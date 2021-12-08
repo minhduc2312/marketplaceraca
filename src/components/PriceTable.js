@@ -64,31 +64,33 @@ const PriceTable = () => {
     return (
         <div>
             <p id='tokenPrice'>RACA Price: {tokenPrice}</p>
-            <SwapRacaToUSD priceRaca={tokenPrice}/>
-            <table id='tablePrice'>
-                <thead>
-                    <tr>
-                        <th scope="col"></th>
-                        <th scope="col">Metamon</th>
-                        <th scope="col">Egg</th>
-                        <th scope="col">Yellow Diamon</th>
-                        <th scope="col">Potion</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {listEgg && listMetamon && listDiamond && listPotion && listEgg.map((child, index) => {
-                        return (
-                            <tr key={index + 1}>
-                                <th scope="row">{index + 1}</th>
-                                <td>{numberWithCommas(listMetamon[index]?.fixed_price)}(~{(tokenPrice * listMetamon[index]?.fixed_price).toFixed(2)} USD)</td>
-                                <td>{numberWithCommas(listEgg[index]?.fixed_price)}(~{(tokenPrice * listEgg[index]?.fixed_price).toFixed(2)} USD)</td>
-                                <td>{numberWithCommas(listDiamond[index]?.fixed_price)}(~{(tokenPrice * listDiamond[index]?.fixed_price).toFixed(2)} USD)</td>
-                                <td>{numberWithCommas(listPotion[index]?.fixed_price)}(~{(tokenPrice * listPotion[index]?.fixed_price).toFixed(2)} USD)</td>
-                            </tr>)
-                    })
-                    }
-                </tbody>
-            </table>
+            <SwapRacaToUSD priceRaca={tokenPrice} />
+            <div id='table-scroll'>
+                <table id='tablePrice'>
+                    <thead>
+                        <tr>
+                            <th scope="col"></th>
+                            <th scope="col">Metamon</th>
+                            <th scope="col">Egg</th>
+                            <th scope="col">Yellow Diamon</th>
+                            <th scope="col">Potion</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {listEgg && listMetamon && listDiamond && listPotion && listEgg.map((child, index) => {
+                            return (
+                                <tr key={index + 1}>
+                                    <th scope="row">{index + 1}</th>
+                                    <td>{numberWithCommas(listMetamon[index]?.fixed_price)} (~{(tokenPrice * listMetamon[index]?.fixed_price).toFixed(2)})</td>
+                                    <td>{numberWithCommas(listEgg[index]?.fixed_price)} (~{(tokenPrice * listEgg[index]?.fixed_price).toFixed(2)})</td>
+                                    <td>{numberWithCommas(listDiamond[index]?.fixed_price)} (~{(tokenPrice * listDiamond[index]?.fixed_price).toFixed(2)})</td>
+                                    <td>{numberWithCommas(listPotion[index]?.fixed_price)} (~{(tokenPrice * listPotion[index]?.fixed_price).toFixed(2)})</td>
+                                </tr>)
+                        })
+                        }
+                    </tbody>
+                </table>
+            </div>
             <div className="cards">
                 {listEgg && listMetamon && listDiamond && listPotion &&
                     <React.StrictMode>
