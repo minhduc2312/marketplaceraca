@@ -51,7 +51,7 @@ const PriceTable = () => {
             let data = res.data['radio-caca'].usd;
             setTokenPrice(data);
 
-        }, 5000)
+        }, 20000)
 
         return () => {
             clearInterval(async () => {
@@ -91,9 +91,7 @@ const PriceTable = () => {
             </table>
             <div className="cards">
                 {listEgg && listMetamon && listDiamond && listPotion &&
-
                     <React.StrictMode>
-
                         <div className="card">
                             {listMetamon[0] && <Card nft={listMetamon[0]}></Card>}
                         </div>
