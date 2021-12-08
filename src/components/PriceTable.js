@@ -58,7 +58,7 @@ const PriceTable = () => {
                 const res = await getPriceRaca();
                 const data = res.data['radio-caca'].usd
                 setTokenPrice(data);
-            }, 5000);
+            }, 20000);
         }
     }, [])
     return (
