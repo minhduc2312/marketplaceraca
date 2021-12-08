@@ -150,6 +150,7 @@
   #tablePrice {
     overflow-x: auto;
     border-spacing: 9px;
+    width: auto;
   }
   #tablePrice td{
     word-wrap: break-word;
