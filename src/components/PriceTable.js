@@ -47,17 +47,19 @@ const PriceTable = () => {
     useEffect(() => {
         getData();
         setInterval(async () => {
-            let res = await getPriceRaca();
-            let data = res.data['radio-caca'].usd;
-            setTokenPrice(data);
+            // let res = await getPriceRaca();
+            // let data = res.data['radio-caca'].usd;
+            // setTokenPrice(data);
+            getData();
 
         }, 20000)
 
         return () => {
             clearInterval(async () => {
-                const res = await getPriceRaca();
-                const data = res.data['radio-caca'].usd
-                setTokenPrice(data);
+                // const res = await getPriceRaca();
+                // const data = res.data['radio-caca'].usd
+                // setTokenPrice(data);
+                getData();
             }, 20000);
         }
     }, [])
