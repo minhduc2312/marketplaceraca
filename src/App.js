@@ -1,11 +1,11 @@
 import './App.css';
-import PriceTable from './components/PriceTable';
+import RacaTabs from './components/Tabs';
 
 function App() {
-
+ 
   return (
     <div className="App">
-      <PriceTable />
+      <RacaTabs/>
     </div>
 
   );

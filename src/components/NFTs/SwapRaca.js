@@ -10,7 +10,7 @@ const SwapRacaToUSD = ({ priceRaca }) => {
     }
     useEffect(() => {
         setUsdPrice(() => inputRaca * priceRaca);
-    }, [inputRaca])
+    }, [inputRaca, priceRaca])
     return (
         <div id='swap-raca'>
             <input id="RACA" type="number" value={inputRaca} onChange={handleChange} />

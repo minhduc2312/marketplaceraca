@@ -5,15 +5,13 @@ function numberWithCommas(x) {
 
 const Card = (props) => {
     const { name = "undefined", id = "#0000", image_url = '', fixed_price = '0000' } = props.nft;
-
     return (
-
         <div className='nft'>
             <div className="imgBox">
-                <img className='image-nft' alt={name} src={image_url} />
+                <img className='image-nft' alt={name} src={image_url || "/marketplaceraca/nft.png"} />
             </div>
             <div className="textBox">
-                <p className='name-nft'>{name}#{id}</p>
+                <p className='name-nft'>{name&&""}#{id}</p>
                 <div className='separate'></div>
                 <div className='price'>
                     <p style={{
