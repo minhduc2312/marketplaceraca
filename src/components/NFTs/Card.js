@@ -4,6 +4,7 @@ function numberWithCommas(x) {
 }
 
 const Card = (props) => {
+
     const { name = "undefined", id = "#0000", image_url = '', fixed_price = '0000' } = props.nft;
     return (
         <div className='nft'>
@@ -22,6 +23,7 @@ const Card = (props) => {
                         whiteSpace:'nowrap',
                         textOverflow:'ellipsis',
                         overflow:'hidden',
+                        margin: '0'
                     }}>Price</p>
                     <p className='priceNum'>{numberWithCommas(fixed_price)}</p>
                 </div>

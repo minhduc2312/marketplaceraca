@@ -4,8 +4,8 @@ import Tab from '@mui/material/Tab';
 import Box from '@mui/material/Box';
 import TabPanel from './TabPanel';
 import PriceTable from './NFTs/PriceTable';
-import Sales from './Sales';
-
+import Sales from './Sales/Sales';
+import Metamon from './Metamon/Metamon'
 function a11yProps(index) {
     return {
         id: `simple-tab-${index}`,
@@ -22,7 +22,7 @@ const RacaTabs = () => {
 
     return (
         <Box sx={{ width: '100%' }}>
-            <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
+            <Box id="tabs" sx={{ borderBottom: 1, borderColor: 'divider' }}>
                 <Tabs value={value} onChange={handleChange} aria-label="basic tabs example">
                     <Tab label="NFTs" {...a11yProps(0)} />
                     <Tab label="Sales" {...a11yProps(1)} />
@@ -36,7 +36,7 @@ const RacaTabs = () => {
                 <Sales/>
             </TabPanel>
             <TabPanel value={value} index={2}>
-                Item Three
+                <Metamon/>
             </TabPanel>
         </Box>
     );

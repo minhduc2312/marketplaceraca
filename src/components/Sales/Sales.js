@@ -1,11 +1,13 @@
 import React, { useEffect, useState } from 'react';
 import Table from '@mui/material/Table';
-import { numberWithCommas } from './NFTs/PriceTable'
+import { numberWithCommas } from '../NFTs/PriceTable'
 import axios from 'axios';
-import { TextField, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, Button } from '@mui/material';
+import { TextField, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, Button, CircularProgress } from '@mui/material';
 import { initializeApp } from "firebase/app";
-import firebaseConfig from "../config"
+import firebaseConfig from "../../config"
 import { collection, getDocs, getFirestore, query, orderBy } from "firebase/firestore";
+import '../../styles/sales.css';
+
 
 function createData(name, totalSales, totalCost, totalWithdraw, percent) {
     const sales = totalSales * percent / 100;
@@ -53,7 +55,7 @@ const Sales = () => {
         const db = getFirestore(app);
 
         const q = query(collection(db, "Transaction"), orderBy("time"));
-
+        
         const querySnapshot = await getDocs(q);
         const tempList = [];
         querySnapshot.forEach((doc) => {
@@ -77,9 +79,11 @@ const Sales = () => {
     useEffect(() => {
 
         const listSales = listHistory.filter(item => item.nft_token_id === 407301)
-        const listCost = listHistory.filter(item => item.nft_token_id === 403545)
-
+        const listCost = listHistory.filter(item => item.nft_token_id === 403545) 
         let sumSales = listSales.reduce((prev, curr) => {
+            if (curr.time > Date.parse(("12/28/2021"))/1000){
+                curr.fee = Number(curr.amount)*5/100;
+            }
             return prev + (Number(curr.amount) - Number(curr.fee))
         }, 0);
         let sumCost = listCost.reduce((prev, curr) => {
@@ -88,16 +92,17 @@ const Sales = () => {
 
         let withdraw = 0;
         let cost = 0;
-        listWithdraw.forEach((item) => {
+        listWithdraw.forEach((item,index) => {
             if (item.transfer) {
-                withdraw += item.amount;
+                withdraw += Number(item.amount);
+                
             } else {
-                cost += item.amount;
+                cost += Number(item.amount);
             }
-
         }, 0);
         sumCost += cost;
-        sumSales -= 2700;
+        if (sumSales !== 0)
+            sumSales -= 2700;
         setListSummary([
             createData("Johny Duc", sumSales, sumCost, withdraw, 40),
             createData("Khang Pug", sumSales, sumCost, withdraw, 40),
@@ -120,14 +125,12 @@ const Sales = () => {
                         </TableRow>
                     </TableHead>
                     <TableBody>
-                        {listSummary && listSummary.map((row) => (
+                        {listHistory && listSummary && listSummary.map((row) => (
                             <TableRow
                                 key={row.name}
                                 sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
                             >
-                                <TableCell component="th" scope="row">
-                                    {row.name}
-                                </TableCell>
+                                <TableCell component="th" scope="row">{row.name}</TableCell>
                                 <TableCell align="center">{numberWithCommas(Math.floor(row.sales))}</TableCell>
                                 <TableCell align="center">{numberWithCommas(Math.floor(row.cost))}</TableCell>
                                 <TableCell align="center">{numberWithCommas(Math.floor(row.profit))}</TableCell>
@@ -135,6 +138,12 @@ const Sales = () => {
                                 <TableCell align="center">{numberWithCommas(Math.floor(row.remain))}</TableCell>
                             </TableRow>
                         ))}
+                        {!listHistory && <TableRow sx={{ '&:last-child td, &:last-child th': { border: 0 } }}>
+                            <TableCell component="th" scope="row">
+                                <CircularProgress size='small' color="success" />
+                            </TableCell>
+                        </TableRow>}
+
                     </TableBody>
                 </Table>
             </TableContainer>
