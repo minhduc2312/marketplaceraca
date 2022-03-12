@@ -1,6 +1,6 @@
 {
   "files": {
-    "main.css": "/marketplaceraca/static/css/main.f5657e1d.chunk.css",
+    "main.css": "/marketplaceraca/static/css/main.597a58a5.chunk.css",
     "main.js": "/marketplaceraca/static/js/main.92b7f7e7.chunk.js",
     "main.js.map": "/marketplaceraca/static/js/main.92b7f7e7.chunk.js.map",
     "runtime-main.js": "/marketplaceraca/static/js/runtime-main.63f8bb23.js",
@@ -10,13 +10,13 @@
     "static/js/3.e51f5255.chunk.js": "/marketplaceraca/static/js/3.e51f5255.chunk.js",
     "static/js/3.e51f5255.chunk.js.map": "/marketplaceraca/static/js/3.e51f5255.chunk.js.map",
     "index.html": "/marketplaceraca/index.html",
-    "static/css/main.f5657e1d.chunk.css.map": "/marketplaceraca/static/css/main.f5657e1d.chunk.css.map",
+    "static/css/main.597a58a5.chunk.css.map": "/marketplaceraca/static/css/main.597a58a5.chunk.css.map",
     "static/js/2.e9fb5086.chunk.js.LICENSE.txt": "/marketplaceraca/static/js/2.e9fb5086.chunk.js.LICENSE.txt"
   },
   "entrypoints": [
     "static/js/runtime-main.63f8bb23.js",
     "static/js/2.e9fb5086.chunk.js",
-    "static/css/main.f5657e1d.chunk.css",
+    "static/css/main.597a58a5.chunk.css",
     "static/js/main.92b7f7e7.chunk.js"
   ]
 }
