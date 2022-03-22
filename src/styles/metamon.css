@@ -1,0 +1,39 @@
+.css-1h61cah-MuiContainer-root {
+  margin-left: 0px !important;
+  padding-left: 10px !important;
+}
+.css-1yxc72j-MuiButtonBase-root-MuiButton-root:hover {
+  background-color: #fcc33c !important;
+}
+.css-hfutr2-MuiSvgIcon-root-MuiSelect-icon,
+.css-1480iag-MuiInputBase-root-MuiInput-root,
+.css-1c2i806-MuiFormLabel-root-MuiInputLabel-root {
+  color: #ffffff !important;
+}
+.css-1d3z3hw-MuiOutlinedInput-notchedOutline {
+  border-color: #fff !important;
+}
+.css-1480iag-MuiInputBase-root-MuiInput-root:before {
+  border-bottom: 1px solid #fff !important;
+}
+.css-h31oa0,
+.css-1xspix3-MuiContainer-root {
+  margin-left: 0px !important;
+}
+.metamon {
+  width: 60% !important;
+}
+@media screen and (min-width: 880px) {
+  
+}
+@media screen and (max-width: 880px) {
+  .App {
+    padding: 0 5px;
+  }
+  .css-1h61cah-MuiContainer-root {
+    padding-left: 10px !important;
+  }
+  .metamon {
+    width: 100% !important;
+  }
+}

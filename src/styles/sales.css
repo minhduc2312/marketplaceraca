@@ -1,0 +1,124 @@
+#withdraw {
+  width: 50%;
+  height: 400px;
+}
+#addTransaction {
+  text-align: left;
+  display: flex;
+  flex-direction: column;
+  width: 50%;
+  margin-bottom: 10px;
+}
+#toggleButton {
+  width: 50%;
+  margin-bottom: 10px;
+  background-image: linear-gradient(to right, #4568dc, #b06ab3);
+}
+
+#addButton {
+  background-image: linear-gradient(to right, #6190e8, #a7bfe8);
+}
+#tabs {
+  width: 600px;
+}
+.sales {
+  padding-top: 20px;
+}
+#sales-section table thead th {
+  font-weight: bold;
+  padding-bottom: 0px;
+}
+
+#sales-section table tbody td:not(first-child) {
+  text-align: center;
+}
+.sales {
+  display: flex;
+  justify-content: center;
+}
+.multiRow {
+  display: flex !important;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  width: 100% !important;
+  border-bottom: none !important;
+  padding-left: 0px !important;
+  padding-right: 0px !important;
+  padding-bottom:0px !important
+}
+.multiRow tr:last-child {
+  display: flex;
+  justify-content: center;
+  width: 100%;
+  align-items: center;
+}
+.multiRow tr{
+  text-align: center !important;
+  font-weight: bold !important;
+}
+.multiRow tr td {
+  text-align: center !important;
+  width: 50% !important;
+  text-align: center;
+  border-top: 1px solid rgba(224, 224, 224, 1);
+  border-bottom: none;
+  font-weight: bold;
+  padding-bottom: 0px;
+}
+.multiCell td {
+  border-bottom: none !important;
+  width: 50% !important;
+  text-align: center !important;
+}
+.multiCell {
+  width: 100% !important;
+  display: flex !important;
+  flex-direction: row;
+  justify-content: center !important;
+  /* padding: 16px 0px !important */
+}
+
+#sales-section {
+  width: 80%;
+}
+#sales-section table tbody td:first-child,
+#sales-section table thead th:first-child {
+  width: 30%;
+  text-align: left;
+}
+
+@media screen and (max-width: 880px) {
+  .css-19kzrtu {
+    padding: 24px 0px !important;
+  }
+  #sales-section table tbody th:first-child,
+  #sales-section table thead th:first-child {
+    position: sticky;
+    left: 0;
+    background-color: white;
+    padding-right: 10px;
+    width: auto;
+  }
+  #withdraw {
+    width: 100%;
+  }
+  #addTransaction {
+    width: 100%;
+  }
+
+  #tabs {
+    width: 100%;
+    margin-left: 0px;
+  }
+
+  .css-1h9z7r5 {
+    width: calc(100% / 3);
+  }
+  .sales {
+    padding: 0px;
+  }
+  #sales-section {
+    width: 100%;
+  }
+}

@@ -1,0 +1,254 @@
+.tokenPrice {
+  font-weight: 500;
+  text-align: left;
+}
+#swap-raca {
+  font-weight: 500;
+  text-align: left;
+}
+#swap-raca input {
+  height: 20px;
+}
+.tablePrice {
+  width: 60%;
+  border-spacing: 10px;
+}
+.cards {
+  display: flex;
+  flex-flow: row wrap;
+  row-gap: 0px;
+  padding: 40px 0;
+  width: 100%;
+}
+.card {
+  min-width: 250px;
+  margin-right: 4%;
+}
+.nft {
+  width: 286px;
+  height: 456px;
+  margin-bottom: 60px;
+  border: 2px solid rgb(255 255 255 / 66%);
+  cursor: pointer;
+  position: relative;
+  border-radius: 5px;
+}
+.imgBox {
+  position: relative;
+  width: 284px;
+  height: 284px;
+  border-radius: 0;
+}
+.textBox {
+  padding: 16px 16px 0;
+}
+.image-nft {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+.name-nft {
+  color: #ffffff;
+  font-weight: 700;
+  font-size: 20px;
+  line-height: 32px;
+}
+.priceNum {
+  margin-left: 12px;
+  color: #ffffff;
+  font-weight: 700;
+  font-size: 16px;
+  font-family: PingFang SC;
+  font-style: normal;
+  line-height: 24px;
+  font-feature-settings: "pnum" on, "lnum" on;
+}
+.price {
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+}
+#timeUpdated {
+  text-align: left;
+}
+.tablePrice th {
+  font-weight: bold;
+  padding: 0px;
+  font-size: 1rem;
+}
+.tablePrice td {
+  font-size: 1rem;
+}
+
+.tablePrice {
+  width: 100%;
+  overflow-x: auto;
+  border-spacing: 8px;
+}
+.loading .image-nft,
+.loading .name-nft,
+.loading .price {
+  position: relative;
+  overflow: hidden;
+}
+.loading .image-nft::before,
+.loading .name-nft::before,
+.loading .price::before {
+  position: absolute;
+  background-color: #dddddd;
+  content: "";
+  width: 100%;
+  height: 80%;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+}
+.loading .image-nft::after,
+.loading .name-nft::after,
+.loading .price::after {
+  position: absolute;
+  content: "";
+  width: 100%;
+  height: 80%;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-image: linear-gradient(to right, #dddddd, #ffffff 50%, #dddddd);
+  animation: skeletonLoading 2s infinite alternate;
+}
+.pricetable {
+  display: flex;
+}
+.priceToken {
+  display: flex;
+  width: 40%;
+  gap: 10%;
+}
+#xike {
+  width: 40%;
+}
+#xike img {
+  object-fit: contain;
+  width: 100%;
+  height: auto;
+}
+#xike p {
+  font-family: cursive;
+  font-size: 20px;
+  font-weight: bolder;
+  margin: 0;
+  padding-left: 6%;
+}
+.table-scroll {
+  color: #ffffff;
+  background-color: #fff0 !important;
+  width: 60%;
+  overflow-x: hidden !important;
+}
+.table-scroll th {
+  color: #ffffff;
+}
+.table-scroll td {
+  color: #ffffff;
+}
+.stats {
+  /* border-top: 1px solid #ffffff; */
+  margin-top: 20px;
+  width: 50%;
+}
+.header {
+  display: flex;
+  text-transform: uppercase;
+  font-weight: bold;
+  font-size: larger;
+  position: relative;
+  justify-content: center;
+}
+.stats-session {
+  display: flex;
+  gap: 2%;
+  width: 71.5%;
+}
+@keyframes skeletonLoading {
+  from {
+    left: -40%;
+  }
+  to {
+    left: 40%;
+  }
+}
+.table-scroll td:last-child {
+  border-right: 2px solid;
+}
+.table-scroll tbody th:first-child {
+  border-left: 2px solid;
+}
+.table-scroll tbody th:first-child {
+    border-right: 1px solid;
+  }
+@media screen and (min-width: 880px) {
+  .stats-session {
+    width: 71.5%;
+  }
+}
+@media screen and (max-width: 880px) {
+  .nft {
+    width: 100%;
+    height: 80%;
+    margin-bottom: 24px;
+  }
+  .cards {
+    width: 100vw;
+    justify-content: center;
+  }
+  .card {
+    width: 43%;
+    height: 100%;
+    min-width: 170px;
+  }
+  .imgBox {
+    width: 100%;
+    height: 175px;
+  }
+  .name-nft {
+    font-size: 14px;
+    margin: 0px;
+  }
+  .textBox {
+    padding: 0px 16px;
+  }
+  .tablePrice td {
+    word-wrap: break-word;
+    border-collapse: collapse;
+    padding: 8px 2px;
+    /* border-right: 1px solid; */
+  }
+  .stats {
+    width: 100%;
+  }
+  .stats td {
+    width: 30%;
+  }
+  .table-scroll {
+    width: 100%;
+  }
+  #xike {
+    display: none;
+  }
+  .priceToken {
+    width: auto;
+    gap: 5%;
+  }
+  .stats-session {
+    width: 100%;
+  }
+  .table-scroll th {
+    font-size: 0.8rem;
+  }
+  .table-scroll td:last-child {
+    padding-right: 5px;
+  }
+  
+}
