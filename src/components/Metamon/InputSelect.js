@@ -43,7 +43,7 @@ export const InputSelect = ({ getFilter }) => {
                 />
                 <TextField value={level} onChange={handleLevelChange} sx={{ color: '#fff', width: 100, marginRight: '0.5rem' }} id="level" label="Level" variant="standard" type='number' autoComplete="new-password"
                 />
-                <Button sx={{ color: '#fff', height: '100%', color: '#383838', background: '#fcc33c' }} variant="contained" onClick={ConfirmHandle}>Confirm</Button>
+                <Button sx={{height: '100%', color: '#383838', background: '#fcc33c' }} variant="contained" onClick={ConfirmHandle}>Confirm</Button>
             </Box>
             <Box>
                 <FormControl style={{ margin: '20px 0' }}>

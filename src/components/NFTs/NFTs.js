@@ -2,7 +2,7 @@ import axios from "axios";
 import React, { useEffect, useState } from "react";
 import Card from "./Card";
 import SwapRacaToUSD from "./SwapRaca";
-import { Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, buttonClasses } from '@mui/material';
+import { Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper } from '@mui/material';
 import '../../styles/nfts.css';
 import { useSelector } from "react-redux";
 
@@ -14,8 +14,7 @@ const getAPI = (categoryId = '', size = '') => {
     });
 }
 const ConvertDDMM = (datetime) => {
-    const [date, time] = datetime.toLocaleString().split(',');
-    const [month, day, year] = date.split('/');
+    const [time] = datetime.toLocaleString().split(',');
     return `${time.split(' ').join('')}`
 }
 const getStats = (categoryId = '') => {

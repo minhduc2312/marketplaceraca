@@ -19,6 +19,7 @@ const initState = {
         tokenId: '',
         rarity: '',
         purity: '',
+        aura: '',
         price: '',
         min: '',
         max: '',

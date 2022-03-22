@@ -5,8 +5,7 @@ import InputFilters from './InputFilters';
 import '../../styles/elemon.css';
 import { Box, CircularProgress, Grid } from '@mui/material';
 import InfoCard from './InfoCard';
-import { useDispatch, useSelector } from 'react-redux';
-import { handlePower } from '../../app/actions';
+import { useSelector } from 'react-redux';
 
 
 const getElemonItem = (pageNumber = 1, pageSize = 20, priceMode = 2, baseCardId, tokenId, rarities, classes, purities) => {
@@ -31,10 +30,8 @@ const Elemon = () => {
     const [timeUpdated, setTimeUpdated] = useState("")
     const [loading, setLoading] = useState(true);
     const [listFilter, setListFilter] = useState([]);
-    const [myNFT, setMyNFT] = useState();
     const { min, max, sort, name, tokenId } = useSelector(state => state.filtersElemon)
 
-    const dispatch = useDispatch();
     const convertDateTime = () => {
         const now = new Date();
         setTimeUpdated(now.toLocaleString())
@@ -63,19 +60,9 @@ const Elemon = () => {
                 const amount = lengthList % size !== 0 && lengthList - (i * size) < 0 ? ((i - 1) * size) + (lengthList % size) : i * size
                 await getElemonInfo(listElemon?.slice((i - 1) * size, amount)).then(res => {
                     const listInfo = listElemon.slice((i - 1) * size, amount).map((item, index) => {
-                        try {
-                            if (item.ownerAddress === '0x10201091597635eC7b8e208306E6aDCC7c167925' && index != undefined) {
-                                item.point = res.data[index]?.point;
-                                dispatch(handlePower({ minPower: item.point - (item.point % 100000 + 50000), maxPower: max }))
-                                setMyNFT(item);
-                            }
-                            return {
-                                ...item,
-                                point: res?.data[index]?.point,
-                            }
-                        }
-                        catch (err) {
-                            console.log(err)
+                        return {
+                            ...item,
+                            point: res?.data[index]?.point,
                         }
                     });
                     setListElemonInfo(pre => pre.concat(listInfo))
@@ -94,15 +81,15 @@ const Elemon = () => {
             let maxP = max;
             let minP = min;
             if (tokenId) {
-                return elemon.tokenId == tokenId;
+                return elemon.tokenId === tokenId;
             } else {
                 const checkPower = (power, type) => {
                     if (!power)
                         return true;
-                    return type == 1 ? elemon?.point >= power : elemon?.point <= power
+                    return type === 1 ? elemon?.point >= power : elemon?.point <= power
                 }
                 if (Number(name) !== 0) {
-                    return checkPower(minP, 1) && checkPower(maxP, 2) && elemon.baseCardId == name;
+                    return checkPower(minP, 1) && checkPower(maxP, 2) && elemon.baseCardId === Number(name);
                 }
                 return checkPower(minP, 1) && checkPower(maxP, 2)
             }
@@ -134,12 +121,6 @@ const Elemon = () => {
                 <InputFilters />
                 <p className='timeUpdate'>{timeUpdated}</p>
                 <Grid container spacing={1}>
-                    {myNFT && (
-                        <Grid item xs={6} md={4} lg={2.2}>
-                            <InfoCard elemon={myNFT} />
-                        </Grid>
-                    )}
-
                     {listFilter && listFilter?.slice(0, 100).map((item, index) => (
                         <Grid key={index} item xs={6} md={4} lg={2.2}>
                             <InfoCard elemon={item} />

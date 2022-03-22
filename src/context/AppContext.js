@@ -1,5 +1,4 @@
 import { createContext, useEffect, useState } from 'react'
-import useRouter from './useRouter'
 export const AppContext = createContext();
 
 export const AppProvider = ({ children }) => {

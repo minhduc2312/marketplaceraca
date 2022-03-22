@@ -1,11 +1,10 @@
 import React, { useContext, useEffect, useState } from 'react'
 import Metamask from './Metamask'
-import { TextField, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, Button, CircularProgress, Table } from '@mui/material';
+import { TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, CircularProgress, Table } from '@mui/material';
 import axios from 'axios';
 import { AppContext } from '../context/AppContext';
 import { numberWithCommas } from './NFTs/NFTs';
-import WalletConnect from "@walletconnect/client";
-import QRCodeModal from "@walletconnect/qrcode-modal";
+
 
 
 const MarketHistory = () => {
@@ -24,13 +23,13 @@ const MarketHistory = () => {
     const getHistoryData = async () => {
       let pageNo = 1;
       let pageSize = 10;
-      const isMD = currentAccount == '0x769ba0cb0d89666f7506194d2cf416ea0f812e16';
+      const isMD = currentAccount === '0x769ba0cb0d89666f7506194d2cf416ea0f812e16';
       getMarketHistory(pageNo, pageSize).then(async (res) => {
         setLength(res.total);
         setHistoryList(pre => pre.concat(res.list));
         const loop = isMD ? Math.floor(res.total / 10) : Math.floor(res.total / 10) + 1;
         for (let i = 2; i <= loop; i++) {
-          if (i == 10)
+          if (i === 10)
             continue;
           const listData = await getMarketHistory(i, pageSize);
           setHistoryList(pre => pre.concat(listData.list))
@@ -59,10 +58,10 @@ const MarketHistory = () => {
     let buy = 0;
     let sell = 0;
     let lengthList = length;
-    if (currentAccount == '0x769ba0cb0d89666f7506194d2cf416ea0f812e16') {
+    if (currentAccount === '0x769ba0cb0d89666f7506194d2cf416ea0f812e16') {
       lengthList--;
     }
-    if (historyList.length == lengthList && historyList.length != 0) {
+    if (historyList.length === lengthList && historyList.length !== 0) {
       historyList.forEach(item => {
         if (!listNFT.includes(item.token_name)) {
           listNFT.push(item.token_name)
@@ -74,7 +73,7 @@ const MarketHistory = () => {
             countSell: item.type === 'Sell' ? item.count : 0,
           })
         } else {
-          if (item.type == 'Buy') {
+          if (item.type === 'Buy') {
             listTotal.filter(name => name.token_name === item.token_name)[0].totalBuy += item.amount;
             listTotal.filter(name => name.token_name === item.token_name)[0].countBuy += item.count;
           }
@@ -83,7 +82,7 @@ const MarketHistory = () => {
             listTotal.filter(name => name.token_name === item.token_name)[0].countSell += item.count
           }
         }
-        if (item.type == 'Buy') {
+        if (item.type === 'Buy') {
           buy += item.amount
         }
         else {
@@ -93,8 +92,8 @@ const MarketHistory = () => {
       setTotalBuy(buy);
       setTotalSell(sell);
       // console.log(listTotal.filter(name => name.token_name === "Metamon Egg#204900010231")[0]?.totalSell)
-      if (currentAccount == '0x769ba0cb0d89666f7506194d2cf416ea0f812e16') {
-        const getItem = listTotal.filter(name => name.token_name == "Metamon Egg#204900010231")[0];
+      if (currentAccount === '0x769ba0cb0d89666f7506194d2cf416ea0f812e16') {
+        const getItem = listTotal.filter(name => name.token_name === "Metamon Egg#204900010231")[0];
         getItem.totalSell = 100000;
         setTotalSell(prev => prev + getItem.totalSell)
       }

@@ -1,14 +1,41 @@
-import { Button, TextField, Box } from '@mui/material';
+import { Button, TextField, Box, Typography, Checkbox, FormControl, FormControlLabel } from '@mui/material';
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { handlePower, handleSort, handleFilterName, handleTokenId } from '../../app/actions';
 
 const InputFilters = () => {
-    const { min, max, sort } = useSelector(state => state.filtersElemon);
+    const { min, max } = useSelector(state => state.filtersElemon);
     const [minPower, setMinPower] = useState(min);
     const [maxPower, setMaxPower] = useState(max);
-    const [sortPrice, setSortPrice] = useState(sort)
-    const [tokenId, setTokenId] = useState();
+    const listRarity = [
+        {
+            rarity: 'B',
+            color: '#7ebeff',
+            textShadow: '0 0 6px #4553ff'
+        },
+        {
+            rarity: 'A',
+            color: '#83ffcb',
+            textShadow: '0 0 6px #45ffb0'
+        },
+        {
+            rarity: 'S',
+            color: '#ff83fa',
+            textShadow: '0 0 6px #ff45d4'
+        },
+        {
+            rarity: 'SS',
+            color: '#ffe283',
+            textShadow: '0 0 6px #eaff45'
+        },
+        {
+            rarity: 'SSS',
+            color: '#ff8383',
+            textShadow: '0 0 6px #ff2424'
+        },
+
+    ]
+
 
     const dispatch = useDispatch();
     const handleMinPower = (event) => {
@@ -18,7 +45,6 @@ const InputFilters = () => {
         setMaxPower(event.target.value);
     }
     const handleSortPrice = (event) => {
-        setSortPrice(event.target.value);
         dispatch(handleSort(event.target.value));
     }
     const handleName = (event) => {
@@ -26,17 +52,17 @@ const InputFilters = () => {
     }
     const handleSubmit = () => {
         dispatch(handlePower({ minPower, maxPower }));
-        setSortPrice(0);
     }
     // const changeTokenId = (e) => {
     //     setTokenId(e.target.value)
     // }
     useEffect(() => {
         setMinPower(min)
-    },[min])
+    }, [min])
     const changeTokenId = (e) => {
         dispatch(handleTokenId(e.target?.value))
     }
+
     return (
         <div className="filters">
             <div className="filter-content">
@@ -66,7 +92,36 @@ const InputFilters = () => {
                         <option value="19">Scary</option>
                         <option value="13">Cokoner</option>
                     </select>
-                    <input onBlur={changeTokenId} className="market__input" placeholder="Elemon Id" value={tokenId} type='number' />
+                    <Box className='filters_expand'>
+                        <Box className='filter_item'>
+                            <Typography variant='h5'>Rarity</Typography>
+                            <Box className='item_content'>
+                                <FormControl component="fieldset" className='checkbox_item'>
+
+                                    {listRarity.length && listRarity.map(item => {
+                                        <FormControlLabel
+                                            value={item.rarity}
+                                            control={<Checkbox />}
+                                            label="End"
+                                            labelPlacement="end"
+                                            sx={{
+                                                color: '#fff',
+                                                '&.Mui-checked': {
+                                                    color: '#fff',
+                                                },
+                                            }}
+
+                                        />
+                                    })}
+                                </FormControl>
+
+                            </Box>
+                        </Box>
+                        <Box className='filter_item'>
+                            <Typography variant='h5'>Aura</Typography>
+                        </Box>
+                    </Box>
+                    <input onBlur={changeTokenId} className="market__input" placeholder="Elemon Id" type='number' />
 
                     <Box className='filter_power'>
                         <TextField value={minPower} onChange={handleMinPower} sx={{ width: 100, marginRight: '0.5rem' }} id="min-power" label="Min" variant="standard" type='number' />
@@ -80,5 +135,6 @@ const InputFilters = () => {
         </div>
     )
 };
+
 
 export default InputFilters;

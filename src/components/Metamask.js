@@ -1,4 +1,4 @@
-import { Button, buttonGroupClasses } from '@mui/material';
+import { Button } from '@mui/material';
 import React, { useContext } from 'react'
 import { AppContext } from '../context/AppContext'
 
@@ -31,7 +31,7 @@ const Metamask = () => {
             /* width: 25%; */
             alignItems: 'center',
         }}>
-            <img width={`100px`} height='100px' src='/marketplaceraca/metamask.png' />
+            <img alt='' width={`100px`} height='100px' src='/marketplaceraca/metamask.png' />
             <Button sx={{ height: '100%', color: '#383838', background: '#fcc33c' }} variant="contained" onClick={() => connectToWallet()}>Connect to wallet</Button>
         </div>
     )
@@ -46,7 +46,7 @@ const Metamask = () => {
             /* width: 25%; */
             alignItems: 'center',
         }}>
-            <img width={`100px`} height='100px' src='/marketplaceraca/metamask.png' />
+            <img alt='' width={`100px`} height='100px' src='/marketplaceraca/metamask.png' />
             <p> You must install Metamask, a <br /> virtual Ethereum wallet, in your browser</p>
         </div>
 
@@ -59,7 +59,7 @@ const Metamask = () => {
             /* width: 25%; */
             alignItems: 'center',
         }}>
-            <img width={`100px`} height='100px' src='/marketplaceraca/error.png' />
+            <img alt='' width={`100px`} height='100px' src='/marketplaceraca/error.png' />
             <p>An error occurred. Please try again later or use another browser</p>
         </div>
     )

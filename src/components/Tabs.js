@@ -4,11 +4,9 @@ import Tab from '@mui/material/Tab';
 import Box from '@mui/material/Box';
 import TabPanel from './TabPanel';
 import NFTs from './NFTs/NFTs';
-import Sales from './Sales/Sales';
 import Metamon from './Metamon/Metamon'
 import Elemon from './Elemon/Elemon'
 import '../App.css'
-import Metamask from './Metamask';
 import MarketHistory from './MarketHistory';
 
 function a11yProps(index) {

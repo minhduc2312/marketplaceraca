@@ -291,6 +291,23 @@ button {
   page-break-after: always; /* CSS 2.1 syntax */
   break-after: always; /* New syntax */
 }
+
+.filters_expand{
+  display: flex;
+  width: 100%;
+  justify-content: space-around;
+  color: #049ec4;
+}
+.filter_item h5::before{
+  content: url('https://app.elemon.io/assets/images/icon_filter_header.png');
+  left: 0px;
+  transform: translateY(-50%);
+}
+
+
+
+
+
 @media screen and (max-width: 880px) {
   .filter-top .market__select {
     width: calc(50% - 3px);
