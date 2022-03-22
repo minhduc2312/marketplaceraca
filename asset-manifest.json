@@ -1,8 +1,8 @@
 {
   "files": {
     "main.css": "/marketplaceraca/static/css/main.d1b96127.chunk.css",
-    "main.js": "/marketplaceraca/static/js/main.14ab393c.chunk.js",
-    "main.js.map": "/marketplaceraca/static/js/main.14ab393c.chunk.js.map",
+    "main.js": "/marketplaceraca/static/js/main.a5ef4f9a.chunk.js",
+    "main.js.map": "/marketplaceraca/static/js/main.a5ef4f9a.chunk.js.map",
     "runtime-main.js": "/marketplaceraca/static/js/runtime-main.4f781cd9.js",
     "runtime-main.js.map": "/marketplaceraca/static/js/runtime-main.4f781cd9.js.map",
     "static/js/2.554ebd7f.chunk.js": "/marketplaceraca/static/js/2.554ebd7f.chunk.js",
@@ -17,6 +17,6 @@
     "static/js/runtime-main.4f781cd9.js",
     "static/js/2.554ebd7f.chunk.js",
     "static/css/main.d1b96127.chunk.css",
-    "static/js/main.14ab393c.chunk.js"
+    "static/js/main.a5ef4f9a.chunk.js"
   ]
 }
