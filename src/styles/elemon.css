@@ -227,19 +227,18 @@ img {
   z-index: -2;
   border-radius: 14px;
 }
-.owner::after{
-  background: linear-gradient(#fd0000 0,#f77 100%) !important;
+.owner::after {
+  background: linear-gradient(#fd0000 0, #f77 100%) !important;
 }
-.owner::before{
-  background: linear-gradient(#fc5454 0,red 100%) !important;
+.owner::before {
+  background: linear-gradient(#fc5454 0, red 100%) !important;
 }
-
 
 .content .text .element {
   display: flex;
-    justify-content: center;
-    align-items: center;
-    margin-top: 5px;
+  justify-content: center;
+  align-items: center;
+  margin-top: 5px;
 }
 .element.power {
   border: 2px solid #d42d31;
@@ -248,9 +247,9 @@ img {
 }
 .element .icon {
   border-radius: 5px 0px 0px 5px;
-    border: 2px solid #d42d31;
-    height: 36px;
-    border-right: none;
+  border: 2px solid #d42d31;
+  height: 36px;
+  border-right: none;
 }
 .element .icon img {
   width: 32px;
@@ -258,30 +257,30 @@ img {
 }
 .element .element__name {
   font-family: pt_bold;
-    font-size: 20px;
-    text-align: left;
-    color: #fff;
-    align-items: center;
-    margin: 0;
-    /* margin-left: 5px; */
-    padding: 0px 5px;
-    border: 2px solid #d42d31;
-    height: 36px;
-    border-left: none;
-    border-radius: 0px 5px 5px 0px;
+  font-size: 20px;
+  text-align: left;
+  color: #fff;
+  align-items: center;
+  margin: 0;
+  /* margin-left: 5px; */
+  padding: 0px 5px;
+  border: 2px solid #d42d31;
+  height: 36px;
+  border-left: none;
+  border-radius: 0px 5px 5px 0px;
 }
 .timeUpdate {
   margin-top: 0px;
   text-align: left;
 }
-.css-1480iag-MuiInputBase-root-MuiInput-root{
+.css-1480iag-MuiInputBase-root-MuiInput-root {
   height: 26px !important;
 }
 button {
   border: none;
 }
-.filter_power{
-    margin-left:10px
+.filter_power {
+  margin-left: 10px;
 }
 .filter_power:before {
   content: "\a";
@@ -292,21 +291,49 @@ button {
   break-after: always; /* New syntax */
 }
 
-.filters_expand{
+.filters_expand {
   display: flex;
-  width: 100%;
+  width: 30%;
   justify-content: space-around;
   color: #049ec4;
 }
-.filter_item h5::before{
-  content: url('https://app.elemon.io/assets/images/icon_filter_header.png');
+.filter_item h5::before {
+  content: url("https://app.elemon.io/assets/images/icon_filter_header.png");
   left: 0px;
   transform: translateY(-50%);
 }
+.filter_item {
+  width: 50%;
+}
+.MuiInput-underline {
+  margin-top: 10px;
+}
 
-
-
-
+.checkbox_item {
+  display: grid !important;
+  grid-template-columns: auto auto auto;
+  gap: 10px;
+  width: 100%;
+}
+#min-power-label,
+#max-power-label {
+  top: -5px;
+}
+.checkbox_item label {
+  width: 50px;
+}
+.MuiCheckbox-root {
+  padding: 0px !important ;
+}
+.rarity {
+  padding: 5px !important;
+}
+.rarity .MuiFormControlLabel-root {
+  margin-left: -5px;
+}
+.aura .MuiFormControlLabel-root {
+  margin: 0px;
+}
 
 @media screen and (max-width: 880px) {
   .filter-top .market__select {
@@ -325,7 +352,17 @@ button {
   .timeUpdate {
     text-align: center;
   }
+  .filters_expand {
+    width: 100%;
+  }
+  .input_power{
+    width: 90px !important;
+  }
+  .btnConfirm_power{
+    width: 80px !important;
+  }
 }
+
 ::placeholder {
   color: #f7f7f7;
   text-align: center;

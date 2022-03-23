@@ -52,5 +52,29 @@ export const handleTokenId = (id) => {
         payload: id,
     }
 }
+export const addRarity = (id) => {
+    return {
+        type: 'elemon/addRarity',
+        payload: Number(id),
+    }
+}
+export const removeRarity = (id) => {
+    return {
+        type: 'elemon/removeRarity',
+        payload: Number(id),
+    }
+}
+export const addAura = (id) => {
+    return {
+        type: 'elemon/addAura',
+        payload: Number(id),
+    }
+}
+export const removeAura = (id) => {
+    return {
+        type: 'elemon/removeAura',
+        payload: Number(id),
+    }
+}
 
 
