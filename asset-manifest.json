@@ -1,22 +1,22 @@
 {
   "files": {
-    "main.css": "/marketplaceraca/static/css/main.c0b3857c.chunk.css",
-    "main.js": "/marketplaceraca/static/js/main.edf1473e.chunk.js",
-    "main.js.map": "/marketplaceraca/static/js/main.edf1473e.chunk.js.map",
+    "main.css": "/marketplaceraca/static/css/main.586dc4ea.chunk.css",
+    "main.js": "/marketplaceraca/static/js/main.c9176740.chunk.js",
+    "main.js.map": "/marketplaceraca/static/js/main.c9176740.chunk.js.map",
     "runtime-main.js": "/marketplaceraca/static/js/runtime-main.774bba9e.js",
     "runtime-main.js.map": "/marketplaceraca/static/js/runtime-main.774bba9e.js.map",
-    "static/js/2.a4c87d48.chunk.js": "/marketplaceraca/static/js/2.a4c87d48.chunk.js",
-    "static/js/2.a4c87d48.chunk.js.map": "/marketplaceraca/static/js/2.a4c87d48.chunk.js.map",
+    "static/js/2.ec871ec5.chunk.js": "/marketplaceraca/static/js/2.ec871ec5.chunk.js",
+    "static/js/2.ec871ec5.chunk.js.map": "/marketplaceraca/static/js/2.ec871ec5.chunk.js.map",
     "static/js/3.5a516a97.chunk.js": "/marketplaceraca/static/js/3.5a516a97.chunk.js",
     "static/js/3.5a516a97.chunk.js.map": "/marketplaceraca/static/js/3.5a516a97.chunk.js.map",
     "index.html": "/marketplaceraca/index.html",
-    "static/css/main.c0b3857c.chunk.css.map": "/marketplaceraca/static/css/main.c0b3857c.chunk.css.map",
-    "static/js/2.a4c87d48.chunk.js.LICENSE.txt": "/marketplaceraca/static/js/2.a4c87d48.chunk.js.LICENSE.txt"
+    "static/css/main.586dc4ea.chunk.css.map": "/marketplaceraca/static/css/main.586dc4ea.chunk.css.map",
+    "static/js/2.ec871ec5.chunk.js.LICENSE.txt": "/marketplaceraca/static/js/2.ec871ec5.chunk.js.LICENSE.txt"
   },
   "entrypoints": [
     "static/js/runtime-main.774bba9e.js",
-    "static/js/2.a4c87d48.chunk.js",
-    "static/css/main.c0b3857c.chunk.css",
-    "static/js/main.edf1473e.chunk.js"
+    "static/js/2.ec871ec5.chunk.js",
+    "static/css/main.586dc4ea.chunk.css",
+    "static/js/main.c9176740.chunk.js"
   ]
 }
