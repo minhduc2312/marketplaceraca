@@ -94,9 +94,6 @@ const InputFilters = () => {
     setMinPower(min);
   }, [min]);
 
-  useEffect(() => {
-    console.log(rarity, aura);
-  }, [rarity, aura]);
   return (
     <div className="filters">
       <div className="filter-content">

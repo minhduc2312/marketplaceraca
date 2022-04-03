@@ -23,13 +23,16 @@
   outline: 0;
   background: #162840;
 }
+.market__input{
+  font-size: 14px;
+}
 input::-webkit-outer-spin-button,
 input::-webkit-inner-spin-button {
   -webkit-appearance: none;
   margin: 0;
 }
 .market__input {
-  width: 75px;
+  width: 70px;
 }
 .character-item {
   height: auto;
@@ -280,7 +283,7 @@ button {
   border: none;
 }
 .filter_power {
-  margin-left: 10px;
+  margin-left: 2px;
 }
 .filter_power:before {
   content: "\a";
@@ -356,10 +359,13 @@ button {
     width: 100%;
   }
   .input_power{
-    width: 90px !important;
+    width: 85px !important;
   }
   .btnConfirm_power{
     width: 80px !important;
+  }
+  .css-1wt0ykv{
+    margin-top:10px !important
   }
 }
 

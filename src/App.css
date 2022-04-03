@@ -66,6 +66,9 @@ body::before {
 #tabs {
   width: 600px;
 }
+.Mui-selected {
+  color: rgb(25 118 210) !important;
+}
 @media screen and (max-width: 880px) {
   .App {
     padding: 0 5px;

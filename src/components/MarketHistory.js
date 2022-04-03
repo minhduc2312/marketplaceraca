@@ -4,13 +4,13 @@ import { TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, Circu
 import axios from 'axios';
 import { AppContext } from '../context/AppContext';
 import { numberWithCommas } from './NFTs/NFTs';
-
+import '../styles/market_history.css'
 
 
 const MarketHistory = () => {
   const { currentAccount } = useContext(AppContext);
   const [loading, setLoading] = useState(true);
-  
+
   const [historyList, setHistoryList] = useState([]);
   const [length, setLength] = useState(0);
   const [totalList, setTotalList] = useState([])
@@ -20,25 +20,28 @@ const MarketHistory = () => {
     return axios(`https://market-api.radiocaca.com/users/${currentAccount}/histories?pageNo=${pageNo}&pageSize=${pageSize}`).then(res => res.data)
   }
   useEffect(() => {
+    console.log(window.w3)
     const getHistoryData = async () => {
       let pageNo = 1;
       let pageSize = 10;
-      const isMD = currentAccount === '0x769ba0cb0d89666f7506194d2cf416ea0f812e16';
-      getMarketHistory(pageNo, pageSize).then(async (res) => {
-        setLength(res.total);
-        setHistoryList(pre => pre.concat(res.list));
-        const loop = isMD ? Math.floor(res.total / 10) : Math.floor(res.total / 10) + 1;
-        for (let i = 2; i <= loop; i++) {
-          if (i === 10)
-            continue;
-          const listData = await getMarketHistory(i, pageSize);
-          setHistoryList(pre => pre.concat(listData.list))
-        }
-      })
+      const isMD = currentAccount.toLowerCase() === '0x769ba0cb0d89666f7506194d2cf416ea0f812e16';
       if (isMD) {
-        getMarketHistory(10, 5).then(res => setHistoryList(pre => pre.concat(res.list)))
-        // getMarketHistory(10, 5).then(res => setHistoryList(pre => pre.concat(res.list)))
-        getMarketHistory(3, 48).then(res => setHistoryList(pre => pre.concat(res.list)))
+        getMarketHistory(pageNo, pageSize).then(async (res) => {
+          setLength(res.total)
+          const listDataMD = await getMarketHistory(1, res.total - 8).then(async (res) => {
+            const listDataMD2 = await getMarketHistory(2, res.total - 7).then(res => res.list);
+
+            return res.list.concat(listDataMD2)
+          });
+          setHistoryList(listDataMD)
+
+        })
+      } else {
+        const listData = await getMarketHistory(pageNo, pageSize).then(async (res) => {
+          setLength(res.total);
+          return getMarketHistory(pageNo, res.total).then(res => res.list);
+        })
+        setHistoryList(listData);
       }
 
     }
@@ -53,6 +56,7 @@ const MarketHistory = () => {
   }, [currentAccount])
 
   useEffect(() => {
+
     const listNFT = [];
     const listTotal = [];
     let buy = 0;
@@ -63,6 +67,8 @@ const MarketHistory = () => {
     }
     if (historyList.length === lengthList && historyList.length !== 0) {
       historyList.forEach(item => {
+        if (item.token_name === 'Metamon#363811')
+          return;
         if (!listNFT.includes(item.token_name)) {
           listNFT.push(item.token_name)
           listTotal.push({
@@ -105,7 +111,6 @@ const MarketHistory = () => {
         }
       }))
       setLoading(false);
-      // console.log(listTotal)
     }
 
   }, [historyList])
@@ -120,24 +125,23 @@ const MarketHistory = () => {
               <TableHead>
                 <TableRow>
                   <TableCell component='th' align='center'>NFT</TableCell>
-                  <TableCell align="center">
-                    <TableCell component='td' className='multiRow'>
-                      <TableRow >Buy</TableRow>
-                      <TableRow>
-                        <TableCell component='td'>Amount</TableCell>
-                        <TableCell component='td'>Count</TableCell>
-                      </TableRow>
-                    </TableCell>
-
+                  <TableCell component='th' align="center">
+                    <div>
+                      <p colSpan={2}>Buy</p>
+                      <div className='multiRow'>
+                        <p>Amount</p>
+                        <p>Count</p>
+                      </div>
+                    </div>
                   </TableCell>
                   <TableCell align="center">
-                    <TableCell component='td' className='multiRow'>
-                      <TableRow>Sell</TableRow>
-                      <TableRow >
-                        <TableCell component='td'>Amount</TableCell>
-                        <TableCell component='td'>Count</TableCell>
-                      </TableRow>
-                    </TableCell>
+                    <div>
+                      <p>Sell</p>
+                      <div className='multiRow'>
+                        <p>Amount</p>
+                        <p>Count</p>
+                      </div>
+                    </div>
                   </TableCell>
                   <TableCell align="center">Profit</TableCell>
                 </TableRow>
@@ -146,33 +150,37 @@ const MarketHistory = () => {
                 {totalList.length !== 0 && totalList.map((item, index) => (
                   <TableRow key={index}>
                     <TableCell component='th'>{item.token_name}</TableCell>
+
                     <TableCell>
-                      <TableRow className='multiCell'>
-                        <TableCell >{numberWithCommas(Math.floor(item.totalBuy))}</TableCell>
-                        <TableCell >{numberWithCommas(Math.floor(item.countBuy))}</TableCell>
-                      </TableRow>
+                    <div className="multiRow">
+                        <p>{numberWithCommas(Math.floor(item.totalBuy))}</p>
+                        <p>{numberWithCommas(Math.floor(item.countBuy))}</p>
+                    </div>
+                      
                     </TableCell>
 
                     <TableCell>
-                      <TableRow className='multiCell'>
-                        <TableCell >{numberWithCommas(Math.floor(item.totalSell))}</TableCell>
-                        <TableCell >{numberWithCommas(Math.floor(item.countSell))}</TableCell>
-                      </TableRow>
+                    <div className='multiRow'>
+                        <p>{numberWithCommas(Math.floor(item.totalSell))}</p>
+                        <p>{numberWithCommas(Math.floor(item.countSell))}</p>
+                    </div>
+                     
                     </TableCell>
-                    <TableCell>{numberWithCommas(Math.floor(item.profit))}</TableCell>
+
+                    <TableCell align='center'>{numberWithCommas(Math.floor(item.profit))}</TableCell>
 
                   </TableRow>
                 ))}
                 {totalList.length !== 0 && (
                   <TableRow >
                     <TableCell component='th'>Total</TableCell>
-                    <TableCell>{numberWithCommas(Math.floor(totalBuy))}</TableCell>
-                    <TableCell>{numberWithCommas(Math.floor(totalSell))}</TableCell>
-                    <TableCell>{numberWithCommas(Math.floor(totalSell - totalBuy))}</TableCell>
+                    <TableCell align='center'>{numberWithCommas(Math.floor(totalBuy))}</TableCell>
+                    <TableCell align='center'>{numberWithCommas(Math.floor(totalSell))}</TableCell>
+                    <TableCell align='center'>{numberWithCommas(Math.floor(totalSell - totalBuy))}</TableCell>
                   </TableRow>
                 )}
                 <TableRow >
-                  <TableCell colSpan={4} align='center' style={{ textAlign: 'center' }}>
+                  <TableCell colSpan={2} align='center' id='loading' style={{ textAlign: 'center' }}>
                     {loading && <CircularProgress color="primary" />}
                   </TableCell>
                 </TableRow>

@@ -26,6 +26,7 @@ const Metamon = () => {
 
     const showInfo = (e) => {
     }
+
     const getListMetamon = async () => {
         await getData(minScore, level, 1).then(async (res) => {
             const data = res.data;
@@ -80,7 +81,7 @@ const Metamon = () => {
 
     return (
         <Box sx={{ textAlign: 'left' }}>
-            <InputSelect />
+            <InputSelect handleConfirm={getListMetamon} />
             <TableContainer className='table-scroll metamon' component={Paper}>
                 <Table className='tablePrice' aria-label="simple table">
                     <TableHead>

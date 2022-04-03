@@ -76,5 +76,11 @@ export const removeAura = (id) => {
         payload: Number(id),
     }
 }
+export const changeCurrentAccount = (address) => {
+    return {
+        type: 'changeCurrentAccount',
+        payload: address,
+    }
+}
 
 

@@ -11,6 +11,7 @@ const initState = {
         ? 20
         : JSON.parse(myStorage.getItem("metamon"))?.levelMetamon,
     arrange: 0,
+
   },
   price: {
     raca: 0,
@@ -30,6 +31,7 @@ const initState = {
     max: "",
   },
   tab: 0,
+  currentAccount: '',
 };
 
 const rootReducer = (state = initState, action) => {
@@ -114,7 +116,7 @@ const rootReducer = (state = initState, action) => {
         ...state,
         filtersElemon: {
           ...state.filtersElemon,
-          aura: [...state.filtersElemon.aura,action.payload],
+          aura: [...state.filtersElemon.aura, action.payload],
         },
       };
     case "elemon/removeAura":
@@ -129,6 +131,11 @@ const rootReducer = (state = initState, action) => {
             .concat(listAura.slice(positionAura + 1)),
         },
       };
+    case 'changeCurrentAccount':
+      return {
+        ...state,
+        currentAccount: action.payload,
+      }
     default:
       return state;
   }

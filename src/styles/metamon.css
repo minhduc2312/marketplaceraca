@@ -23,12 +23,18 @@
 .metamon {
   width: 60% !important;
 }
+.MuiTableCell-root{
+  border-bottom: none;
+}
+
+
 @media screen and (min-width: 880px) {
   
 }
 @media screen and (max-width: 880px) {
   .App {
     padding: 0 5px;
+    height: auto;
   }
   .css-1h61cah-MuiContainer-root {
     padding-left: 10px !important;

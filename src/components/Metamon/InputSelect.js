@@ -3,7 +3,7 @@ import { useState } from 'react';
 import { MenuItem, FormControl, Select, TextField, Box, Button, Container } from '@mui/material'
 import { handleArrange, handleFilters } from '../../app/actions';
 import { useDispatch, useSelector } from 'react-redux';
-export const InputSelect = ({ getFilter }) => {
+export const InputSelect = ({ handleConfirm }) => {
     const dispatch = useDispatch();
     const filters = useSelector(state => state.filters)
     const myStorage = window.localStorage;
@@ -11,7 +11,7 @@ export const InputSelect = ({ getFilter }) => {
     const [minScore, setMinScore] = useState(filters.minScore);
     const [level, setLevel] = useState(filters.level);
 
-
+    
     const handleLevelChange = (e) => {
         setLevel(e.target.value);
     }
@@ -28,6 +28,7 @@ export const InputSelect = ({ getFilter }) => {
     const ConfirmHandle = () => {
         dispatch(handleFilters({ minScore, level }));
         setArrange(0)
+        handleConfirm();
         myStorage.setItem('metamon', JSON.stringify({
             score: minScore,
             levelMetamon: level
