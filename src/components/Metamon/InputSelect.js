@@ -3,6 +3,7 @@ import { useState } from 'react';
 import { MenuItem, FormControl, Select, TextField, Box, Button, Container } from '@mui/material'
 import { handleArrange, handleFilters } from '../../app/actions';
 import { useDispatch, useSelector } from 'react-redux';
+
 export const InputSelect = ({ handleConfirm }) => {
     const dispatch = useDispatch();
     const filters = useSelector(state => state.filters)

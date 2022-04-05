@@ -179,9 +179,8 @@ const InputFilters = () => {
                         <img
                           width="35px"
                           alt="aura"
-                          src={`https://app.elemon.io/assets/images/aura/quality_${
-                            item + 1
-                          }.png`}
+                          src={`https://app.elemon.io/assets/images/aura/quality_${item + 1
+                            }.png`}
                         />
                       }
                       labelPlacement="end"

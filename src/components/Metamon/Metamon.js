@@ -4,6 +4,7 @@ import { Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper
 import { InputSelect } from "./InputSelect";
 import { numberWithCommas } from '../NFTs/NFTs';
 import { useDispatch, useSelector } from "react-redux";
+import { CircularProgress } from "@mui/material";
 
 import '../../styles/metamon.css'
 import '../../styles/nfts.css'
@@ -21,6 +22,7 @@ const Metamon = () => {
 
     const [listMetamon, setListMetamon] = useState([])
     const [listShow, setListShow] = useState([])
+    const [loading, setLoading] = useState(true)
     const dispatch = useDispatch();
     const { raca } = useSelector(state => state.price);
 
@@ -28,6 +30,7 @@ const Metamon = () => {
     }
 
     const getListMetamon = async () => {
+        setLoading(true);
         await getData(minScore, level, 1).then(async (res) => {
             const data = res.data;
             let listData = res.data.list
@@ -39,15 +42,17 @@ const Metamon = () => {
             }
             setListMetamon(listData)
         });
-    }
+        setLoading(false);
 
-    useEffect(() => {
+    }
+    const handleListMetamon = () => {
+        setListMetamon([])
         getListMetamon();
         dispatch(handleArrange(0));
-        return () => {
-            setListMetamon([])
-        }
-    }, [minScore, level])
+    }
+    useEffect(() => {
+        handleListMetamon();
+    }, [])
     useEffect(() => {
         //Get list property
         const sortBy = (filter) => {
@@ -81,7 +86,7 @@ const Metamon = () => {
 
     return (
         <Box sx={{ textAlign: 'left' }}>
-            <InputSelect handleConfirm={getListMetamon} />
+            <InputSelect handleConfirm={handleListMetamon} />
             <TableContainer className='table-scroll metamon' component={Paper}>
                 <Table className='tablePrice' aria-label="simple table">
                     <TableHead>
@@ -105,6 +110,13 @@ const Metamon = () => {
                         </TableRow>
                     </TableHead>
                     <TableBody>
+                        {loading && (
+                            <TableRow >
+                                <TableCell sx={{ borderLeft:'2px solid'  }} colSpan={6} align="center">
+                                    <CircularProgress />
+                                </TableCell>
+                            </TableRow>
+                        )}
                         {listShow && listShow.map((metamon, index) => {
                             return (
                                 <TableRow key={index + 1}>

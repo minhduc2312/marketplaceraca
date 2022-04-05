@@ -1,6 +1,5 @@
 import { createContext, useEffect, useState } from 'react'
 import WalletConnectProvider from "@walletconnect/web3-provider";
-import { CustomQRCodeModal } from "@walletconnect/qrcode-modal";
 import Web3 from "web3"
 
 export const AppContext = createContext();
@@ -27,6 +26,7 @@ export const AppProvider = ({ children }) => {
             ],
         },
     });
+   
     useEffect(() => {
         checkIfWalletConnected();
         window?.ethereum?.on('accountsChanged', async () => {
@@ -39,6 +39,7 @@ export const AppProvider = ({ children }) => {
         try {
             if (currentAccount) {
                 setAppStatus('connected');
+               
             } else {
                 const addressArray = await window?.ethereum?.request({
                     method: 'eth_accounts',
@@ -48,6 +49,7 @@ export const AppProvider = ({ children }) => {
                     //connected
                     setAppStatus('connected');
                     setCurrentAccount(addressArray[0]);
+
                 } else {
                     // not connected
                     setAppStatus('not-connected');

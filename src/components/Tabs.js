@@ -7,7 +7,7 @@ import NFTs from './NFTs/NFTs';
 import Metamon from './Metamon/Metamon'
 import Elemon from './Elemon/Elemon'
 import '../App.css'
-import MarketHistory from './MarketHistory';
+import Portfolio from './Portfolio/Portfolio';
 
 function a11yProps(index) {
     return {
@@ -45,7 +45,7 @@ const HeaderTabs = (props) => {
                 <Elemon />
             </TabPanel>
             <TabPanel value={value} index={3}>
-                <MarketHistory />
+                <Portfolio />
             </TabPanel>
         </Box>
     );
