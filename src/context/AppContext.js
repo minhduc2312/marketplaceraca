@@ -89,8 +89,7 @@ export const AppProvider = ({ children }) => {
 
         try {
             setAppStatus('loading');
-            // console.log('asdsad')
-            // console.log(window.ethereum);
+
             const addressArray = await window?.ethereum?.request({
                 method: 'eth_requestAccounts',
             })
