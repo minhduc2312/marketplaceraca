@@ -51,7 +51,8 @@ const initState = {
   },
   tab: 0,
   currentAccount: '',
-  listToken
+  listToken,
+  db: {},
 };
 
 const rootReducer = (state = initState, action) => {
@@ -167,6 +168,11 @@ const rootReducer = (state = initState, action) => {
             address: action.payload.tokenInput
           }
         ]
+      }
+    case 'initApp':
+      return {
+        ...state,
+        db: action.payload
       }
     default:
       return state;

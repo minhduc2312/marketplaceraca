@@ -84,10 +84,15 @@ export const changeCurrentAccount = (address) => {
     }
 }
 export const addToken =  (token) => {
-    
     return {
         type: 'tokens/add',
         payload: token,
+    }
+}
+export const initApp =  (app) => {
+    return {
+        type: 'initApp',
+        payload: app,
     }
 }
 

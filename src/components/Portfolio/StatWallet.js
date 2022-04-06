@@ -1,11 +1,13 @@
 import React, { useContext, useEffect, useState } from 'react'
 import Web3 from 'web3'
-import { TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, CircularProgress, Table, Button, Modal } from '@mui/material';
+import { TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, CircularProgress, Table, Button } from '@mui/material';
 import { AppContext } from '../../context/AppContext'
 import axios from 'axios';
 import ModalUI from './ModalUI';
 // import { listToken } from './data';
 import { useSelector } from 'react-redux';
+//FireBase
+import { collection, query, getDocs, where } from "firebase/firestore"
 
 const StatWallet = () => {
   const { currentAccount } = useContext(AppContext)
@@ -15,6 +17,7 @@ const StatWallet = () => {
   const rpcUrl = 'https://bsc-dataseed1.binance.org:443'
   const web3 = new Web3(rpcUrl);
   const [listBalance, setListBalance] = useState([]);
+  const db = useSelector(state => state.db);
   const abiJson = [
     {
       "constant": true,
@@ -54,7 +57,7 @@ const StatWallet = () => {
           }
         })
         setLoading(false);
-      }).catch(err=>{
+      }).catch(err => {
         console.log(err)
       })
     }
@@ -64,6 +67,16 @@ const StatWallet = () => {
   }
   useEffect(() => {
     if (currentAccount) {
+      // const q = query(collection(db, 'users', where('address', "===", currentAccount)))
+      const q = query(collection(db, "users"), where('address', '==', currentAccount));
+      const getDataFireBase = async () => {
+        const querySnapshot = await getDocs(q);
+        querySnapshot.forEach((doc) => {
+          console.log(doc.data());
+        });
+      }
+      getDataFireBase();
+
       web3.eth.getBalance(currentAccount).then(res => {
         const balanceFromWei = Web3.utils.fromWei(res, 'ether')
         setListBalance(prev => {
@@ -74,6 +87,7 @@ const StatWallet = () => {
             }
           }
         })
+        setLoading(false);
       });
       // getBalanceOfTokens();
       listToken.forEach(token => {
@@ -88,7 +102,6 @@ const StatWallet = () => {
   }, [currentAccount])
   useEffect(() => {
     const length = listToken.length;
-    console.log(listToken[length - 1])
     getTransaction(listToken[length - 1]);
   }, [listToken])
   return (

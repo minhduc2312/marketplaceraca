@@ -7,12 +7,14 @@ import StatWallet from './StatWallet';
 import { useTransition, animated } from 'react-spring'
 import { AppContext } from '../../context/AppContext';
 import { initializeApp } from "firebase/app";
-import firebaseConfig from '../../config';np
-
+import firebaseConfig from '../../config';
+import { useDispatch } from 'react-redux';
+import { initApp } from '../../app/actions';
+import { getFirestore } from "firebase/firestore"
 const Portfolio = () => {
     const app = initializeApp(firebaseConfig);
-    
-    console.log(app)
+    const db = getFirestore(app)
+    const dispatch = useDispatch()
     const { currentAccount } = useContext(AppContext);
     const [isVisible, setIsVisible] = useState(true);
     const transition = useTransition(isVisible, {
@@ -20,6 +22,9 @@ const Portfolio = () => {
         enter: { x: 0, y: 10, opacity: 1, display: 'block' },
         leave: { x: 500, y: 10, opacity: 0, display: 'none' }
     })
+    useEffect(() => {
+        dispatch(initApp(db));
+    }, [])
     const handleSwitch = () => {
         setIsVisible(state => !state)
     }
