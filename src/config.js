@@ -1,11 +1,11 @@
 
 
 const firebaseConfig = {
-    apiKey: "AIzaSyCQItrkH9bp7aT1yiwobbNbHtXcKcZ45Qk",
-    authDomain: "sales-nft-raca.firebaseapp.com",
-    projectId: "sales-nft-raca",
-    storageBucket: "sales-nft-raca.appspot.com",
-    messagingSenderId: "547281695761",
-    appId: "1:547281695761:web:bade483d397ca7e9cd2db0"
+    apiKey: "AIzaSyDMPGSZM9TbhHyO_dnV5yXanp-XsDnCT9A",
+    authDomain: "portfolio-mind.firebaseapp.com",
+    projectId: "portfolio-mind",
+    storageBucket: "portfolio-mind.appspot.com",
+    messagingSenderId: "993307046762",
+    appId: "1:993307046762:web:a00d4f8dd7756c6d8a6b13"
 };
 export default firebaseConfig

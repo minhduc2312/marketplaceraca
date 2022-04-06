@@ -1,3 +1,4 @@
+import axios from "axios"
 
 export const handleFilters = ({ minScore, level }) => {
     return {
@@ -80,6 +81,13 @@ export const changeCurrentAccount = (address) => {
     return {
         type: 'changeCurrentAccount',
         payload: address,
+    }
+}
+export const addToken =  (token) => {
+    
+    return {
+        type: 'tokens/add',
+        payload: token,
     }
 }
 

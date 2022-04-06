@@ -1,17 +1,36 @@
 const myStorage = window.localStorage;
 
+const listToken = [
+  {
+    tokenName: 'BNB',
+    address: '0xB8c77482e45F1F44dE1745F52C74426C631bDD52'
+  },
+  // {
+  //   tokenName: "BUSD",
+  //   address: '0xe9e7cea3dedca5984780bafc599bd69add087d56',
+  // },
+  // {
+  //   tokenName: "RACA",
+  //   address: '0x12BB890508c125661E03b09EC06E404bc9289040',
+  // },
+  // {
+  //   tokenName: "ELMON",
+  //   address: '0xE3233fdb23F1c27aB37Bd66A19a1f1762fCf5f3F',
+  // },
+  // {
+  //   tokenName: "ELCOIN",
+  //   address: '0x092FFBc968203B652B08361aDec75E275573F2db',
+  // }
+]
 const initState = {
   filters: {
     minScore:
       myStorage.getItem("metamon") === undefined
-        ? 315
-        : JSON.parse(myStorage.getItem("metamon"))?.score,
+        ? 315 : JSON.parse(myStorage.getItem("metamon"))?.score,
     level:
       myStorage.getItem("metamon") === undefined
-        ? 20
-        : JSON.parse(myStorage.getItem("metamon"))?.levelMetamon,
+        ? 20 : JSON.parse(myStorage.getItem("metamon"))?.levelMetamon,
     arrange: 0,
-
   },
   price: {
     raca: 0,
@@ -32,6 +51,7 @@ const initState = {
   },
   tab: 0,
   currentAccount: '',
+  listToken
 };
 
 const rootReducer = (state = initState, action) => {
@@ -135,6 +155,18 @@ const rootReducer = (state = initState, action) => {
       return {
         ...state,
         currentAccount: action.payload,
+      }
+    case 'tokens/add':
+      // console.log(action.payload)
+      return {
+        ...state,
+        listToken: [
+          ...state.listToken,
+          {
+            tokenName: action.payload.symbol,
+            address: action.payload.tokenInput
+          }
+        ]
       }
     default:
       return state;

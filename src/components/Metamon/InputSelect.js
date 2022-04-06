@@ -48,7 +48,7 @@ export const InputSelect = ({ handleConfirm }) => {
                 <Button sx={{height: '100%', color: '#383838', background: '#fcc33c' }} variant="contained" onClick={ConfirmHandle}>Confirm</Button>
             </Box>
             <Box>
-                <FormControl style={{ margin: '20px 0' }}>
+                <FormControl class='select-metamon' style={{ margin: '20px 0' }}>
                     <Select
                         size='small'
                         labelId="select"

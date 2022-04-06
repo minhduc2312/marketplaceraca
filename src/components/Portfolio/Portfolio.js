@@ -6,9 +6,13 @@ import Metamask from '../Metamask';
 import StatWallet from './StatWallet';
 import { useTransition, animated } from 'react-spring'
 import { AppContext } from '../../context/AppContext';
-
+import { initializeApp } from "firebase/app";
+import firebaseConfig from '../../config';np
 
 const Portfolio = () => {
+    const app = initializeApp(firebaseConfig);
+    
+    console.log(app)
     const { currentAccount } = useContext(AppContext);
     const [isVisible, setIsVisible] = useState(true);
     const transition = useTransition(isVisible, {
@@ -22,14 +26,19 @@ const Portfolio = () => {
     return (
         <div className="portfolio">
             <Metamask />
-            <Button sx={{ height: '100%', color: '#fff', background: 'rgb(253 186 28 / 92%)', padding: '5px 10px' }} variant="contained" onClick={handleSwitch}>{isVisible ? "Stat Raca" : "Portfolio"}</Button>
-            {transition((style, item) =>
-                item ? <animated.div style={style}>
-                    <StatWallet />
-                </animated.div> : <animated.div style={style}>
-                    <MarketHistory />
-                </animated.div>
+            {currentAccount && (
+                <React.StrictMode>
+                    <Button sx={{ height: '100%', color: '#fff', background: 'rgb(253 186 28 / 92%)', padding: '5px 10px' }} variant="contained" onClick={handleSwitch}>{isVisible ? "Stat Raca" : "Portfolio"}</Button>
+                    {transition((style, item) =>
+                        item ? <animated.div style={style}>
+                            <StatWallet />
+                        </animated.div> : <animated.div style={style}>
+                            <MarketHistory />
+                        </animated.div>
+                    )}
+                </React.StrictMode>
             )}
+
             {/* {currentAccount && <MarketHistory />}
             {currentAccount && <StatWallet />} */}
         </div>
