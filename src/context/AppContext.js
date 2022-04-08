@@ -1,13 +1,15 @@
 import { createContext, useEffect, useState } from 'react'
 import WalletConnectProvider from "@walletconnect/web3-provider";
 import Web3 from "web3"
+import { useDispatch } from 'react-redux';
+import { changeCurrentAccount } from '../app/actions';
 
 export const AppContext = createContext();
 
 export const AppProvider = ({ children }) => {
     const [appStatus, setAppStatus] = useState('loading')
     const [currentAccount, setCurrentAccount] = useState('');
-
+    const dispatch = useDispatch();
     const provider = new WalletConnectProvider({
         rpc: {
             56: 'https://matic-mainnet.chainstacklabs.com',
@@ -26,12 +28,13 @@ export const AppProvider = ({ children }) => {
             ],
         },
     });
-   
+
     useEffect(() => {
         checkIfWalletConnected();
         window?.ethereum?.on('accountsChanged', async () => {
             checkIfWalletConnected();
         })
+       
     }, [currentAccount])
 
     const checkIfWalletConnected = async () => {
@@ -39,7 +42,7 @@ export const AppProvider = ({ children }) => {
         try {
             if (currentAccount) {
                 setAppStatus('connected');
-               
+
             } else {
                 const addressArray = await window?.ethereum?.request({
                     method: 'eth_accounts',

@@ -158,15 +158,33 @@ const rootReducer = (state = initState, action) => {
         currentAccount: action.payload,
       }
     case 'tokens/add':
-      // console.log(action.payload)
+      
       return {
         ...state,
         listToken: [
           ...state.listToken,
           {
             tokenName: action.payload.symbol,
-            address: action.payload.tokenInput
+            address: action.payload.token,
+            price: action.payload.price
           }
+        ]
+      }
+    case 'initTokens':
+      // console.log(action.payload)
+      return {
+        ...state,
+        listToken: [
+          ...state.listToken,
+          ...action.payload
+        ]
+      }
+    case 'clearListToken':
+      // console.log(action.payload)
+      return {
+        ...state,
+        listToken: [
+          state.listToken[0]
         ]
       }
     case 'initApp':

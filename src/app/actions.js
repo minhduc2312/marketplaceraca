@@ -83,16 +83,27 @@ export const changeCurrentAccount = (address) => {
         payload: address,
     }
 }
-export const addToken =  (token) => {
+export const addToken = (token) => {
     return {
         type: 'tokens/add',
         payload: token,
     }
 }
-export const initApp =  (app) => {
+export const initTokens = (tokens) => {
+    return {
+        type: 'initTokens',
+        payload: tokens,
+    }
+}
+export const initApp = (app) => {
     return {
         type: 'initApp',
         payload: app,
+    }
+}
+export const clearListToken = () => {
+    return {
+        type:'clearListToken'
     }
 }
 

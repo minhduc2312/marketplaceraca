@@ -1,13 +1,30 @@
-import React, { useState } from 'react'
-import { Box, Button, Typography, Modal, Input, TextField } from '@mui/material';
+import React, { useState, useContext, useEffect } from 'react'
+import { Box, Typography, Modal, TextField } from '@mui/material';
 import '../../styles/statwallet.css'
-import { useDispatch } from 'react-redux';
-import { addToken } from '../../app/actions';
+import { useDispatch, useSelector } from 'react-redux';
 import axios from 'axios';
+import { AppContext } from '../../context/AppContext';
+import InfoToken from './InfoToken';
+
+
+export const getInfoToken = async (token) => {
+    return await axios.get(`https://api.pancakeswap.info/api/v2/tokens/${token
+        }`).then(res => {
+            const result = res.data.data
+            return result;
+        });
+}
 const ModalUI = ({ isOpen, setOpen }) => {
-    const [tokenInput, setTokenInput] = useState('')
-    const handleClose = () => setOpen(false);
+    const { currentAccount } = useContext(AppContext)
+    const [tokenInput, setTokenInput] = useState('');
+    const [infoCurrentToken, setInfoCurrentToken] = useState();
+    const [invalidToken, setInvalidToken] = useState(false)
+    const handleClose = () => {
+        setOpen(false);
+        setInfoCurrentToken();
+    }
     const dispatch = useDispatch();
+    const db = useSelector(state => state.db);
     const style = {
         position: 'absolute',
         top: '25%',
@@ -21,17 +38,28 @@ const ModalUI = ({ isOpen, setOpen }) => {
         p: 4,
     };
     const handleChangeInput = (e) => {
-        console.log(e.target.value)
-        setTokenInput(e.target.value);
+        setTokenInput(e.target.value.toLowerCase());
     }
-    const handleAddToken = async () => {
-        const result = await axios.get(`https://api.pancakeswap.info/api/v2/tokens/${tokenInput}`).then(res => res.data.data);
-        const data = {
-            ...result,
-            address: tokenInput
+    useEffect(() => {
+        if (tokenInput.length === 42) {
+            getInfoToken(tokenInput).then(res => {
+                if (res) {
+                    setInvalidToken(false)
+                    setInfoCurrentToken({
+                        ...res,
+                        address: tokenInput
+                    })
+                }
+            }).catch(err => setInvalidToken(true))
         }
-        dispatch(addToken({ ...result, tokenInput }))
-    }
+        if (tokenInput === '') {
+            setInvalidToken(false)
+        }
+        return () => {
+            setInfoCurrentToken()
+        }
+    }, [tokenInput])
+
     return (
         <Modal
             open={isOpen}
@@ -42,10 +70,18 @@ const ModalUI = ({ isOpen, setOpen }) => {
                 <Typography id="modal-modal-title" variant="h6" align='center' component="h2">
                     Import Token
                 </Typography>
+
                 <Box sx={{ display: 'flex', justifyContent: 'center', flexDirection: 'column' }}>
                     <TextField onChange={(e) => handleChangeInput(e)} label="Token" variant="outlined" sx={{ mt: 2 }} />
-                    <Button sx={{ height: '100%', color: '#fff', background: 'rgb(253 186 28 / 92%)', padding: '5px 10px', mt: 2, width: '40%', transform: 'translateX(calc(100px - 10%))' }} variant="contained" onClick={handleAddToken}>Comfirm</Button>
+                    {infoCurrentToken && (
+                        <InfoToken token={infoCurrentToken} />
+                    )}
+                    {invalidToken && (
+                        <Typography variant="h6" color="#d42d31">Enter valid token address </Typography>
+                    )}
+
                 </Box>
+
             </Box>
         </Modal>
     )
