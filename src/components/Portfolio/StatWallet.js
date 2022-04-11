@@ -8,7 +8,6 @@ import { useDispatch, useSelector } from 'react-redux';
 //FireBase
 import { collection, query, getDocs, where, updateDoc, doc } from "firebase/firestore"
 import { addToken, clearListToken, removeToken } from '../../app/actions';
-import { handleAddToken } from './ModalUI'
 import millify from 'millify';
 
 const StatWallet = () => {
@@ -22,18 +21,8 @@ const StatWallet = () => {
   const [listBalance, setListBalance] = useState([]);
   const db = useSelector(state => state.db);
   const dispatch = useDispatch();
-  const abiJson = [
-    {
-      "constant": true,
-      "inputs": [{ "name": "who", "type": "address" }],
-      "name": "balanceOf",
-      "outputs": [{ "name": "", "type": "uint256" }],
-      "payable": false, "stateMutability": "view",
-      "type": "function"
-    },
-  ];
 
-  const getTransaction = ({ tokenName, address }) => {
+  const getTransaction = ({ tokenName, address, id }) => {
     if (tokenName !== 'BNB') {
       axios.get(`https://api.bscscan.com/api?module=account&action=tokentx&contractaddress=${address}&address=${currentAccount}&page=1&offset=10000&startblock=0&endblock=999999999&sort=asc&apikey=RWBIX4SRF8ZCSSDVHIM8YGSK5V65J9UNNN`).then(async (res) => {
         const data = res.data.result;
@@ -41,10 +30,10 @@ const StatWallet = () => {
         let totalDepositPrice = 0;
         let totalWithdraw = 0;
         let totalWithdrawPrice = 0;
-        let transactionFee = 0;
         let startTime = data[0].timeStamp - 86400;
         let endTime = data[data.length - 1].timeStamp;
-        const hashmapPrice = await axios.get(`https://api.coingecko.com/api/v3/coins/radio-caca/market_chart/range?vs_currency=usd&from=${startTime}&to=${endTime}`).then(res => {
+
+        const hashmapPrice = await axios.get(`https://api.coingecko.com/api/v3/coins/${id}/market_chart/range?vs_currency=usd&from=${startTime}&to=${endTime}`).then(res => {
           const hashmap = {};
           const data = res.data.prices;
           data.forEach((price) => {
@@ -58,7 +47,18 @@ const StatWallet = () => {
         // console.log(data[0], data[data.length - 1])
         data?.forEach(transaction => {
           const value = Number(Web3.utils.fromWei(transaction.value, 'ether'))
-          const getDateTransaction = new Date(transaction.timeStamp * 1000).toLocaleDateString();
+          let getDateTransaction = new Date(transaction.timeStamp * 1000).toLocaleDateString();
+          // if (tokenName == 'ELMON') {
+          //   console.log(hashmapPrice)
+          //   console.log(hashmapPrice[getDateTransaction], getDateTransaction)
+          // }
+          let index = 1;
+          while (hashmapPrice[getDateTransaction] === undefined && index <= 10) {
+            console.log((Number(transaction.timeStamp) + 86400) * 1000)
+            getDateTransaction = new Date((transaction.timeStamp - 0 + 86400) * 1000).toLocaleDateString()
+            // console.log(getDateTransaction)
+            index++
+          }
           if (transaction.from === currentAccount) {
             // console.log(hashmapPrice[getDateTransaction])
             totalWithdraw += value;
@@ -68,9 +68,10 @@ const StatWallet = () => {
             totalDepositPrice += value * hashmapPrice[getDateTransaction];
             // console.log(value, getDateTransaction)
           }
-          transactionFee += Number(Web3.utils.fromWei(transaction.gasPrice * transaction.gasUsed + "", 'ether'));
         })
+        console.log(totalWithdrawPrice, totalDepositPrice)
         const balance = Number(totalDeposit.toFixed(4) - totalWithdraw.toFixed(4));
+
         setListBalance(prev => {
           return {
             ...prev,
@@ -79,7 +80,7 @@ const StatWallet = () => {
               totalDeposit: totalDeposit <= 0 ? totalDeposit : Number(totalDeposit).toFixed(4),
               balance: balance <= 0 ? Math.floor(balance) : balance.toFixed(4),
               totalWithdrawPrice,
-              totalDepositPrice
+              totalDepositPrice,
             }
           }
         })
@@ -143,7 +144,8 @@ const StatWallet = () => {
                     const token = listTokens[i].address;
                     dispatch(addToken({
                       ...res,
-                      token
+                      token,
+                      id: listTokens[i].id
                     }))
                   })
                 }
@@ -201,7 +203,7 @@ const StatWallet = () => {
   }, [listToken])
   return (
     <div className="PortfolioWallet" style={{ display: 'flex', justifyContent: 'center' }}>
-      <TableContainer sx={{ maxWidth: '650px'}} id="PortfolioWallet-section" component={Paper}>
+      <TableContainer sx={{ maxWidth: '650px' }} id="PortfolioWallet-section" component={Paper}>
         <Table aria-label="simple table">
           <TableHead>
             <TableRow>
@@ -219,18 +221,26 @@ const StatWallet = () => {
                 <TableCell align='center'>{(listBalance[item.tokenName]?.totalDeposit) ? millify(listBalance[item.tokenName]?.totalDeposit, {
                   precision: 2,
                   decimalSeparator: ","
-                }) : 0}</TableCell>
+                }) : 0} (~{listBalance[item.tokenName]?.totalDepositPrice ? millify(listBalance[item.tokenName]?.totalDepositPrice, {
+                  precision: 2,
+                  decimalSeparator: ","
+                }) : 0})</TableCell>
+
                 <TableCell align='center'>{(listBalance[item.tokenName]?.totalWithdraw) ? millify(listBalance[item.tokenName]?.totalWithdraw, {
                   precision: 2,
                   decimalSeparator: ","
-                }) : 0}</TableCell>
+                }) : 0} (~{listBalance[item.tokenName]?.totalWithdrawPrice ? millify(listBalance[item.tokenName]?.totalWithdrawPrice, {
+                  precision: 2,
+                  decimalSeparator: ","
+                }) : 0})</TableCell>
+
                 <TableCell align='center'>{(listBalance[item.tokenName]?.balance) && item.tokenName !== "BNB" ? millify(listBalance[item.tokenName]?.balance, {
                   precision: 2,
                   decimalSeparator: ","
-                }) : (listBalance[item.tokenName]?.balance) }</TableCell>
+                }) : (listBalance[item.tokenName]?.balance)}</TableCell>
                 <TableCell sx={{ padding: 0, width: '20px' }} align='center'>
                   {index !== 0 && (
-                    <Button sx={{minWidth:'20px',padding:'0px'}} data-token={item.address} onClick={(e) => deleteToken(e)}><img src='/marketplaceraca/delete_outline.svg' /></Button>
+                    <Button sx={{ minWidth: '20px', padding: '0px' }} data-token={item.address} onClick={(e) => deleteToken(e)}><img src='/marketplaceraca/delete_outline.svg' alt='' /></Button>
                   )}
                 </TableCell>
               </TableRow>
@@ -251,7 +261,7 @@ const StatWallet = () => {
         </Table>
       </TableContainer>
       <ModalUI isOpen={isOpenModal} setOpen={setIsOpenModal} />
-    </div >
+    </div>
   )
 }
 export default StatWallet

@@ -3,7 +3,7 @@ import { Box, Button, Typography } from '@mui/material';
 import '../../styles/statwallet.css'
 import { useDispatch, useSelector } from 'react-redux';
 import { addToken } from '../../app/actions';
-import { addDoc, collection, getDocs, where, updateDoc, doc, QuerySnapshot, query, serverTimestamp } from 'firebase/firestore';
+import { addDoc, collection, getDocs, where, updateDoc, doc, query } from 'firebase/firestore';
 import { AppContext } from '../../context/AppContext';
 import { getInfoToken } from './ModalUI';
 import axios from 'axios';
@@ -27,13 +27,13 @@ const InfoToken = ({ token, setLoading }) => {
                 tokens: [
                     {
                         address: token.address.toLowerCase(),
-                        timestamp: Date.now()
+                        timestamp: Date.now(),
+                        id: token.id
                     }
                 ]
             }).finally(() => setLoading(false));
         } else {
             querySnapshot.forEach(async (data) => {
-                console.log(token)
                 if (!data.data().tokens.includes(token.address?.toLowerCase())) {
                     const docRef = await doc(db, "users", data.id);
                     await updateDoc(docRef, {
@@ -41,7 +41,8 @@ const InfoToken = ({ token, setLoading }) => {
                             ...data.data().tokens,
                             {
                                 address: token.address.toLowerCase(),
-                                timestamp: Date.now()
+                                timestamp: Date.now(),
+                                id:token.id
                             }
                         ]
                     }).then(() => {
@@ -49,7 +50,8 @@ const InfoToken = ({ token, setLoading }) => {
                         dispatch(addToken(
                             {
                                 ...token,
-                                token: token.address.toLowerCase()
+                                token: token.address.toLowerCase(),
+                                id: token.id
                             }))
                     }).finally(() => setLoading(false));
                 } else {
@@ -68,7 +70,8 @@ const InfoToken = ({ token, setLoading }) => {
                     if (address) {
                         getInfoToken(address).then((async (res) => {
                             if (res) {
-                                addTokenToDB({ ...res, address: address })
+                                console.log(token.id)
+                                addTokenToDB({ ...res, address: address, id: token.id })
                             }
                         }))
                     }
@@ -76,7 +79,9 @@ const InfoToken = ({ token, setLoading }) => {
             } else {
                 getInfoToken(token.address).then((async (res) => {
                     if (res) {
-                        addTokenToDB({ ...res, address: token.address })
+                        addTokenToDB({
+                            ...res, address: token.address, id: res.id
+                        })
                     }
                 })).finally(() => setLoading(false))
             }
@@ -88,7 +93,7 @@ const InfoToken = ({ token, setLoading }) => {
     return (
         <Box sx={{ display: 'flex', alignItems: 'center', mt: 2 }}>
             <Box sx={{ display: 'flex', width: '80%', gap: '5px', alignItems: 'center' }}>
-                <img width={'25px'} src={token.thumb ? token.large : '/marketplaceraca/help_outline.svg'} />
+                <img alt='' width={'25px'} src={token.thumb ? token.large : '/marketplaceraca/help_outline.svg'} />
                 <Typography variant="h6">{token.symbol}</Typography>
                 <Typography variant="h7">{token.name}</Typography>
             </Box>

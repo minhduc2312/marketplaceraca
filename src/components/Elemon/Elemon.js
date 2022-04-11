@@ -138,7 +138,7 @@ const Elemon = () => {
           case 3:
             return a.point <= b.point ? 1 : -1;
           default:
-            break;
+            return 0;
         }
       });
 
@@ -146,7 +146,7 @@ const Elemon = () => {
     return () => {
       setListFilter([]);
     };
-  }, [loading, min, max, sort, name, tokenId,aura,rarity]);
+  }, [loading, min, max, sort, name, tokenId,aura,rarity,listElemonInfo]);
 
   return (
     <Box>

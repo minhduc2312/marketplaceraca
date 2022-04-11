@@ -1,11 +1,8 @@
-import React, { useState, useContext, useEffect, useRef } from 'react'
+import React, { useState, useEffect } from 'react'
 import { Box, Typography, Modal, TextField } from '@mui/material';
 import '../../styles/statwallet.css'
-import { useDispatch, useSelector } from 'react-redux';
 import axios from 'axios';
-import { AppContext } from '../../context/AppContext';
 import InfoToken from './InfoToken';
-import { URLSearchParams } from 'url'
 import Loading from '../Loading';
 
 // export const getInfoToken = async (token) => {
@@ -35,7 +32,6 @@ export const getInfoToken = async (token) => {
         .catch(err => console.log(err));
 }
 const ModalUI = ({ isOpen, setOpen }) => {
-    const { currentAccount } = useContext(AppContext)
     const [tokenInput, setTokenInput] = useState('');
     const [tokenQuery, setTokenQuery] = useState();
     const [invalidToken, setInvalidToken] = useState(false);
@@ -45,8 +41,6 @@ const ModalUI = ({ isOpen, setOpen }) => {
         setTokenQuery();
     }
 
-    const dispatch = useDispatch();
-    const db = useSelector(state => state.db);
     const style = {
         position: 'absolute',
         top: '25%',
