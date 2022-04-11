@@ -158,7 +158,6 @@ const rootReducer = (state = initState, action) => {
         currentAccount: action.payload,
       }
     case 'tokens/add':
-      
       return {
         ...state,
         listToken: [
@@ -167,7 +166,17 @@ const rootReducer = (state = initState, action) => {
             tokenName: action.payload.symbol,
             address: action.payload.token,
             price: action.payload.price
-          }
+          },
+        ],
+        prevLength: state.listToken.length
+      }
+    case 'tokens/remove':
+      const newList = state.listToken.filter(token => token.address !== action.payload);
+      return {
+        ...state,
+        prevLength: state.listToken.length,
+        listToken: [
+          ...newList
         ]
       }
     case 'initTokens':

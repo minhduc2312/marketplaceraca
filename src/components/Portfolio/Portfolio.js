@@ -19,7 +19,7 @@ const Portfolio = () => {
     const [isVisible, setIsVisible] = useState(true);
     const transition = useTransition(isVisible, {
         from: { x: -500, y: 10, opacity: 0 },
-        enter: { x: 0, y: 10, opacity: 1, display: 'block' },
+        enter: { x: 0, y: 0, opacity: 1, display: 'block' },
         leave: { x: 500, y: 10, opacity: 0, display: 'none' }
     })
     useEffect(() => {
@@ -33,7 +33,7 @@ const Portfolio = () => {
             <Metamask />
             {currentAccount && (
                 <React.StrictMode>
-                    <Button sx={{ height: '100%', color: '#fff', background: 'rgb(253 186 28 / 92%)', padding: '5px 10px' }} variant="contained" onClick={handleSwitch}>{isVisible ? "Stat Raca" : "Portfolio"}</Button>
+                    <Button sx={{ height: '100%', color: '#fff', background: 'rgb(253 186 28 / 92%)', padding: '5px 10px',marginBottom:'10px' }} variant="contained" onClick={handleSwitch}>{isVisible ? "Stat Raca" : "Portfolio"}</Button>
                     {transition((style, item) =>
                         item ? <animated.div style={style}>
                             <StatWallet />

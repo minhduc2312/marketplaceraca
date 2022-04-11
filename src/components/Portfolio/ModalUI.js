@@ -1,35 +1,57 @@
-import React, { useState, useContext, useEffect } from 'react'
+import React, { useState, useContext, useEffect, useRef } from 'react'
 import { Box, Typography, Modal, TextField } from '@mui/material';
 import '../../styles/statwallet.css'
 import { useDispatch, useSelector } from 'react-redux';
 import axios from 'axios';
 import { AppContext } from '../../context/AppContext';
 import InfoToken from './InfoToken';
+import { URLSearchParams } from 'url'
+import Loading from '../Loading';
 
+// export const getInfoToken = async (token) => {
 
+//     setLoading(true)
+//     return await axios.get(`https://api.pancakeswap.info/api/v2/tokens/${token
+//         }`).then(res => {
+//             const result = res.data.data
+//             return result;
+//         }).finally(() => setLoading(false));
+// }
 export const getInfoToken = async (token) => {
-    return await axios.get(`https://api.pancakeswap.info/api/v2/tokens/${token
-        }`).then(res => {
-            const result = res.data.data
-            return result;
-        });
+    return await axios.get(`https://api.coingecko.com/api/v3/search?query=${token}`)
+        .then(res => {
+            if (res.data.coins.length !== 0) {
+                const coins = res.data.coins;
+                // console.log(coins)
+                return coins;
+            } else {
+                return axios.get(`https://api.pancakeswap.info/api/v2/tokens/${token
+                    }`).then(res => {
+                        const result = res.data.data
+                        return result;
+                    });
+            }
+        })
+        .catch(err => console.log(err));
 }
 const ModalUI = ({ isOpen, setOpen }) => {
     const { currentAccount } = useContext(AppContext)
     const [tokenInput, setTokenInput] = useState('');
-    const [infoCurrentToken, setInfoCurrentToken] = useState();
-    const [invalidToken, setInvalidToken] = useState(false)
+    const [tokenQuery, setTokenQuery] = useState();
+    const [invalidToken, setInvalidToken] = useState(false);
+    const [loading, setLoading] = useState(false);
     const handleClose = () => {
         setOpen(false);
-        setInfoCurrentToken();
+        setTokenQuery();
     }
+
     const dispatch = useDispatch();
     const db = useSelector(state => state.db);
     const style = {
         position: 'absolute',
         top: '25%',
         left: '50%',
-        transform: 'translate(-50%, -50%)',
+        transform: 'translate(-50%, -22%)',
         width: 300,
         bgcolor: 'background.paper',
         border: '2px solid #00000087',
@@ -41,22 +63,32 @@ const ModalUI = ({ isOpen, setOpen }) => {
         setTokenInput(e.target.value.toLowerCase());
     }
     useEffect(() => {
-        if (tokenInput.length === 42) {
-            getInfoToken(tokenInput).then(res => {
-                if (res) {
+        const bounceInput = setTimeout(() => {
+            if (tokenInput !== '') {
+                getInfoToken(tokenInput).then(res => {
+                    if (res.length !== 0 && res.length !== undefined) {
+                        setInvalidToken(false)
+                        setTokenQuery([...res])
+                        // console.log(res?.length)
+                    } else {
+                        setInvalidToken(false)
+                        setTokenQuery([{
+                            ...res,
+                            address: tokenInput
+                        }])
+                    }
+                }).catch(err => {
                     setInvalidToken(false)
-                    setInfoCurrentToken({
-                        ...res,
-                        address: tokenInput
-                    })
-                }
-            }).catch(err => setInvalidToken(true))
-        }
-        if (tokenInput === '') {
-            setInvalidToken(false)
-        }
+                }).finally(() => setLoading(false));
+            } else {
+                setInvalidToken(false)
+                setLoading(false)
+            }
+        }, 1000)
         return () => {
-            setInfoCurrentToken()
+            setTokenQuery()
+            setLoading(true)
+            clearTimeout(bounceInput)
         }
     }, [tokenInput])
 
@@ -72,16 +104,19 @@ const ModalUI = ({ isOpen, setOpen }) => {
                 </Typography>
 
                 <Box sx={{ display: 'flex', justifyContent: 'center', flexDirection: 'column' }}>
-                    <TextField onChange={(e) => handleChangeInput(e)} label="Token" variant="outlined" sx={{ mt: 2 }} />
-                    {infoCurrentToken && (
-                        <InfoToken token={infoCurrentToken} />
-                    )}
+                    <TextField autoFocus onChange={(e) => handleChangeInput(e)} label="Token" variant="outlined" className='input-token' sx={{ mt: 2 }} />
+                    {tokenQuery && <Box sx={{ mt: 2, maxHeight: '200px', overflowY: 'auto', overflowX: 'hidden' }} className="list-token-query">
+                        {tokenQuery.map((infoToken, index) => (
+                            <InfoToken key={index} token={infoToken} setLoading={setLoading} />)
+                        )}
+                    </Box>}
                     {invalidToken && (
                         <Typography variant="h6" color="#d42d31">Enter valid token address </Typography>
                     )}
-
                 </Box>
-
+                {loading && (
+                    <Loading />
+                )}
             </Box>
         </Modal>
     )

@@ -89,6 +89,12 @@ export const addToken = (token) => {
         payload: token,
     }
 }
+export const removeToken = (token) => {
+    return {
+        type: 'tokens/remove',
+        payload: token,
+    }
+}
 export const initTokens = (tokens) => {
     return {
         type: 'initTokens',
