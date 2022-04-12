@@ -1,8 +1,12 @@
-#modal_import {
+#modalUI {
   animation: showModal 0.5s forwards;
+  /* width: 650px; */
 }
 #PortfolioWallet-section table thead th:last-child {
   width: 40px;
+}
+#table_transactions thead tr th{
+  padding:14px
 }
 
 /* .css-1v4ccyo fieldset {
@@ -17,6 +21,13 @@
   }
   #PortfolioWallet-section table tbody th {
     padding: 16px 0px 16px 10px;
+  }
+  .button-detail{
+    justify-content: left !important;
+  }
+  #modalUI{
+    width: 350px;
+    padding:16px;
   }
 }
 @keyframes showModal {

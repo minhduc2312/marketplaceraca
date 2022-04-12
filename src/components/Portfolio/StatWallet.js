@@ -3,17 +3,20 @@ import Web3 from 'web3'
 import { TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, CircularProgress, Table, Button } from '@mui/material';
 import { AppContext } from '../../context/AppContext'
 import axios from 'axios';
-import ModalUI, { getInfoToken } from './ModalUI';
 import { useDispatch, useSelector } from 'react-redux';
 //FireBase
 import { collection, query, getDocs, where, updateDoc, doc } from "firebase/firestore"
 import { addToken, clearListToken, removeToken } from '../../app/actions';
+import { getInfoToken } from './InfoToken'
 import millify from 'millify';
+import ImportTokenModal from './ImportTokenModal';
+import TransactionsModal from './TransactionsModal';
 
 const StatWallet = () => {
   const { currentAccount } = useContext(AppContext)
   const [loading, setLoading] = useState(true);
-  const [isOpenModal, setIsOpenModal] = useState(false);
+  const [listTransactions, setListTransactions] = useState({})
+  const [infoTransactions, setInfoTransactions] = useState();
   const listToken = useSelector(state => state.listToken)
   const prevLength = useSelector(state => state.prevLength)
   const rpcUrl = 'https://bsc-dataseed1.binance.org:443'
@@ -32,44 +35,59 @@ const StatWallet = () => {
         let totalWithdrawPrice = 0;
         let startTime = data[0].timeStamp - 86400;
         let endTime = data[data.length - 1].timeStamp;
+        const listTransactionsTemp = {};
 
-        const hashmapPrice = await axios.get(`https://api.coingecko.com/api/v3/coins/${id}/market_chart/range?vs_currency=usd&from=${startTime}&to=${endTime}`).then(res => {
-          const hashmap = {};
-          const data = res.data.prices;
-          data.forEach((price) => {
-            const date = new Date(price[0]).toLocaleDateString()
-            // console.log(price[0])
-            hashmap[date] = price[1]
-          })
-          return hashmap
-        })
-
+        const listTransactions = {};
+        listTransactionsTemp[tokenName] = []
+        let hashmapPrice;
+        if (id) {
+          hashmapPrice = await axios.get(`https://api.coingecko.com/api/v3/coins/${id}/market_chart/range?vs_currency=usd&from=${startTime}&to=${endTime}`).then(res => {
+            const hashmap = {};
+            const data = res.data.prices;
+            data.forEach((price) => {
+              const date = new Date(price[0]).toLocaleDateString()
+              // console.log(price[0])
+              hashmap[date] = price[1]
+            })
+            return hashmap;
+          }).catch((err) => console.log(err))
+        }
         // console.log(data[0], data[data.length - 1])
         data?.forEach(transaction => {
           const value = Number(Web3.utils.fromWei(transaction.value, 'ether'))
           let getDateTransaction = new Date(transaction.timeStamp * 1000).toLocaleDateString();
-          // if (tokenName == 'ELMON') {
-          //   console.log(hashmapPrice)
-          //   console.log(hashmapPrice[getDateTransaction], getDateTransaction)
-          // }
-          let index = 1;
-          while (hashmapPrice[getDateTransaction] === undefined && index <= 10) {
-            console.log((Number(transaction.timeStamp) + 86400) * 1000)
-            getDateTransaction = new Date((transaction.timeStamp - 0 + 86400) * 1000).toLocaleDateString()
-            // console.log(getDateTransaction)
-            index++
+          const infoTransaction = {
+            value,
+            date: getDateTransaction,
+            status: transaction.from === currentAccount ? 'out' : 'in'
           }
+          if (id) {
+            let index = 1;
+            while (hashmapPrice[getDateTransaction] === undefined && index <= 10) {
+              getDateTransaction = new Date((transaction.timeStamp - 0 + 86400) * 1000).toLocaleDateString()
+              index++;
+            }
+          }
+
+          infoTransaction.price = hashmapPrice ? hashmapPrice[getDateTransaction] : 0;
+          listTransactionsTemp[tokenName].push(infoTransaction)
           if (transaction.from === currentAccount) {
-            // console.log(hashmapPrice[getDateTransaction])
             totalWithdraw += value;
-            totalWithdrawPrice += value * hashmapPrice[getDateTransaction];
+            if (id)
+              totalWithdrawPrice += value * hashmapPrice[getDateTransaction];
           } else {
             totalDeposit += Number(Web3.utils.fromWei(transaction.value, 'ether'));
-            totalDepositPrice += value * hashmapPrice[getDateTransaction];
+            if (id)
+              totalDepositPrice += value * hashmapPrice[getDateTransaction];
             // console.log(value, getDateTransaction)
           }
         })
-        console.log(totalWithdrawPrice, totalDepositPrice)
+        setListTransactions(prev => {
+          return {
+            ...prev,
+            ...listTransactionsTemp
+          }
+        })
         const balance = Number(totalDeposit.toFixed(4) - totalWithdraw.toFixed(4));
 
         setListBalance(prev => {
@@ -90,9 +108,7 @@ const StatWallet = () => {
       }).finally(() => setLoading(false))
     }
   }
-  const handleOpen = () => {
-    setIsOpenModal(prev => !prev);
-  }
+
   const deleteToken = async (e) => {
     let token;
     if (e.target.parentNode.dataset.token) {
@@ -118,6 +134,16 @@ const StatWallet = () => {
           setLoading(false)
         }).finally(() => setLoading(false))
       }
+    })
+  }
+  const showDetailTransaction = (e) => {
+    const tokenName = e.target.parentNode.dataset.name
+    console.log(listTransactions[tokenName]);
+    setInfoTransactions({
+      tokenName,
+      listTransactions: [
+        ...listTransactions[tokenName]
+      ]
     })
   }
 
@@ -162,12 +188,6 @@ const StatWallet = () => {
               }, 2000)
               setLoading(false)
             }
-
-            // doc.data().tokens.forEach((token) => {
-            //   getInfoToken(token).then(async (res) => {
-            //     dispatch(addToken({ ...res, token }))
-            //   })
-            // })
           }
         });
       }
@@ -217,7 +237,11 @@ const StatWallet = () => {
           <TableBody>
             {listBalance && listToken && (listToken.map((item, index) => (
               <TableRow key={index}>
-                <TableCell component='th'>{item.tokenName}</TableCell>
+                <TableCell component='th' data-name={item.tokenName}>{item.tokenName} {listTransactions[item.tokenName] ? (<Button className='button-detail' sx={{
+                  fontSize: "12px",
+                  padding: 0,
+                  justifyContent: "center",
+                }} onClick={(e) => showDetailTransaction(e)}>Details</Button>) : ''} </TableCell>
                 <TableCell align='center'>{(listBalance[item.tokenName]?.totalDeposit) ? millify(listBalance[item.tokenName]?.totalDeposit, {
                   precision: 2,
                   decimalSeparator: ","
@@ -247,7 +271,7 @@ const StatWallet = () => {
             )))}
             <TableRow >
               <TableCell colSpan={5} align='center' style={{ textAlign: 'center', padding: '10px 0' }}>
-                <Button sx={{ height: '100%', color: '#fff', background: 'rgb(253 186 28 / 92%)' }} variant="contained" onClick={handleOpen}>Import</Button>
+                <ImportTokenModal />
               </TableCell>
             </TableRow>
             {loading && (
@@ -260,7 +284,11 @@ const StatWallet = () => {
           </TableBody>
         </Table>
       </TableContainer>
-      <ModalUI isOpen={isOpenModal} setOpen={setIsOpenModal} />
+      {infoTransactions && (
+        <TransactionsModal infoTransactions={infoTransactions} setInfoTransactions={setInfoTransactions}>
+
+        </TransactionsModal>
+      )}
     </div>
   )
 }

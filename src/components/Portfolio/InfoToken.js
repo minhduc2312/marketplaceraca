@@ -5,8 +5,25 @@ import { useDispatch, useSelector } from 'react-redux';
 import { addToken } from '../../app/actions';
 import { addDoc, collection, getDocs, where, updateDoc, doc, query } from 'firebase/firestore';
 import { AppContext } from '../../context/AppContext';
-import { getInfoToken } from './ModalUI';
 import axios from 'axios';
+
+export const getInfoToken = async (token) => {
+    return await axios.get(`https://api.coingecko.com/api/v3/search?query=${token}`)
+        .then(res => {
+            if (res.data.coins.length !== 0) {
+                const coins = res.data.coins;
+                // console.log(coins)
+                return coins;
+            } else {
+                return axios.get(`https://api.pancakeswap.info/api/v2/tokens/${token
+                    }`).then(res => {
+                        const result = res.data.data
+                        return result;
+                    });
+            }
+        })
+        .catch(err => console.log(err));
+}
 
 const InfoToken = ({ token, setLoading }) => {
     const { currentAccount } = useContext(AppContext);
@@ -42,7 +59,7 @@ const InfoToken = ({ token, setLoading }) => {
                             {
                                 address: token.address.toLowerCase(),
                                 timestamp: Date.now(),
-                                id:token.id
+                                id: token.id
                             }
                         ]
                     }).then(() => {
@@ -71,7 +88,7 @@ const InfoToken = ({ token, setLoading }) => {
                         getInfoToken(address).then((async (res) => {
                             if (res) {
                                 console.log(token.id)
-                                addTokenToDB({ ...res, address: address, id: token.id })
+                                addTokenToDB({ ...res, address: address, id: token.id ?? '' })
                             }
                         }))
                     }
@@ -80,7 +97,7 @@ const InfoToken = ({ token, setLoading }) => {
                 getInfoToken(token.address).then((async (res) => {
                     if (res) {
                         addTokenToDB({
-                            ...res, address: token.address, id: res.id
+                            ...res, address: token.address, id: res.id ?? ''
                         })
                     }
                 })).finally(() => setLoading(false))
