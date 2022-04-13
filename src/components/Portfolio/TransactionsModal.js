@@ -1,4 +1,4 @@
-import { Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Typography, TableSortLabel, Box } from '@mui/material'
+import { Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Typography, TableSortLabel } from '@mui/material'
 import PropTypes from 'prop-types';
 
 import millify from 'millify'
@@ -7,8 +7,22 @@ import ModalUI from './ModalUI'
 
 function descendingComparator(a, b, orderBy) {
     if (orderBy === 'value') {
-        a[orderBy] = a.price * a.amount;
-        b[orderBy] = b.price * b.amount;
+
+    }
+    switch (orderBy) {
+        case 'value':
+            a[orderBy] = a.price * a.amount;
+            b[orderBy] = b.price * b.amount;
+            break;
+        case 'date':
+            if (new Date(b[orderBy]) < new Date(b[orderBy])) {
+                return -1;
+            }
+            return 1
+            // console.log(new Date(a[orderBy])> new Date(b[orderBy]))
+            break;
+        default:
+            break;
     }
     if (b[orderBy] < a[orderBy]) {
         return -1;
@@ -58,7 +72,7 @@ const headCells = [
     },
 ]
 function EnhancedTableHead(props) {
-    const { onSelectAllClick, order, orderBy, numSelected, rowCount, onRequestSort } =
+    const { order, orderBy, onRequestSort } =
         props;
     const createSortHandler = (property) => (event) => {
         onRequestSort(event, property);

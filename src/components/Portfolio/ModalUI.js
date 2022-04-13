@@ -1,6 +1,5 @@
-import React, { useState, useEffect } from 'react'
+import React from 'react'
 import '../../styles/statwallet.css'
-import axios from 'axios';
 import { Box, Modal } from '@mui/material';
 
 const ModalUI = ({ isOpen, setOpen, children, onClose }) => {
