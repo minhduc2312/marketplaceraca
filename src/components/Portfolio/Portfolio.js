@@ -24,7 +24,7 @@ const Portfolio = () => {
     })
     useEffect(() => {
         dispatch(initApp(db));
-    }, [])
+    }, [db])
     const handleSwitch = () => {
         setIsVisible(state => !state)
     }

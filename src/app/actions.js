@@ -1,4 +1,3 @@
-import axios from "axios"
 
 export const handleFilters = ({ minScore, level }) => {
     return {

@@ -21,7 +21,7 @@ import {
 } from "../../app/actions";
 
 const InputFilters = () => {
-  const { min, max, rarity, aura } = useSelector(
+  const { min, max } = useSelector(
     (state) => state.filtersElemon
   );
   const [minPower, setMinPower] = useState(min);

@@ -1,15 +1,12 @@
 import { createContext, useEffect, useState } from 'react'
 import WalletConnectProvider from "@walletconnect/web3-provider";
 import Web3 from "web3"
-import { useDispatch } from 'react-redux';
-import { changeCurrentAccount } from '../app/actions';
 
 export const AppContext = createContext();
 
 export const AppProvider = ({ children }) => {
     const [appStatus, setAppStatus] = useState('loading')
     const [currentAccount, setCurrentAccount] = useState('');
-    const dispatch = useDispatch();
     const provider = new WalletConnectProvider({
         rpc: {
             56: 'https://matic-mainnet.chainstacklabs.com',
@@ -30,41 +27,42 @@ export const AppProvider = ({ children }) => {
     });
 
     useEffect(() => {
+        const checkIfWalletConnected = async () => {
+            if (!window?.ethereum && !currentAccount) return setAppStatus('noMetamask')
+            try {
+                if (currentAccount) {
+                    setAppStatus('connected');
+
+                } else {
+                    const addressArray = await window?.ethereum?.request({
+                        method: 'eth_accounts',
+                    })
+
+                    if (addressArray?.length > 0) {
+                        //connected
+                        setAppStatus('connected');
+                        setCurrentAccount(addressArray[0]);
+
+                    } else {
+                        // not connected
+                        setAppStatus('not-connected');
+                        setCurrentAccount();
+                    }
+                }
+            } catch (err) {
+                alert(err)
+                console.log(err);
+                setAppStatus('error')
+            }
+        }
         checkIfWalletConnected();
         window?.ethereum?.on('accountsChanged', async () => {
             checkIfWalletConnected();
         })
-       
+
     }, [currentAccount])
 
-    const checkIfWalletConnected = async () => {
-        if (!window?.ethereum && !currentAccount) return setAppStatus('noMetamask')
-        try {
-            if (currentAccount) {
-                setAppStatus('connected');
 
-            } else {
-                const addressArray = await window?.ethereum?.request({
-                    method: 'eth_accounts',
-                })
-
-                if (addressArray?.length > 0) {
-                    //connected
-                    setAppStatus('connected');
-                    setCurrentAccount(addressArray[0]);
-
-                } else {
-                    // not connected
-                    setAppStatus('not-connected');
-                    setCurrentAccount();
-                }
-            }
-        } catch (err) {
-            alert(err)
-            console.log(err);
-            setAppStatus('error')
-        }
-    }
     const disconnectWC = async () => {
         await provider.disconnect();
         setAppStatus('not-connected');

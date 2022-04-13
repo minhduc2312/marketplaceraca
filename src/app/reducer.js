@@ -165,7 +165,8 @@ const rootReducer = (state = initState, action) => {
           {
             tokenName: action.payload.symbol,
             address: action.payload.token,
-            price: action.payload.price
+            price: action.payload.price,
+            id:action.payload?.id
           },
         ],
         prevLength: state.listToken.length
