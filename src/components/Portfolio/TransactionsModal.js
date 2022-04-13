@@ -113,7 +113,6 @@ const TransactionsModal = ({ infoTransactions, setInfoTransactions }) => {
     const [order, setOrder] = useState('asc');
     const [orderBy, setOrderBy] = useState('date');
     const { tokenName, listTransactions } = infoTransactions;
-    console.log(listTransactions)
 
     const handleRequestSort = (event, property) => {
         const isAsc = orderBy === property && order === 'asc';
