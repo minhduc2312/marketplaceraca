@@ -54,9 +54,10 @@ const StatWallet = () => {
           const value = Number(Web3.utils.fromWei(transaction.value, 'ether'))
           let getDateTransaction = new Date(transaction.timeStamp * 1000).toLocaleDateString();
           const infoTransaction = {
-            value,
+            amount:value,
             date: getDateTransaction,
-            status: transaction.from === currentAccount ? 'out' : 'in'
+            status: transaction.from === currentAccount ? 'out' : 'in',
+            
           }
           if (id) {
             let index = 1;

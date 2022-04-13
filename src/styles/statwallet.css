@@ -5,6 +5,9 @@
 #PortfolioWallet-section table thead th:last-child {
   width: 40px;
 }
+#table_transactions table thead tr th:first-child {
+  text-align: center;
+}
 #table_transactions thead tr th {
   padding: 14px;
 }
@@ -29,16 +32,29 @@
     justify-content: left !important;
   }
   #modalUI {
-    width: 350px;
+    width: 345px;
     padding: 16px;
   }
+
   #table_transactions table tbody tr td {
-    padding: 8px;
-    padding-right: 0px;
+    padding: 8px 0px;
+    transform: translateX(-10px);
+  }
+  #table_transactions table tbody tr td:first-child {
+    padding: 10px 0px 10px 10px;
   }
   #table_transactions thead tr th {
-    padding: 10px;
+    padding: 10px 0px;
 }
+  #modalUI {
+    max-height: 450px;
+  }
+  #table_transactions {
+    max-height: 400px;
+  }
+  .sort-icon svg {
+    margin: 0px;
+  }
 }
 @keyframes showModal {
   0% {
