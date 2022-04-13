@@ -37,7 +37,6 @@ const StatWallet = () => {
         let endTime = data[data.length - 1].timeStamp;
         const listTransactionsTemp = {};
 
-        const listTransactions = {};
         listTransactionsTemp[tokenName] = []
         let hashmapPrice;
         if (id) {
@@ -46,13 +45,11 @@ const StatWallet = () => {
             const data = res.data.prices;
             data.forEach((price) => {
               const date = new Date(price[0]).toLocaleDateString()
-              // console.log(price[0])
               hashmap[date] = price[1]
             })
             return hashmap;
           }).catch((err) => console.log(err))
         }
-        // console.log(data[0], data[data.length - 1])
         data?.forEach(transaction => {
           const value = Number(Web3.utils.fromWei(transaction.value, 'ether'))
           let getDateTransaction = new Date(transaction.timeStamp * 1000).toLocaleDateString();
@@ -79,7 +76,6 @@ const StatWallet = () => {
             totalDeposit += Number(Web3.utils.fromWei(transaction.value, 'ether'));
             if (id)
               totalDepositPrice += value * hashmapPrice[getDateTransaction];
-            // console.log(value, getDateTransaction)
           }
         })
         setListTransactions(prev => {
@@ -121,7 +117,6 @@ const StatWallet = () => {
     const querySnapshot = await getDocs(q);
     querySnapshot.forEach(async (docItem) => {
       if (docItem.exists()) {
-        // console.log(doc.data().tokens)
         const result = docItem.data().tokens;
         const listResult = result.filter(item => item.address !== token);
         const docRef = await doc(db, "users", docItem.id);
@@ -138,7 +133,6 @@ const StatWallet = () => {
   }
   const showDetailTransaction = (e) => {
     const tokenName = e.target.parentNode.dataset.name
-    console.log(listTransactions[tokenName]);
     setInfoTransactions({
       tokenName,
       listTransactions: [
@@ -164,7 +158,6 @@ const StatWallet = () => {
               // let flag = limit;
               const loop = setInterval(() => {
                 for (let i = start; i < end; i++) {
-                  // console.log(listTokens[i])
                   setLoading(true)
                   getInfoToken(listTokens[i]?.address).then(async (res) => {
                     const token = listTokens[i].address;
@@ -184,7 +177,6 @@ const StatWallet = () => {
                 } else {
                   end += limit
                 }
-                // console.log(flag, listTokens.length)
               }, 2000)
               setLoading(false)
             }
@@ -219,7 +211,6 @@ const StatWallet = () => {
     return () => {
       setLoading(true)
     }
-    // console.log(listToken)
   }, [listToken])
   return (
     <div className="PortfolioWallet" style={{ display: 'flex', justifyContent: 'center' }}>
