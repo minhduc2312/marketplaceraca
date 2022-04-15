@@ -18,7 +18,7 @@ const getData = (minScore = 315, level = 1, pageNo = 1) => {
 }
 
 const Metamon = () => {
-    const { minScore, level, arrange } = useSelector(state => state.filters)
+    const { stateMinScore, stateLevel, arrange } = useSelector(state => state.filters)
 
     const [listMetamon, setListMetamon] = useState([])
     const [listShow, setListShow] = useState([])
@@ -26,15 +26,11 @@ const Metamon = () => {
     const dispatch = useDispatch();
     const { raca } = useSelector(state => state.price);
 
-    const showInfo = (e) => {
-    }
-
-    const getListMetamon = async () => {
+    const getListMetamon = async (minScore = stateMinScore, level = stateLevel) => {
         setLoading(true);
         await getData(minScore, level, 1).then(async (res) => {
             const data = res.data;
             let listData = res.data.list
-            // console.log(data.list.total)
             for (let i = 1; i <= Math.floor(data.total / 100); i++) {
                 const list = await getData(minScore, level, i + 1).then(res => res.data.list);
                 listData = listData.concat(list)
@@ -45,9 +41,10 @@ const Metamon = () => {
         setLoading(false);
 
     }
-    const handleListMetamon = () => {
+    const handleListMetamon = (minScore, level) => {
+        // console.log(minScore, level)
         setListMetamon([])
-        getListMetamon();
+        getListMetamon(minScore, level);
         dispatch(handleArrange(0));
     }
     useEffect(() => {
@@ -112,7 +109,7 @@ const Metamon = () => {
                     <TableBody>
                         {loading && (
                             <TableRow >
-                                <TableCell sx={{ borderLeft:'2px solid'  }} colSpan={6} align="center">
+                                <TableCell sx={{ borderLeft: '2px solid' }} colSpan={6} align="center">
                                     <CircularProgress />
                                 </TableCell>
                             </TableRow>
@@ -121,7 +118,7 @@ const Metamon = () => {
                             return (
                                 <TableRow key={index + 1}>
                                     <TableCell align="center" component="th" scope="row">{index + 1}</TableCell>
-                                    <TableCell id={`metamon-${index + 1}`} onMouseEnter={showInfo} align="center" component="th" scope="row" sx={{ position: 'relative' }}>
+                                    <TableCell id={`metamon-${index + 1}`} align="center" component="th" scope="row" sx={{ position: 'relative' }}>
                                         <img width='50px' height='50px' src={metamon.image_url} alt='Metamon' />
                                     </TableCell>
                                     <TableCell align="center" component="td" scope="row">

@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 
 import { MenuItem, FormControl, Select, TextField, Box, Button, Container } from '@mui/material'
 import { handleArrange, handleFilters } from '../../app/actions';
@@ -12,7 +12,7 @@ export const InputSelect = ({ handleConfirm }) => {
     const [minScore, setMinScore] = useState(filters.minScore);
     const [level, setLevel] = useState(filters.level);
 
-    
+
     const handleLevelChange = (e) => {
         setLevel(e.target.value);
     }
@@ -29,12 +29,13 @@ export const InputSelect = ({ handleConfirm }) => {
     const ConfirmHandle = () => {
         dispatch(handleFilters({ minScore, level }));
         setArrange(0)
-        handleConfirm();
+        handleConfirm(minScore, level);
         myStorage.setItem('metamon', JSON.stringify({
             score: minScore,
             levelMetamon: level
         }))
     }
+
     return (
         <Container sx={{ marginTop: '20px', color: '#fff', }}>
             <Box sx={{
@@ -45,7 +46,7 @@ export const InputSelect = ({ handleConfirm }) => {
                 />
                 <TextField value={level} onChange={handleLevelChange} sx={{ color: '#fff', width: 100, marginRight: '0.5rem' }} id="level" label="Level" variant="standard" type='number' autoComplete="new-password"
                 />
-                <Button sx={{height: '100%', color: '#383838', background: '#fcc33c' }} variant="contained" onClick={ConfirmHandle}>Confirm</Button>
+                <Button sx={{ height: '100%', color: '#383838', background: '#fcc33c' }} variant="contained" onClick={ConfirmHandle}>Confirm</Button>
             </Box>
             <Box>
                 <FormControl className='select-metamon' style={{ margin: '20px 0' }}>

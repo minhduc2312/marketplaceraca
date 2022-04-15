@@ -78,6 +78,7 @@
 }
 .tablePrice td {
   font-size: 1rem;
+  border-right: 1px solid;
 }
 
 .tablePrice {
@@ -155,22 +156,18 @@
 }
 .stats {
   /* border-top: 1px solid #ffffff; */
-  margin-top: 20px;
   width: 50%;
 }
-.header {
-  display: flex;
-  text-transform: uppercase;
-  font-weight: bold;
-  font-size: larger;
-  position: relative;
-  justify-content: center;
+.tablePrice {
+  height: 100%;
 }
-.stats-session {
-  display: flex;
-  gap: 2%;
-  width: 71.5%;
+.tablePrice tbody th {
+  width: 25px;
 }
+.select-stats fieldset {
+  border-color: rgb(255 255 255 / 66%);
+}
+
 @keyframes skeletonLoading {
   from {
     left: -40%;
@@ -186,12 +183,15 @@
   border-left: 2px solid;
 }
 .table-scroll tbody th:first-child {
-    border-right: 1px solid;
-  }
+  border-right: 1px solid;
+}
 @media screen and (min-width: 880px) {
   .stats-session {
     width: 71.5%;
   }
+}
+.info-metamon-cell p {
+  text-align: center;
 }
 @media screen and (max-width: 880px) {
   .nft {
@@ -223,7 +223,6 @@
     word-wrap: break-word;
     border-collapse: collapse;
     padding: 8px 2px;
-    /* border-right: 1px solid; */
   }
   .stats {
     width: 100%;
@@ -243,12 +242,21 @@
   }
   .stats-session {
     width: 100%;
+    margin-top: 20px;
+    display: flex;
+    flex-direction: column;
   }
   .table-scroll th {
     font-size: 0.8rem;
   }
   .table-scroll td:last-child {
     padding-right: 5px;
+  }
+  .tablePrice tbody th {
+    width: 15px;
+  }
+  .info-metamon-cell {
+    padding: 0px !important;
   }
   
 }

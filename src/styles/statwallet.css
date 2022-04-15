@@ -15,9 +15,7 @@
   max-height: 600px;
 }
 
-/* .css-1v4ccyo fieldset {
-  border-color: rgba(0, 0, 0, 0.23) !important;
-} */
+
 @media screen and (max-width: 880px) {
   #PortfolioWallet-section table thead th {
     padding: 5px;

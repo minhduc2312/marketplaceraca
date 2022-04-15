@@ -9,7 +9,7 @@ function TabPanel(props) {
             role="tabpanel"
             hidden={value !== index}
             id={`simple-tabpanel-${index}`}
-            sx={{ color: '#ffffff' }}
+            style={{ color: '#ffffff' }}
             aria-labelledby={`simple-tab-${index}`}
             {...other}
         >
