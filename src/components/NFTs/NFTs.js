@@ -2,7 +2,7 @@ import axios from "axios";
 import React, { useEffect, useState } from "react";
 import Card from "./Card";
 import SwapRacaToUSD from "./SwapRaca";
-import { Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, Box, Typography, MenuItem, Select, FormControl} from '@mui/material';
+import { Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, Box, Typography, MenuItem, Select, FormControl } from '@mui/material';
 import '../../styles/nfts.css';
 import { useSelector } from "react-redux";
 import millify from "millify";
@@ -170,27 +170,7 @@ const NFTs = () => {
     useEffect(() => {
         getData();
         convertDateTime();
-
-        // 
-        // }).then(function (response) {
-        //     console.log(response.data)
-        //     const formData1 = new FormData();
-        //     formData1.append('address', '0x769ba0cb0d89666f7506194d2cf416ea0f812e16')
-        //     axios({
-        //         method: 'POST',
-        //         url: 'https://metamon-api.radiocaca.com/usm-api/getBattleRecord',
-        //         data: formData1,
-        //         headers: {
-        //             "accessToken": response.data.data
-        //         }
-        //     }).then(function (response) {
-        //         console.log(response);
-        //     })
-        // })
-        // .catch(function (error) {
-        //     console.log(error);
-        // });
-        const rerender = setInterval(() => {
+        const rerenderData = setInterval(() => {
             getData();
             convertDateTime();
         }, 20000)
@@ -203,197 +183,204 @@ const NFTs = () => {
             setListStats([])
             setKissUpLand({})
             setTokenPrice(0)
-            clearInterval(rerender);
+            clearInterval(rerenderData);
         }
     }, []);
     useEffect(() => {
-        // const getSelected = selectStatsList.filter(item=> item.id === selectStats);
         getStats(selectStats, 10).then(res => setSelectedStatsList(res.data.list));
-        // setSelectedStats(getSelected)
+        const rerenderStats = setInterval(() => {
+            getStats(selectStats, 10).then(res => setSelectedStatsList(res.data.list));
+        }, 60000);
         return () => {
-
+            clearInterval(rerenderStats)
+            setSelectedStatsList()
         }
     }, [selectStats])
     return (
-        <div>
-            <div className="priceToken">
-                <p className='tokenPrice'>RACA: {raca}</p>
-                <p className='tokenPrice'>ELMON: {elmon}</p>
-                <p className='tokenPrice'>ELCOIN: {elcoin}</p>
-                <p className='tokenPrice'>BTC: {numberWithCommas(btc)}</p>
-            </div>
-
-            <SwapRacaToUSD />
-            <p id='timeUpdated'>{timeUpdated}</p>
-            <div className='pricetable'>
-                <TableContainer className='table-scroll' component={Paper}>
-                    <Table className='tablePrice' aria-label="simple table">
-                        <TableHead>
-                            <TableRow>
-                                <TableCell align="center">#</TableCell>
-                                <TableCell align="center">
-                                    <img width='50px' height='50px' src='/marketplaceraca/metamon.png' alt='Metamon' />
-                                </TableCell>
-                                <TableCell align="center">
-                                    <img width='50px' height='50px' src='/marketplaceraca/MetamonEgg.png' alt='Egg' />
-                                </TableCell>
-                                <TableCell align="center">
-                                    <img width='50px' height='50px' src='/marketplaceraca/DiamondYellow.png' alt='DiamondYellow' />
-                                </TableCell>
-                                <TableCell align="center">
-                                    <img style={{ objectFit: 'contain' }} width='50px' height='50px' src='/marketplaceraca/potion.png' alt='Potion' />
-                                </TableCell>
-                                <TableCell align="center">
-                                    <img style={{ objectFit: 'contain' }} width='50px' height='50px' src='/marketplaceraca/valhalla.png' alt='Potion' />
-                                </TableCell>
-                            </TableRow>
-                        </TableHead>
-                        <TableBody>
-                            {listEgg && listMetamon && listDiamond && listPotion && listEgg.map((child, index) => {
-                                return (
-                                    <TableRow key={index + 1}>
-                                        <TableCell align="center" component="th" scope="row">{index + 1}</TableCell>
-                                        <TableCell align="center">{millify(Math.floor(listMetamon[index]?.fixed_price))} (~{(tokenPrice * listMetamon[index]?.fixed_price).toFixed(2)})</TableCell>
-                                        <TableCell align="center">{numberWithCommas(Math.floor(listEgg[index]?.fixed_price))} (~{(tokenPrice * listEgg[index]?.fixed_price).toFixed(2)})</TableCell>
-                                        <TableCell align="center">{numberWithCommas(Math.floor(listDiamond[index]?.fixed_price))} (~{(tokenPrice * listDiamond[index]?.fixed_price).toFixed(2)})</TableCell>
-                                        <TableCell align="center">{numberWithCommas(Math.floor(listPotion[index]?.fixed_price))} (~{(tokenPrice * listPotion[index]?.fixed_price).toFixed(2)})</TableCell>
-                                        <TableCell align="center">{numberWithCommas(Math.floor(sellListValhalla[index]?.amount))} (~{(tokenPrice * sellListValhalla[index]?.amount).toFixed(2)})</TableCell>
-                                    </TableRow>)
-                            })}
-
-                        </TableBody>
-                    </Table>
-                </TableContainer>
-                <div id='xike'>
-                    <p>Xìke Captain</p>
-                    <img alt='Xike' src='/marketplaceraca/xike.png' />
-                </div>
-            </div>
-            <Box className="stats-session">
-                <Box sx={{ display: 'flex', justifyContent: 'space-between', padding: '5px 12px' }}>
-                    <Typography style={{
-                        textTransform: 'uppercase',
-                        fontWeight: "bold",
-                        fontSize: "larger",
-                    }}>Stats</Typography>
-                    <FormControl className='select-stats' style={{ width: '150px' }}>
-                        <Select
-                            size='small'
-                            labelId="select"
-                            id="filter"
-                            value={selectStats}
-                            onChange={handleChangeSelect}
-                            sx={{ color: '#fff', }}
-                            className='select-stats'
-                        >
-                            {selectStatsList && selectStatsList.map((item, index) => (
-                                <MenuItem key={item.id} value={item.id}>{item.name}</MenuItem>
-                            ))}
-                        </Select>
-                    </FormControl>
-                </Box>
-                <Box sx={{ display: 'flex', gap: "2%" }}>
-                    <Box className='stats'>
-                        <img width='50px' height='50px' className='symbols' src='/marketplaceraca/MetamonEgg.png' alt='Egg' />
+        <Box>
+            <Box sx={{ display: 'flex', flexDirection: 'row' }}>
+                <div className="statistical">
+                    <div className="priceToken">
+                        <p className='tokenPrice'>RACA: {raca}</p>
+                        <p className='tokenPrice'>ELMON: {elmon}</p>
+                        <p className='tokenPrice'>ELCOIN: {elcoin}</p>
+                        <p className='tokenPrice'>BTC: {numberWithCommas(btc)}</p>
+                    </div>
+                    <SwapRacaToUSD />
+                    <p id='timeUpdated'>{timeUpdated}</p>
+                    <div className='pricetable'>
                         <TableContainer className='table-scroll' component={Paper}>
                             <Table className='tablePrice' aria-label="simple table">
                                 <TableHead>
                                     <TableRow>
                                         <TableCell align="center">#</TableCell>
                                         <TableCell align="center">
-                                            <p>Price</p>
+                                            <img width='50px' height='50px' src='/marketplaceraca/metamon.png' alt='Metamon' />
                                         </TableCell>
                                         <TableCell align="center">
-                                            <p>Count</p>
+                                            <img width='50px' height='50px' src='/marketplaceraca/MetamonEgg.png' alt='Egg' />
                                         </TableCell>
                                         <TableCell align="center">
-                                            <p>Time</p>
+                                            <img width='50px' height='50px' src='/marketplaceraca/DiamondYellow.png' alt='DiamondYellow' />
+                                        </TableCell>
+                                        <TableCell align="center">
+                                            <img style={{ objectFit: 'contain' }} width='50px' height='50px' src='/marketplaceraca/potion.png' alt='Potion' />
+                                        </TableCell>
+                                        <TableCell align="center">
+                                            <img style={{ objectFit: 'contain' }} width='50px' height='50px' src='/marketplaceraca/valhalla.png' alt='Potion' />
                                         </TableCell>
                                     </TableRow>
                                 </TableHead>
                                 <TableBody>
-                                    {listStats && listStats.map((item, index) => {
-                                        return (
-                                            <TableRow key={index + 1}>
-                                                <TableCell align="center" component='th' scope="row">{index + 1}</TableCell>
-                                                <TableCell style={{ paddingLeft: '5px' }} align="center">{numberWithCommas(Math.floor(item?.fixed_price / item.count))}</TableCell>
-                                                <TableCell align="center">{numberWithCommas(item.count)}</TableCell>
-                                                <TableCell align="center">{ConvertDDMM(new Date(item.timestamp * 1000))}</TableCell>
-                                            </TableRow>)
-                                    })
-                                    }
-                                </TableBody>
-                            </Table>
-                        </TableContainer>
-                    </Box>
-                    <Box className='stats'>
-                        <img width='50px' height='50px' style={{ objectFit: 'contain' }} className='symbols' src={`/marketplaceraca/${selectStatsList.filter(item => item.id === selectStats)[0].img}`} alt={selectStatsList.filter(item => item.id === selectStats)[0].name} />
-                        <TableContainer className='table-scroll' component={Paper}>
-                            <Table className='tablePrice' aria-label="simple table">
-                                <TableHead>
-                                    <TableRow>
-                                        <TableCell align="center">#</TableCell>
-                                        <TableCell align="center">
-                                            <p>Price</p>
-                                        </TableCell>
-                                        <TableCell align="center">
-                                            <p>{Number(selectStats) === 13 ? "Info" : "Count"}</p>
-                                        </TableCell>
-                                        <TableCell align="center">
-                                            <p>Time</p>
-                                        </TableCell>
-                                    </TableRow>
-                                </TableHead>
-                                <TableBody>
-                                    {selectedStatsList && selectedStatsList.map((item, index) => {
+                                    {listEgg && listMetamon && listDiamond && listPotion && listEgg.map((child, index) => {
                                         return (
                                             <TableRow key={index + 1}>
                                                 <TableCell align="center" component="th" scope="row">{index + 1}</TableCell>
-                                                <TableCell align="center" style={{ paddingLeft: '1px' }}>{millify(Math.floor(item?.fixed_price / item.count))}</TableCell>
-                                                {Number(selectStats) === 13 ? (
-                                                   <TableCell className="info-metamon-cell" padding='none'> 
-                                                       <Typography sx={{color:'#fff',fontSize:'12px'}}>{item.level}</Typography>
-                                                        <Typography sx={{ color: '#fff',fontSize:'12px' }}>{item.score}</Typography>
-                                                   </TableCell>
-
-                                                ) : (
-                                                <TableCell align="center">{numberWithCommas(item.count)}</TableCell>
-
-                                                )}
-                                                <TableCell align="center">{ConvertDDMM(new Date(item.timestamp * 1000))}</TableCell>
+                                                <TableCell align="center">{millify(Math.floor(listMetamon[index]?.fixed_price))} (~{(tokenPrice * listMetamon[index]?.fixed_price).toFixed(2)})</TableCell>
+                                                <TableCell align="center">{numberWithCommas(Math.floor(listEgg[index]?.fixed_price))} (~{(tokenPrice * listEgg[index]?.fixed_price).toFixed(2)})</TableCell>
+                                                <TableCell align="center">{numberWithCommas(Math.floor(listDiamond[index]?.fixed_price))} (~{(tokenPrice * listDiamond[index]?.fixed_price).toFixed(2)})</TableCell>
+                                                <TableCell align="center">{numberWithCommas(Math.floor(listPotion[index]?.fixed_price))} (~{(tokenPrice * listPotion[index]?.fixed_price).toFixed(2)})</TableCell>
+                                                <TableCell align="center">{numberWithCommas(Math.floor(sellListValhalla[index]?.amount))} (~{(tokenPrice * sellListValhalla[index]?.amount).toFixed(2)})</TableCell>
                                             </TableRow>)
-                                    })
-                                    }
+                                    })}
+
                                 </TableBody>
                             </Table>
                         </TableContainer>
+
+                    </div>
+                    <Box className="stats-session">
+                        <Box sx={{ display: 'flex', justifyContent: 'space-between', padding: '5px 12px' }}>
+                            <Typography style={{
+                                textTransform: 'uppercase',
+                                fontWeight: "bold",
+                                fontSize: "larger",
+                            }}>Stats</Typography>
+                            <FormControl className='select-stats' style={{ width: '150px' }}>
+                                <Select
+                                    size='small'
+                                    labelId="select"
+                                    id="filter"
+                                    value={selectStats}
+                                    onChange={handleChangeSelect}
+                                    sx={{ color: '#fff', }}
+                                    className='select-stats'
+                                >
+                                    {selectStatsList && selectStatsList.map((item, index) => (
+                                        <MenuItem key={item.id} value={item.id}>{item.name}</MenuItem>
+                                    ))}
+                                </Select>
+                            </FormControl>
+                        </Box>
+                        <Box sx={{ display: 'flex', gap: "2%" }}>
+                            <Box className='stats'>
+                                <img width='50px' height='50px' className='symbols' src='/marketplaceraca/MetamonEgg.png' alt='Egg' />
+                                <TableContainer className='table-scroll' component={Paper}>
+                                    <Table className='tablePrice' aria-label="simple table">
+                                        <TableHead>
+                                            <TableRow>
+                                                <TableCell align="center">#</TableCell>
+                                                <TableCell align="center">
+                                                    <p>Price</p>
+                                                </TableCell>
+                                                <TableCell align="center">
+                                                    <p>Count</p>
+                                                </TableCell>
+                                                <TableCell align="center">
+                                                    <p>Time</p>
+                                                </TableCell>
+                                            </TableRow>
+                                        </TableHead>
+                                        <TableBody>
+                                            {listStats && listStats.map((item, index) => {
+                                                return (
+                                                    <TableRow key={index + 1}>
+                                                        <TableCell align="center" component='th' scope="row">{index + 1}</TableCell>
+                                                        <TableCell style={{ paddingLeft: '5px' }} align="center">{numberWithCommas(Math.floor(item?.fixed_price / item.count))}</TableCell>
+                                                        <TableCell align="center">{numberWithCommas(item.count)}</TableCell>
+                                                        <TableCell align="center">{ConvertDDMM(new Date(item.timestamp * 1000))}</TableCell>
+                                                    </TableRow>)
+                                            })
+                                            }
+                                        </TableBody>
+                                    </Table>
+                                </TableContainer>
+                            </Box>
+                            <Box className='stats'>
+                                <img width='50px' height='50px' style={{ objectFit: 'contain' }} className='symbols' src={`/marketplaceraca/${selectStatsList.filter(item => item.id === selectStats)[0].img}`} alt={selectStatsList.filter(item => item.id === selectStats)[0].name} />
+                                <TableContainer className='table-scroll' component={Paper}>
+                                    <Table className='tablePrice' aria-label="simple table">
+                                        <TableHead>
+                                            <TableRow>
+                                                <TableCell align="center">#</TableCell>
+                                                <TableCell align="center">
+                                                    <p>Price</p>
+                                                </TableCell>
+                                                <TableCell align="center">
+                                                    <p>{Number(selectStats) === 13 ? "Info" : "Count"}</p>
+                                                </TableCell>
+                                                <TableCell align="center">
+                                                    <p>Time</p>
+                                                </TableCell>
+                                            </TableRow>
+                                        </TableHead>
+                                        <TableBody>
+                                            {selectedStatsList && selectedStatsList.map((item, index) => {
+                                                return (
+                                                    <TableRow key={index + 1}>
+                                                        <TableCell align="center" component="th" scope="row">{index + 1}</TableCell>
+                                                        <TableCell align="center" style={{ paddingLeft: '1px' }}>{millify(Math.floor(item?.fixed_price / item.count))}</TableCell>
+                                                        {Number(selectStats) === 13 ? (
+                                                            <TableCell className="info-metamon-cell" padding='none'>
+                                                                <Typography sx={{ color: '#fff', fontSize: '12px' }}>{item.level}</Typography>
+                                                                <Typography sx={{ color: '#fff', fontSize: '12px' }}>{item.score}</Typography>
+                                                            </TableCell>
+
+                                                        ) : (
+                                                            <TableCell align="center">{numberWithCommas(item.count)}</TableCell>
+
+                                                        )}
+                                                        <TableCell align="center">{ConvertDDMM(new Date(item.timestamp * 1000))}</TableCell>
+                                                    </TableRow>)
+                                            })
+                                            }
+                                        </TableBody>
+                                    </Table>
+                                </TableContainer>
+                            </Box>
+                        </Box>
+
                     </Box>
-                </Box>
 
+
+                </div>
+                <div id="xike" style={{ transform: 'translateY(10%)' }}>
+                    <p>Xìke Captain</p>
+                    <img alt="Xike" src="/marketplaceraca/xike.png" />
+                </div>
             </Box>
-
-            <div className="cards">
+            <Box className="cards">
                 {MetamonR &&
-                    <div className="card loading">
+                    <Box className="card loading">
                         <Card nft={MetamonR} />
-                    </div>}
+                    </Box>}
 
                 {BigGreen &&
-                    <div className="card loading">
+                    <Box className="card loading">
                         <Card nft={BigGreen} />
-                    </div>}
+                    </Box>}
 
                 {MMLand &&
-                    <div className="card loading">
+                    <Box className="card loading">
                         <Card nft={MMLand} />
-                    </div>}
+                    </Box>}
 
                 {kissUpLand &&
-                    <div className="card loading"><Card nft={kissUpLand} />
-                    </div>}
+                    <Box className="card loading"><Card nft={kissUpLand} />
+                    </Box>}
+            </Box>
+        </Box>
 
-            </div>
-        </div >
     );
 }
 export default NFTs;

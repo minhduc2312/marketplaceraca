@@ -37,10 +37,11 @@ export const InputSelect = ({ handleConfirm }) => {
     }
 
     return (
-        <Container sx={{ marginTop: '20px', color: '#fff', }}>
+        <Container maxWidth='lg xl' className='container' sx={{ margin: '20px 0px 0px 0px', marginTop: '20px', color: '#fff', }}>
             <Box sx={{
                 display: 'flex',
-                alignItems: 'end'
+                alignItems: 'end',
+                justifyContent: 'center'
             }}>
                 <TextField value={minScore} onChange={handleMinScoreChange} sx={{ color: '#fff', width: 100, marginRight: '0.5rem' }} id="min-score" label="Min score" variant="standard" type='number' autoComplete="new-password"
                 />
@@ -48,7 +49,10 @@ export const InputSelect = ({ handleConfirm }) => {
                 />
                 <Button sx={{ height: '100%', color: '#383838', background: '#fcc33c' }} variant="contained" onClick={ConfirmHandle}>Confirm</Button>
             </Box>
-            <Box>
+            <Box sx={{
+                textAlign: 'center',
+                // transform: 'translateX(-85px)'
+            }}>
                 <FormControl className='select-metamon' style={{ margin: '20px 0' }}>
                     <Select
                         size='small'

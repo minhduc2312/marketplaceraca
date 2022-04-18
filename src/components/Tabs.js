@@ -27,12 +27,12 @@ const HeaderTabs = (props) => {
 
     return (
         <Box sx={{ width: '100%' }}>
-            <Box id="tabs" sx={{ borderBottom: 1, borderColor: 'divider' }}>
-                <Tabs value={value} sx={{ color: '#ffffff' }} onChange={handleChange}>
-                    <Tab label="Raca" {...a11yProps(0)} />
-                    <Tab label="Metamon" {...a11yProps(1)} />
-                    <Tab label="Elemon" {...a11yProps(2)} />
-                    <Tab label="Sales" {...a11yProps(3)} />
+            <Box id="tabs" sx={{ display: 'flex', justifyContent: 'center' }}>
+                <Tabs id="tabs-bar" value={value} sx={{ color: '#ffffff', width: '600px' }} onChange={handleChange} centered>
+                    <Tab className="tab" label={<img alt='raca' width='30px' src='/marketplaceraca/favicon.svg'/>} {...a11yProps(0)} />
+                    <Tab className="tab" label={<img alt='metamon' width='50px' src='/marketplaceraca/metamon-SR.png' />} {...a11yProps(1)} />
+                    <Tab className="tab" label={<img alt='elemon' width='40px' src='/marketplaceraca/elemon-logo.png' />} {...a11yProps(2)} />
+                    <Tab className="tab" label={<img alt='sales' width='40px' src='/marketplaceraca/metamask.png' />} {...a11yProps(3)} />
                 </Tabs>
             </Box>
             <TabPanel value={value} index={0}>

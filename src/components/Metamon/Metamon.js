@@ -18,7 +18,7 @@ const getData = (minScore = 315, level = 1, pageNo = 1) => {
 }
 
 const Metamon = () => {
-    const { stateMinScore, stateLevel, arrange } = useSelector(state => state.filters)
+    const { minScore: stateMinScore, level:stateLevel, arrange } = useSelector(state => state.filters)
 
     const [listMetamon, setListMetamon] = useState([])
     const [listShow, setListShow] = useState([])
@@ -27,6 +27,7 @@ const Metamon = () => {
     const { raca } = useSelector(state => state.price);
 
     const getListMetamon = async (minScore = stateMinScore, level = stateLevel) => {
+        console.log(minScore,level)
         setLoading(true);
         await getData(minScore, level, 1).then(async (res) => {
             const data = res.data;
@@ -85,7 +86,7 @@ const Metamon = () => {
         <Box sx={{ textAlign: 'left' }}>
             <InputSelect handleConfirm={handleListMetamon} />
             <TableContainer className='table-scroll metamon' component={Paper}>
-                <Table className='tablePrice' aria-label="simple table">
+                <Table className='tablePrice ' aria-label="simple table">
                     <TableHead>
                         <TableRow>
                             <TableCell align="center">#</TableCell>

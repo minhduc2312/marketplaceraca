@@ -146,17 +146,20 @@ const Elemon = () => {
     return () => {
       setListFilter([]);
     };
-  }, [loading, min, max, sort, name, tokenId,aura,rarity,listElemonInfo]);
+  }, [loading, min, max, sort, name, tokenId, aura, rarity, listElemonInfo]);
 
   return (
     <Box>
       <Box sx={{ textAlign: "center" }}>
         <InputFilters />
-        <p className="timeUpdate">{timeUpdated}</p>
-        <Grid container spacing={1}>
+        <p style={{
+          display: 'flex',
+          justifyContent: 'center',
+        }} className="timeUpdate">{timeUpdated}</p>
+        <Grid container spacing={1} sx={{ boxShadow: 'none', justifyContent: 'center' }}>
           {listFilter &&
             listFilter?.slice(0, 100).map((item, index) => (
-              <Grid key={index} item xs={6} md={4} lg={2.2}>
+              <Grid key={index} item xs={6} md={4} lg={2.2} >
                 <InfoCard elemon={item} />
               </Grid>
             ))}

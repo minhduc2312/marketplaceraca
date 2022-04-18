@@ -1,10 +1,13 @@
 .tokenPrice {
   font-weight: 500;
   text-align: left;
+  max-width: 90px;
 }
 #swap-raca {
   font-weight: 500;
-  text-align: left;
+  text-align: center;
+  /* display: flex;
+    justify-content: center; */
 }
 #swap-raca input {
   height: 20px;
@@ -69,7 +72,7 @@
   align-items: center;
 }
 #timeUpdated {
-  text-align: left;
+  text-align: center;
 }
 .tablePrice th {
   font-weight: bold;
@@ -124,8 +127,9 @@
 }
 .priceToken {
   display: flex;
-  width: 40%;
-  gap: 10%;
+  width: 100%;
+  justify-content: center;
+  gap: 2%;
 }
 #xike {
   width: 40%;
@@ -185,15 +189,27 @@
 .table-scroll tbody th:first-child {
   border-right: 1px solid;
 }
-@media screen and (min-width: 880px) {
-  .stats-session {
-    width: 71.5%;
-  }
-}
+
 .info-metamon-cell p {
   text-align: center;
+  font-size: 16px;
+}
+.tab {
+  color: #ffffff !important;
+  font-size: 1rem !important;
+  font-weight: 700 !important;
+}
+.Mui-selected {
+  color: #1976d2 !important;
+  font-weight: 900 !important;
+}
+.statistical {
+  width: 60%;
 }
 @media screen and (max-width: 880px) {
+  .statistical {
+    width: 100%;
+  }
   .nft {
     width: 100%;
     height: 80%;
@@ -258,5 +274,7 @@
   .info-metamon-cell {
     padding: 0px !important;
   }
-  
+  .info-metamon-cell p {
+    font-size: 12.5px;
+  }
 }

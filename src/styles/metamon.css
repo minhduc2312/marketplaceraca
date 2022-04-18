@@ -21,20 +21,27 @@
   margin-left: 0px !important;
 }
 .metamon {
-  width: 60% !important;
+  display: flex;
+  justify-content: center;
+  width: 100% !important;
 }
-.MuiTableCell-root{
+.MuiTableCell-root {
   border-bottom: none;
 }
-
-
-@media screen and (min-width: 880px) {
-  
+.metamon .tablePrice {
+  width: 60% !important;
 }
+
 @media screen and (max-width: 880px) {
   .App {
     padding: 0 5px;
     height: auto;
+  }
+  .metamon .tablePrice {
+    width: 100% !important;
+  }
+  .metamon {
+    width: 100%;
   }
   .css-1h61cah-MuiContainer-root {
     padding-left: 10px !important;

@@ -3,10 +3,11 @@
 }
 .filter-top {
   display: flex;
-  justify-content: left;
+  justify-content: center;
   position: relative;
   gap: 3px;
   flex-wrap: wrap;
+  
 }
 
 .filter-top .market__select,
@@ -296,9 +297,10 @@ button {
 
 .filters_expand {
   display: flex;
-  width: 30%;
-  justify-content: space-around;
+  width: 100%;
+  justify-content: center;
   color: #049ec4;
+  margin-top: 20px;
 }
 .filter_item h5::before {
   content: url("https://app.elemon.io/assets/images/icon_filter_header.png");
@@ -306,7 +308,7 @@ button {
   transform: translateY(-50%);
 }
 .filter_item {
-  width: 50%;
+  width: auto;
 }
 .MuiInput-underline {
   margin-top: 10px;
@@ -337,7 +339,9 @@ button {
 .aura .MuiFormControlLabel-root {
   margin: 0px;
 }
-
+.input_power label{
+  color:#fff !important
+}
 @media screen and (max-width: 880px) {
   .filter-top .market__select {
     width: calc(50% - 3px);

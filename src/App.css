@@ -9,7 +9,7 @@ body {
   z-index: 1;
 }
 body {
-  background: url("https://app.elemon.io/assets/images/bg.jpg") no-repeat;
+  background: url("../src/styles/bg.jpg") no-repeat;
   background-size: cover;
 }
 
@@ -28,26 +28,12 @@ body::before {
 .App-link {
   color: #61dafb;
 }
-.css-su9hzg,
-.css-1h9z7r5,
-.css-1q2h7u5,
-.css-348fk2,
-.css-1wt0ykv,
-.css-1wt0ykv:before,
-.css-1636szt,
-.css-mqt2s5,
-.css-aqpgxn-MuiFormLabel-root-MuiInputLabel-root,
-.css-1h9z7r5-MuiButtonBase-root-MuiTab-root {
-  color: #ffffff !important;
-}
 
 .css-1wt0ykv::before,
 .css-1wt0ykv:before {
   border-bottom: 1px solid #fff !important;
 }
-.css-1h9z7r5-MuiButtonBase-root-MuiTab-root.Mui-selected {
-  color: #1976d2 !important;
-}
+
 .MuiTabs-indicator.css-ttwr4n,
 .css-1aquho2-MuiTabs-indicator {
   background-image: linear-gradient(to right, #4568dc, #b06ab3);
@@ -57,22 +43,32 @@ body::before {
   width: calc(100% / 4);
 }
 
-.css-1h9z7r5-MuiButtonBase-root-MuiTab-root.Mui-selected,
-.css-1q2h7u5.Mui-selected {
-  font-weight: 800;
-}
-#tabs {
-  width: 600px;
-}
-.Mui-selected {
-  color: rgb(25 118 210) !important;
-}
 @media screen and (max-width: 880px) {
   .App {
     padding: 0 5px;
     overflow: hidden;
   }
+  #tabs-bar {
+    background: url("../src/styles/bg.jpg") no-repeat;
+    border-radius: 4px;
+  }
+  .tab{
+    padding: 5px 16px !important;
+
+  }
   #tabs {
     width: 100%;
+    position: fixed;
+    z-index: 100;
+    bottom: 0;
+    transform: translateX(-5px);
+    padding-top: 3px;
+    border-radius: 4px;
+    background: rgb(69, 104, 220);
+    background: linear-gradient(
+      90deg,
+      rgba(69, 104, 220, 1) 0%,
+      rgba(176, 106, 179, 1) 100%
+    );
   }
 }
