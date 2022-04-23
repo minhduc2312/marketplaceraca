@@ -1,23 +1,23 @@
 {
   "files": {
-    "main.css": "/marketplaceraca/static/css/main.1aa19bad.chunk.css",
-    "main.js": "/marketplaceraca/static/js/main.04648018.chunk.js",
-    "main.js.map": "/marketplaceraca/static/js/main.04648018.chunk.js.map",
+    "main.css": "/marketplaceraca/static/css/main.404255d9.chunk.css",
+    "main.js": "/marketplaceraca/static/js/main.af41d252.chunk.js",
+    "main.js.map": "/marketplaceraca/static/js/main.af41d252.chunk.js.map",
     "runtime-main.js": "/marketplaceraca/static/js/runtime-main.ec7f3a64.js",
     "runtime-main.js.map": "/marketplaceraca/static/js/runtime-main.ec7f3a64.js.map",
-    "static/js/2.0272fda7.chunk.js": "/marketplaceraca/static/js/2.0272fda7.chunk.js",
-    "static/js/2.0272fda7.chunk.js.map": "/marketplaceraca/static/js/2.0272fda7.chunk.js.map",
+    "static/js/2.9d5e155d.chunk.js": "/marketplaceraca/static/js/2.9d5e155d.chunk.js",
+    "static/js/2.9d5e155d.chunk.js.map": "/marketplaceraca/static/js/2.9d5e155d.chunk.js.map",
     "static/js/3.417e9013.chunk.js": "/marketplaceraca/static/js/3.417e9013.chunk.js",
     "static/js/3.417e9013.chunk.js.map": "/marketplaceraca/static/js/3.417e9013.chunk.js.map",
     "index.html": "/marketplaceraca/index.html",
-    "static/css/main.1aa19bad.chunk.css.map": "/marketplaceraca/static/css/main.1aa19bad.chunk.css.map",
-    "static/js/2.0272fda7.chunk.js.LICENSE.txt": "/marketplaceraca/static/js/2.0272fda7.chunk.js.LICENSE.txt",
+    "static/css/main.404255d9.chunk.css.map": "/marketplaceraca/static/css/main.404255d9.chunk.css.map",
+    "static/js/2.9d5e155d.chunk.js.LICENSE.txt": "/marketplaceraca/static/js/2.9d5e155d.chunk.js.LICENSE.txt",
     "static/media/App.css": "/marketplaceraca/static/media/bg.e49a4dc5.jpg"
   },
   "entrypoints": [
     "static/js/runtime-main.ec7f3a64.js",
-    "static/js/2.0272fda7.chunk.js",
-    "static/css/main.1aa19bad.chunk.css",
-    "static/js/main.04648018.chunk.js"
+    "static/js/2.9d5e155d.chunk.js",
+    "static/css/main.404255d9.chunk.css",
+    "static/js/main.af41d252.chunk.js"
   ]
 }
