@@ -27,7 +27,6 @@ const Metamon = () => {
     const { raca } = useSelector(state => state.price);
 
     const getListMetamon = async (minScore = stateMinScore, level = stateLevel) => {
-        console.log(minScore,level)
         setLoading(true);
         await getData(minScore, level, 1).then(async (res) => {
             const data = res.data;
@@ -118,8 +117,8 @@ const Metamon = () => {
                         {listShow && listShow.map((metamon, index) => {
                             return (
                                 <TableRow key={index + 1}>
-                                    <TableCell align="center" component="th" scope="row">{index + 1}</TableCell>
-                                    <TableCell id={`metamon-${index + 1}`} align="center" component="th" scope="row" sx={{ position: 'relative' }}>
+                                    <TableCell align="center" sx={{borderLeft:'1px solid'}}>{index + 1}</TableCell>
+                                    <TableCell id={`metamon-${index + 1}`} align="center" sx={{ position: 'relative' }}>
                                         <img width='50px' height='50px' src={metamon.image_url} alt='Metamon' />
                                     </TableCell>
                                     <TableCell align="center" component="td" scope="row">

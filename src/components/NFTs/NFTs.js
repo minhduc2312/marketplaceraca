@@ -1,35 +1,21 @@
 import axios from "axios";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import Card from "./Card";
 import SwapRacaToUSD from "./SwapRaca";
-import { Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, Box, Typography, MenuItem, Select, FormControl } from '@mui/material';
+import { Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, Box, Typography, MenuItem, Select, FormControl, Grid } from '@mui/material';
 import '../../styles/nfts.css';
 import { useSelector } from "react-redux";
 import millify from "millify";
+import StatsChart from "../StatsChart/StatsChart";
 
 
 
-const getAPI = (categoryId = '', size = '') => {
-    return axios(`https://market-api.radiocaca.com/nft-sales?pageSize=${size}&sortBy=fixed_price&order=asc&category=${categoryId}&tokenId=-1`, {
-        "Access-Control-Allow-Origin": "*"
-    });
-}
 const ConvertDDMM = (datetime) => {
     const [date, time] = datetime.toLocaleString().split(',');
     return `${time.split(' ')[1]}`
 }
-const getStats = (categoryId = '') => {
-    let tokenId;
-    if (categoryId === 15 || categoryId === 16) {
-        tokenId = 0
-    } else {
-        tokenId = -1
-    }
-    return axios(`https://market-api.radiocaca.com/nft-sales?pageNo=1&pageSize=10&status=executed&tokenId=${tokenId}&category=${categoryId}`, {
-        "Access-Control-Allow-Origin": "*"
-    });
-}
-const getSellList = (formDataPrams) => {
+
+const getSellIngameList = (formDataPrams) => {
     const formDataLogin = new FormData();
     formDataLogin.append('address', "0x769Ba0Cb0D89666F7506194D2cF416Ea0F812e16");
     formDataLogin.append('sign', "0x44063b19d6cd4ce60cda4db25aade076e2206b3539f6f5a62237fb6c0ed31fe84e7770f66cc3e623cf520cdf353a116491af88f4c53894d424914888c677ac321c");
@@ -61,10 +47,10 @@ const getSellList = (formDataPrams) => {
 export function numberWithCommas(x) {
     return x?.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
 }
-const getFormDataValhalla = () => {
+const getFormData = (type) => {
     const formData = new FormData();
     formData.append('address', '0x769Ba0Cb0D89666F7506194D2cF416Ea0F812e16')
-    formData.append('type', 8)
+    formData.append('type', type)
     formData.append('orderType', 3)
     formData.append('orderId', -1)
     formData.append('pageSize', 5)
@@ -97,22 +83,60 @@ const selectStatsList = [
         img: 'mml.png'
     },
 ]
+
+const selectIngameList = [
+    {
+        name: 'Valhalla',
+        type: 8,
+        img: 'valhalla.png'
+    },
+    {
+        name: 'Egg',
+        type: 6,
+        img: 'MetamonEgg.png'
+    },
+    {
+        name: 'Anti Fatigue',
+        type: 11,
+        img: 'AntiFatiguePotion.png'
+    },
+    {
+        name: 'Purple Potion',
+        type: 10,
+        img: 'purple-potion.png'
+    },
+    {
+        name: 'Villa Fragments',
+        type: 1015,
+        img: 'villa.png'
+    },
+    {
+        name: 'Mansion Fragments',
+        type: 1016,
+        img: 'mansion.png'
+    },
+    {
+        name: 'Castle Fragments',
+        type: 1017,
+        img: 'castle.png'
+    },
+    {
+        name: 'Donuts',
+        type: 1004,
+        img: 'Donuts.png'
+    },
+]
+
 const NFTs = () => {
-    const [listMetamon, setListMetamon] = useState([]);
-    const [listDiamond, setListDiamond] = useState([]);
-    const [listEgg, setListEgg] = useState([]);
-    const [listPotion, setListPotion] = useState([]);
-    const [kissUpLand, setKissUpLand] = useState({});
-    const [BigGreen, setBigGreen] = useState({});
-    const [MetamonR, setMetamonR] = useState({});
-    const [MMLand, setMMLand] = useState({});
+    const [priceMarketList, setPriceMarketList] = useState([]);
     const [selectStats, setSelectStats] = useState(selectStatsList[0].id);
-    const [selectedStatsList, setSelectedStatsList] = useState();
+    const [selectedStatsList, setSelectedStatsList] = useState([]);
     const [tokenPrice, setTokenPrice] = useState(0);
     const [timeUpdated, setTimeUpdated] = useState("")
-    const [listStats, setListStats] = useState([]);
-    const [sellListValhalla, setSellListValhalla] = useState([]);
-    const [listStatsPotion, setListStatsPotion] = useState([]);
+    const [eggStatsList, setEggStatsList] = useState([]);
+    const [sellIngameList, setSellIngameList] = useState([]);
+    const [selectTypeIngame, setSelectTypeIngame] = useState(selectIngameList[0].type);
+    const refSelect = useRef();
 
     const convertDateTime = () => {
         const now = new Date();
@@ -122,49 +146,27 @@ const NFTs = () => {
         // console.log(e.target.value)
         setSelectStats(e.target.value)
     }
+    const handleChangeSelectSellIngame = (e) => {
+        setSelectTypeIngame(e.target.value)
+    }
     const { raca, elmon, elcoin, btc } = useSelector(state => state.price)
-    const getData = async () => (
-        Promise.all([
-            getAPI(13, 5).then(res =>
-                setListMetamon(res.data.list)
-            ),
-            getAPI(15, 5).then(res =>
-                setListPotion(res.data.list)
-            ),
-            getAPI(16, 5).then(res =>
-                setListDiamond(res.data.list)
-            ),
-            getAPI(17, 5).then(res =>
-                setListEgg(res.data.list)
-            ),
-            getStats(17).then(res =>
-                setListStats(res.data.list)
-            ),
-            getStats(15).then(res =>
-                setListStatsPotion(res.data.list)
-            ),
-            getSellList(getFormDataValhalla()).then(res =>
-                setSellListValhalla(res.data.data.shopOrderList)
-            ),
-            getAPI(20, 1).then(res => {
-                setKissUpLand(res.data.list[0]);
-                document.querySelector('.loading')?.classList.toggle('loading');
-            }),
-            getAPI(23, 1).then(res => {
-                setMetamonR(res.data.list[0]);
-                document.querySelector('.loading')?.classList.toggle('loading');
-            }),
-            getAPI(7, 1).then(res => {
-                setMMLand(res.data.list[0]);
-                document.querySelector('.loading')?.classList.toggle('loading');
-            }),
-            getAPI(46, 1).then(res => {
-                setBigGreen(res.data.list[0]);
-                document.querySelector('.loading')?.classList.toggle('loading');
-            }),
-        ])
-    )
+    const getData = async () => {
+
+        axios.get("api/raca/market/price").then(res => {
+            let data = {}
+            res.data.map(item => {
+                data = {
+                    ...data,
+                    ...item
+                }
+            })
+            setPriceMarketList(data)
+        })
+        axios.get(`/api/raca/market/stats/17`).then(res => setEggStatsList(res.data))
+        axios.get(`/api/raca/market/stats/${selectStats}`).then(res => setSelectedStatsList(res.data))
+    }
     useEffect(() => {
+
         setTokenPrice(raca)
     }, [raca])
     useEffect(() => {
@@ -176,36 +178,81 @@ const NFTs = () => {
         }, 20000)
 
         return () => {
-            setListMetamon([])
-            setListDiamond([])
-            setListEgg([])
-            setListPotion([])
-            setListStats([])
-            setKissUpLand({})
+            setEggStatsList([])
             setTokenPrice(0)
             clearInterval(rerenderData);
         }
     }, []);
     useEffect(() => {
-        getStats(selectStats, 10).then(res => setSelectedStatsList(res.data.list));
+
+        axios.get(`/api/raca/market/stats/${selectStats}`).then(res => setSelectedStatsList(res.data))
+        return () => {
+            setSelectedStatsList([])
+        }
+    }, [selectStats])
+
+    useEffect(() => {
+        const getChild = refSelect.current.childNodes[0]
+
+        if (getChild?.childNodes[1]) {
+            getChild?.removeChild(getChild?.childNodes[1])
+        }
+        getSellIngameList(getFormData(selectTypeIngame)).then(res => {
+            if (res?.data) {
+                const data = res.data.data;
+                setSellIngameList(data.shopOrderList)
+            }
+
+        }).catch(err => console.log(err));
         const rerenderStats = setInterval(() => {
-            getStats(selectStats, 10).then(res => setSelectedStatsList(res.data.list));
+            getSellIngameList(getFormData(selectTypeIngame)).then(res => {
+                if (res?.data?.data) {
+                    const data = res.data.data;
+                    setSellIngameList(data.shopOrderList)
+                }
+            });
         }, 60000);
         return () => {
             clearInterval(rerenderStats)
-            setSelectedStatsList()
+            setSellIngameList([])
         }
-    }, [selectStats])
+
+    }, [selectTypeIngame])
     return (
         <Box>
-            <Box sx={{ display: 'flex', flexDirection: 'row' }}>
+            <Box sx={{ display: 'flex', flexDirection: 'row', justifyContent: 'center' }}>
                 <div className="statistical">
-                    <div className="priceToken">
-                        <p className='tokenPrice'>RACA: {raca}</p>
-                        <p className='tokenPrice'>ELMON: {elmon}</p>
-                        <p className='tokenPrice'>ELCOIN: {elcoin}</p>
-                        <p className='tokenPrice'>BTC: {numberWithCommas(btc)}</p>
-                    </div>
+                    <Table className="priceToken" sx={{ color: '#fff' }}>
+                        <TableHead>
+                            <TableRow>
+                                <TableCell colSpan={4}>Token Price</TableCell>
+                            </TableRow>
+                        </TableHead>
+                        <TableBody>
+                            <TableRow>
+                                <TableCell className='tokenPrice'>RACA</TableCell>
+                                <TableCell className='tokenPrice'>ELMON</TableCell>
+                                <TableCell className='tokenPrice'>ELCOIN</TableCell>
+                                <TableCell className='tokenPrice'>BTC </TableCell>
+                            </TableRow>
+                            <TableRow>
+                                <TableCell>
+                                    {raca}
+                                </TableCell>
+                                <TableCell>
+                                    {elmon}
+                                </TableCell>
+                                <TableCell>
+                                    {elcoin}
+                                </TableCell>
+                                <TableCell>
+                                    {numberWithCommas(btc)}
+                                </TableCell>
+                            </TableRow>
+
+                        </TableBody>
+
+                    </Table>
                     <SwapRacaToUSD />
                     <p id='timeUpdated'>{timeUpdated}</p>
                     <div className='pricetable'>
@@ -215,34 +262,52 @@ const NFTs = () => {
                                     <TableRow>
                                         <TableCell align="center">#</TableCell>
                                         <TableCell align="center">
-                                            <img width='50px' height='50px' src='/marketplaceraca/metamon.png' alt='Metamon' />
+                                            <img width='50px' height='50px' src='/marketplaceraca/raca/metamon.png' alt='Metamon' />
                                         </TableCell>
                                         <TableCell align="center">
-                                            <img width='50px' height='50px' src='/marketplaceraca/MetamonEgg.png' alt='Egg' />
+                                            <img width='50px' height='50px' src='/marketplaceraca/raca/MetamonEgg.png' alt='Egg' />
                                         </TableCell>
                                         <TableCell align="center">
-                                            <img width='50px' height='50px' src='/marketplaceraca/DiamondYellow.png' alt='DiamondYellow' />
+                                            <img width='50px' height='50px' src='/marketplaceraca/raca/DiamondYellow.png' alt='DiamondYellow' />
                                         </TableCell>
                                         <TableCell align="center">
-                                            <img style={{ objectFit: 'contain' }} width='50px' height='50px' src='/marketplaceraca/potion.png' alt='Potion' />
+                                            <img style={{ objectFit: 'contain' }} width='50px' height='50px' src='/marketplaceraca/raca/potion.png' alt='Potion' />
                                         </TableCell>
                                         <TableCell align="center">
-                                            <img style={{ objectFit: 'contain' }} width='50px' height='50px' src='/marketplaceraca/valhalla.png' alt='Potion' />
+                                            <FormControl className='select-ingame'>
+                                                <Select
+                                                    size='small'
+                                                    labelId="select-ingame"
+                                                    id="select-ingame"
+                                                    value={selectTypeIngame}
+                                                    onChange={handleChangeSelectSellIngame}
+                                                    sx={{ color: '#fff', padding: 0 }}
+                                                    className='select-stats'
+                                                    ref={refSelect}>
+                                                    {selectIngameList && selectIngameList.map((item, index) => (
+                                                        <MenuItem key={item.type} value={item.type}>
+                                                            <img style={{ objectFit: 'contain' }} width='50px' height='50px' src={`/marketplaceraca/raca/${item.img}`} alt={item.name} />
+                                                            {item.name}
+                                                        </MenuItem>
+                                                    ))}
+                                                </Select>
+                                            </FormControl>
+                                            {/* <img style={{ objectFit: 'contain' }} width='50px' height='50px' src='/marketplaceraca/valhalla.png' alt='valhalla' /> */}
                                         </TableCell>
                                     </TableRow>
                                 </TableHead>
                                 <TableBody>
-                                    {listEgg && listMetamon && listDiamond && listPotion && listEgg.map((child, index) => {
-                                        return (
-                                            <TableRow key={index + 1}>
-                                                <TableCell align="center" component="th" scope="row">{index + 1}</TableCell>
-                                                <TableCell align="center">{millify(Math.floor(listMetamon[index]?.fixed_price))} (~{(tokenPrice * listMetamon[index]?.fixed_price).toFixed(2)})</TableCell>
-                                                <TableCell align="center">{numberWithCommas(Math.floor(listEgg[index]?.fixed_price))} (~{(tokenPrice * listEgg[index]?.fixed_price).toFixed(2)})</TableCell>
-                                                <TableCell align="center">{numberWithCommas(Math.floor(listDiamond[index]?.fixed_price))} (~{(tokenPrice * listDiamond[index]?.fixed_price).toFixed(2)})</TableCell>
-                                                <TableCell align="center">{numberWithCommas(Math.floor(listPotion[index]?.fixed_price))} (~{(tokenPrice * listPotion[index]?.fixed_price).toFixed(2)})</TableCell>
-                                                <TableCell align="center">{numberWithCommas(Math.floor(sellListValhalla[index]?.amount))} (~{(tokenPrice * sellListValhalla[index]?.amount).toFixed(2)})</TableCell>
-                                            </TableRow>)
-                                    })}
+                                    {priceMarketList.length !== 0 && [...Array(5).keys()].map((_, index) => (
+                                        <TableRow key={index + 1}>
+                                            <TableCell align="center" sx={{ borderLeft: '1px solid' }}>{index + 1}</TableCell>
+                                            <TableCell align="center">{millify(Math.floor(priceMarketList["Metamon"][index]?.fixed_price))} (~{(tokenPrice * priceMarketList["Metamon"][index]?.fixed_price).toFixed(2)})</TableCell>
+                                            <TableCell align="center">{numberWithCommas(Math.floor(priceMarketList["Metamon Egg"][index]?.fixed_price))} (~{(tokenPrice * priceMarketList["Metamon Egg"][index]?.fixed_price).toFixed(2)})</TableCell>
+                                            <TableCell align="center">{numberWithCommas(Math.floor(priceMarketList["Yellow Diamond"][index]?.fixed_price))} (~{(tokenPrice * priceMarketList["Yellow Diamond"][index]?.fixed_price).toFixed(2)})</TableCell>
+                                            <TableCell align="center">{numberWithCommas(Math.floor(priceMarketList["Potion"][index]?.fixed_price))} (~{(tokenPrice * priceMarketList["Potion"][index]?.fixed_price).toFixed(2)})</TableCell>
+                                            <TableCell align="center">{sellIngameList.length !== 0 ? `${numberWithCommas(Math.floor(sellIngameList[index]?.amount))} (~${(tokenPrice * sellIngameList[index]?.amount).toFixed(2)})` : 0}</TableCell>
+                                        </TableRow>
+                                    )
+                                    )}
 
                                 </TableBody>
                             </Table>
@@ -274,7 +339,7 @@ const NFTs = () => {
                         </Box>
                         <Box sx={{ display: 'flex', gap: "2%" }}>
                             <Box className='stats'>
-                                <img width='50px' height='50px' className='symbols' src='/marketplaceraca/MetamonEgg.png' alt='Egg' />
+                                <img width='50px' height='50px' className='symbols' src='/marketplaceraca/raca/MetamonEgg.png' alt='Egg' />
                                 <TableContainer className='table-scroll' component={Paper}>
                                     <Table className='tablePrice' aria-label="simple table">
                                         <TableHead>
@@ -292,10 +357,10 @@ const NFTs = () => {
                                             </TableRow>
                                         </TableHead>
                                         <TableBody>
-                                            {listStats && listStats.map((item, index) => {
+                                            {eggStatsList?.length !== 0 && eggStatsList.map((item, index) => {
                                                 return (
                                                     <TableRow key={index + 1}>
-                                                        <TableCell align="center" component='th' scope="row">{index + 1}</TableCell>
+                                                        <TableCell align="center" sx={{ borderLeft: "1px solid" }}>{index + 1}</TableCell>
                                                         <TableCell style={{ paddingLeft: '5px' }} align="center">{numberWithCommas(Math.floor(item?.fixed_price / item.count))}</TableCell>
                                                         <TableCell align="center">{numberWithCommas(item.count)}</TableCell>
                                                         <TableCell align="center">{ConvertDDMM(new Date(item.timestamp * 1000))}</TableCell>
@@ -307,7 +372,7 @@ const NFTs = () => {
                                 </TableContainer>
                             </Box>
                             <Box className='stats'>
-                                <img width='50px' height='50px' style={{ objectFit: 'contain' }} className='symbols' src={`/marketplaceraca/${selectStatsList.filter(item => item.id === selectStats)[0].img}`} alt={selectStatsList.filter(item => item.id === selectStats)[0].name} />
+                                <img width='50px' height='50px' style={{ objectFit: 'contain' }} className='symbols' src={`/marketplaceraca/raca/${selectStatsList.filter(item => item.id === selectStats)[0].img}`} alt={selectStatsList.filter(item => item.id === selectStats)[0].name} />
                                 <TableContainer className='table-scroll' component={Paper}>
                                     <Table className='tablePrice' aria-label="simple table">
                                         <TableHead>
@@ -325,10 +390,10 @@ const NFTs = () => {
                                             </TableRow>
                                         </TableHead>
                                         <TableBody>
-                                            {selectedStatsList && selectedStatsList.map((item, index) => {
+                                            {selectedStatsList?.length !== 0 && selectedStatsList.map((item, index) => {
                                                 return (
                                                     <TableRow key={index + 1}>
-                                                        <TableCell align="center" component="th" scope="row">{index + 1}</TableCell>
+                                                        <TableCell align="center" sx={{ borderLeft: "1px solid" }}>{index + 1}</TableCell>
                                                         <TableCell align="center" style={{ paddingLeft: '1px' }}>{millify(Math.floor(item?.fixed_price / item.count))}</TableCell>
                                                         {Number(selectStats) === 13 ? (
                                                             <TableCell className="info-metamon-cell" padding='none'>
@@ -354,31 +419,25 @@ const NFTs = () => {
 
 
                 </div>
-                <div id="xike" style={{ transform: 'translateY(10%)' }}>
-                    <p>Xìke Captain</p>
-                    <img alt="Xike" src="/marketplaceraca/xike.png" />
-                </div>
+
             </Box>
-            <Box className="cards">
-                {MetamonR &&
-                    <Box className="card loading">
-                        <Card nft={MetamonR} />
-                    </Box>}
-
-                {BigGreen &&
-                    <Box className="card loading">
-                        <Card nft={BigGreen} />
-                    </Box>}
-
-                {MMLand &&
-                    <Box className="card loading">
-                        <Card nft={MMLand} />
-                    </Box>}
-
-                {kissUpLand &&
-                    <Box className="card loading"><Card nft={kissUpLand} />
-                    </Box>}
-            </Box>
+            {priceMarketList.length !== 0 && (
+                <Box className="cards">
+                    <Box className="card ">
+                        <Card nft={priceMarketList["MetamonR"][0]} />
+                    </Box>
+                    <Box className="card ">
+                        <Card nft={priceMarketList["Big Green"][0]} />
+                    </Box>
+                    <Box className="card ">
+                        <Card nft={priceMarketList["Musk USM Land"][0]} />
+                    </Box>
+                    <Box className="card ">
+                        <Card nft={priceMarketList["Kiss-up State Land"][0]} />
+                    </Box>
+                </Box>
+            )}
+            <StatsChart />
         </Box>
 
     );

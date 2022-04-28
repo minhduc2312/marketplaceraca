@@ -5,7 +5,6 @@ const Loading = (props) => {
     return (
         <Box sx={{ mt: 2, justifyContent: 'center', display: 'flex' }}>
             <CircularProgress color="primary" />
-
         </Box>
     )
 }

@@ -1,3 +1,4 @@
+import { memo } from "react";
 import { useSelector } from "react-redux";
 
 function numberWithCommas(x) {
@@ -5,16 +6,15 @@ function numberWithCommas(x) {
 }
 
 const Card = (props) => {
-
-    const { name = "undefined", id = "#0000", image_url = '', fixed_price = '0000' } = props.nft;
+    const { name = "undefined", token_id = "#0000", image_url = '', fixed_price = '0000' } = props.nft;
     const { raca } = useSelector(state => state.price)
     return (
         <div className='nft'>
             <div className="imgBox">
-                <img className='image-nft' alt={name} src={image_url || "/marketplaceraca/nft.png"} />
+                <img className='image-nft' alt={name} src={image_url || "/marketplaceraca/raca/nft.png"} />
             </div>
             <div className="textBox">
-                <p className='name-nft'>{name} #{id}</p>
+                <p className='name-nft'>{name} #{token_id}</p>
                 <div className='separate'></div>
                 <div className='price'>
                     <p style={{
@@ -32,4 +32,4 @@ const Card = (props) => {
         </div>
     )
 }
-export default Card;
+export default memo(Card);

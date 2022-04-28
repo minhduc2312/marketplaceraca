@@ -20,16 +20,29 @@
 .css-1xspix3-MuiContainer-root {
   margin-left: 0px !important;
 }
+
 .metamon {
   display: flex;
   justify-content: center;
   width: 100% !important;
+  box-shadow: none !important;
 }
 .MuiTableCell-root {
   border-bottom: none;
 }
 .metamon .tablePrice {
   width: 60% !important;
+}
+#min-score-label,
+#min-score,
+#level-label,
+#level,
+.MuiSelect-iconOutlined {
+  color: #fff !important;
+}
+.Mui-selected .tab-info p{
+  font-size: 17px;
+  font-weight: 700;
 }
 
 @media screen and (max-width: 880px) {
@@ -42,6 +55,7 @@
   }
   .metamon {
     width: 100%;
+    margin-bottom: 100px;
   }
   .css-1h61cah-MuiContainer-root {
     padding-left: 10px !important;

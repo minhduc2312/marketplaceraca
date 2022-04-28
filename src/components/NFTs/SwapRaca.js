@@ -1,3 +1,4 @@
+import { Box, Input, TextField } from "@mui/material";
 import { useEffect, useState } from "react"
 import { useSelector } from "react-redux";
 
@@ -14,11 +15,11 @@ const SwapRacaToUSD = () => {
         setUsdPrice(() => inputRaca * raca);
     }, [inputRaca, raca])
     return (
-        <div id='swap-raca'>
-            <input id="RACA" type="number" value={inputRaca} onChange={handleChange} />
+        <Box id='swap-raca'>
+            <TextField sx={{ height: '50px' }} id="RACA" type="number" variant="outlined" value={inputRaca} onChange={handleChange} />
             <span> ~ </span>
-            <span id="USD">{usdPrice} USD</span>
-        </div>
+            <span id="USD">{usdPrice.toFixed(4)} USD</span>
+        </Box>
     )
 }
 export default SwapRacaToUSD;

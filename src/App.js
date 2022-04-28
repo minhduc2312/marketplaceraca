@@ -5,6 +5,11 @@ import { updatePriceAuto } from './app/actions';
 import HeaderTabs from './components/Tabs';
 import axios from "axios"
 import { AppProvider } from './context/AppContext';
+import { BrowserRouter as Router } from 'react-router-dom';
+
+export const log = (info) => {
+  console.log(info);
+}
 
 function App() {
 
@@ -34,11 +39,14 @@ function App() {
     }
   }, [])
   return (
-    <div className="App">
-      <AppProvider>
-        <HeaderTabs />
-      </AppProvider>
-    </div>
+    <Router>
+      <div className="App">
+        <AppProvider>
+          <HeaderTabs />
+        </AppProvider>
+      </div>
+    </Router>
+
 
   );
 }
