@@ -1,7 +1,8 @@
 const { MongoClient, ServerApiVersion } = require('mongodb');
+require("dotenv").config()
 
-const connection = "mongodb+srv://minhduc231298:Crushonyou231298@portfolio-mind.pntix.mongodb.net/portfolio-mind?retryWrites=true&w=majority";
-const client = new MongoClient(connection, { useNewUrlParser: true, useUnifiedTopology: true, serverApi: ServerApiVersion.v1 });
+
+const client = new MongoClient(process.env.MONGODB_CONNECTION_STRING, { useNewUrlParser: true, useUnifiedTopology: true, serverApi: ServerApiVersion.v1 });
 client.connect(err => {
     const collection = client.db("test").collection("devices");
     // perform actions on the collection object

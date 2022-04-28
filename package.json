@@ -2,14 +2,15 @@
   "name": "backend",
   "version": "1.0.0",
   "description": "",
-  "main": "server.js",
+  "main": "index.js",
   "proxy": "http://localhost:5000/",
   "scripts": {
     "server": "nodemon ./backend/server.js ",
     "client": "npm run start --prefix frontend",
+    "build": "npm run build --prefix frontend",
     "dev": "concurrently --kill-others-on-fail \"npm run server\" \"npm run client\" ",
-    "heroku-postbuild": "NPM_CONFIG_PRODUCTION=false npm install npm && run build"
-
+    "heroku-postbuild": "npm run install-client && npm run build",
+    "install-client": "npm install --prefix frontend"
   },
   "keywords": [],
   "author": "",
