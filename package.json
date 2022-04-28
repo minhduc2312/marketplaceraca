@@ -7,11 +7,8 @@
   "scripts": {
     "server": "nodemon ./backend/server.js ",
     "client": "npm run start --prefix frontend",
-    "build": "npm run build --prefix frontend",
-    "start": "concurrently --kill-others-on-fail \"npm run server\" \"npm run client\" ",
-    "heroku-postbuild": "npm run install-client && npm run build",
-    "install-client": "npm install --prefix frontend"
-
+    "start": "node server.js --prefix backend",
+    "heroku-postbuild": "cd frontend && npm install --only=dev && cd backend && npm install --only=dev && npm install && npm run build"
   },
   "keywords": [],
   "author": "",
