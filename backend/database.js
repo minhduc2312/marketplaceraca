@@ -1,6 +1,5 @@
 const { MongoClient, ServerApiVersion } = require('mongodb');
-require("dotenv").config()
-
+require("dotenv").config();
 
 const client = new MongoClient(process.env.MONGODB_CONNECTION_STRING, { useNewUrlParser: true, useUnifiedTopology: true, serverApi: ServerApiVersion.v1 });
 client.connect(err => {
