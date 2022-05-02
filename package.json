@@ -5,7 +5,7 @@
   "main": "index.js",
   "proxy": "http://localhost:5000/",
   "scripts": {
-    "build": "cd frontend && npm run build",
+    "build": "npm run build --prefix frontend",
     "install-client": "cd frontend && npm install",
     "heroku-postbuild": "npm run install-client && npm run build",
     "server": "cd backend && nodemon server.js ",
