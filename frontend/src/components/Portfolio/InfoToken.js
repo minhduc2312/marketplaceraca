@@ -110,7 +110,7 @@ const InfoToken = ({ token, setLoading }) => {
     return (
         <Box sx={{ display: 'flex', alignItems: 'center', mt: 2 }}>
             <Box sx={{ display: 'flex', width: '80%', gap: '5px', alignItems: 'center' }}>
-                <img alt='' width={'25px'} src={token.thumb ? token.large : '/marketplaceraca/help_outline.svg'} />
+                <img alt='' width={'25px'} src={token.thumb ? token.large : '/help_outline.svg'} />
                 <Typography variant="h6">{token.symbol}</Typography>
                 <Typography variant="h7">{token.name}</Typography>
             </Box>

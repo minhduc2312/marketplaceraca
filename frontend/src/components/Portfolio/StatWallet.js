@@ -256,7 +256,7 @@ const StatWallet = () => {
                 }) : (listBalance[item.tokenName]?.balance)}</TableCell>
                 <TableCell sx={{ padding: 0, width: '20px' }} align='center'>
                   {index !== 0 && (
-                    <Button sx={{ minWidth: '20px', padding: '0px' }} data-token={item.address} onClick={(e) => deleteToken(e)}><img src='/marketplaceraca/delete_outline.svg' alt='' /></Button>
+                    <Button sx={{ minWidth: '20px', padding: '0px' }} data-token={item.address} onClick={(e) => deleteToken(e)}><img src='/delete_outline.svg' alt='' /></Button>
                   )}
                 </TableCell>
               </TableRow>

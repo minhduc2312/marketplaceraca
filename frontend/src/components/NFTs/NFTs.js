@@ -262,16 +262,16 @@ const NFTs = () => {
                                     <TableRow>
                                         <TableCell align="center">#</TableCell>
                                         <TableCell align="center">
-                                            <img width='50px' height='50px' src='/marketplaceraca/raca/metamon.png' alt='Metamon' />
+                                            <img width='50px' height='50px' src='/raca/metamon.png' alt='Metamon' />
                                         </TableCell>
                                         <TableCell align="center">
-                                            <img width='50px' height='50px' src='/marketplaceraca/raca/MetamonEgg.png' alt='Egg' />
+                                            <img width='50px' height='50px' src='/raca/MetamonEgg.png' alt='Egg' />
                                         </TableCell>
                                         <TableCell align="center">
-                                            <img width='50px' height='50px' src='/marketplaceraca/raca/DiamondYellow.png' alt='DiamondYellow' />
+                                            <img width='50px' height='50px' src='/raca/DiamondYellow.png' alt='DiamondYellow' />
                                         </TableCell>
                                         <TableCell align="center">
-                                            <img style={{ objectFit: 'contain' }} width='50px' height='50px' src='/marketplaceraca/raca/potion.png' alt='Potion' />
+                                            <img style={{ objectFit: 'contain' }} width='50px' height='50px' src='/raca/potion.png' alt='Potion' />
                                         </TableCell>
                                         <TableCell align="center">
                                             <FormControl className='select-ingame'>
@@ -286,13 +286,13 @@ const NFTs = () => {
                                                     ref={refSelect}>
                                                     {selectIngameList && selectIngameList.map((item, index) => (
                                                         <MenuItem key={item.type} value={item.type}>
-                                                            <img style={{ objectFit: 'contain' }} width='50px' height='50px' src={`/marketplaceraca/raca/${item.img}`} alt={item.name} />
+                                                            <img style={{ objectFit: 'contain' }} width='50px' height='50px' src={`/raca/${item.img}`} alt={item.name} />
                                                             {item.name}
                                                         </MenuItem>
                                                     ))}
                                                 </Select>
                                             </FormControl>
-                                            {/* <img style={{ objectFit: 'contain' }} width='50px' height='50px' src='/marketplaceraca/valhalla.png' alt='valhalla' /> */}
+                                            {/* <img style={{ objectFit: 'contain' }} width='50px' height='50px' src='/valhalla.png' alt='valhalla' /> */}
                                         </TableCell>
                                     </TableRow>
                                 </TableHead>
@@ -339,7 +339,7 @@ const NFTs = () => {
                         </Box>
                         <Box sx={{ display: 'flex', gap: "2%" }}>
                             <Box className='stats'>
-                                <img width='50px' height='50px' className='symbols' src='/marketplaceraca/raca/MetamonEgg.png' alt='Egg' />
+                                <img width='50px' height='50px' className='symbols' src='/raca/MetamonEgg.png' alt='Egg' />
                                 <TableContainer className='table-scroll' component={Paper}>
                                     <Table className='tablePrice' aria-label="simple table">
                                         <TableHead>
@@ -372,7 +372,7 @@ const NFTs = () => {
                                 </TableContainer>
                             </Box>
                             <Box className='stats'>
-                                <img width='50px' height='50px' style={{ objectFit: 'contain' }} className='symbols' src={`/marketplaceraca/raca/${selectStatsList.filter(item => item.id === selectStats)[0].img}`} alt={selectStatsList.filter(item => item.id === selectStats)[0].name} />
+                                <img width='50px' height='50px' style={{ objectFit: 'contain' }} className='symbols' src={`/raca/${selectStatsList.filter(item => item.id === selectStats)[0].img}`} alt={selectStatsList.filter(item => item.id === selectStats)[0].name} />
                                 <TableContainer className='table-scroll' component={Paper}>
                                     <Table className='tablePrice' aria-label="simple table">
                                         <TableHead>

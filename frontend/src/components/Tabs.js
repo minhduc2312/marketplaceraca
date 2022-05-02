@@ -81,10 +81,9 @@ const HeaderTabs = () => {
     return (
         <Box sx={{ width: '100%' }}>
             <ImageAnimation />
-            <Button className='icon-muted' onClick={onClickChangeSound}><img width={35} src={`/marketplaceraca/${isMute ? 'mute.png' : 'sound.png'}`} /></Button>
+            <Button className='icon-muted' onClick={onClickChangeSound}><img width={35} src={`/${isMute ? 'mute.png' : 'sound.png'}`} /></Button>
             <ReactAudioPlayer
-                src="/marketplaceraca/metamon-sound.mp3"
-                
+                src="/metamon-sound.mp3"
                 controls
                 loop
                 ref={audioRef}
@@ -92,10 +91,10 @@ const HeaderTabs = () => {
             />
             <Box id="tabs" sx={{ display: 'flex', justifyContent: 'center' }}>
                 <Tabs id="tabs-bar" value={value} sx={{ color: '#ffffff', width: '600px' }} onChange={handleChange} centered>
-                    <Tab className="tab" label={<TabInfo label='RACA' alt='raca' width='20px' src='/marketplaceraca/favicon.svg' />} {...a11yProps(0)} />
-                    <Tab className="tab" label={<TabInfo label='METAMON' alt='metamon' width='40px' src='/marketplaceraca/raca/metamon-SR.png' />} {...a11yProps(1)} />
-                    <Tab className="tab" label={<TabInfo label='ElEMON' alt='elemon' width='30px' src='/marketplaceraca/elemon-logo.png' />} {...a11yProps(2)} />
-                    <Tab className="tab" label={<TabInfo label='STATISTICS' alt='sales' width='30px' src='/marketplaceraca/metamask.png' />} {...a11yProps(3)} />
+                    <Tab className="tab" label={<TabInfo label='RACA' alt='raca' width='20px' src='/favicon.svg' />} {...a11yProps(0)} />
+                    <Tab className="tab" label={<TabInfo label='METAMON' alt='metamon' width='40px' src='/raca/metamon-SR.png' />} {...a11yProps(1)} />
+                    <Tab className="tab" label={<TabInfo label='ElEMON' alt='elemon' width='30px' src='/elemon-logo.png' />} {...a11yProps(2)} />
+                    <Tab className="tab" label={<TabInfo label='STATISTICS' alt='sales' width='30px' src='/metamask.png' />} {...a11yProps(3)} />
                 </Tabs>
             </Box>
             {

@@ -11,7 +11,7 @@ const Card = (props) => {
     return (
         <div className='nft'>
             <div className="imgBox">
-                <img className='image-nft' alt={name} src={image_url || "/marketplaceraca/raca/nft.png"} />
+                <img className='image-nft' alt={name} src={image_url || "/raca/nft.png"} />
             </div>
             <div className="textBox">
                 <p className='name-nft'>{name} #{token_id}</p>
