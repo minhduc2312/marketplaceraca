@@ -1,11 +1,10 @@
 {
   "name": "backend",
   "version": "1.0.0",
-  "description": "",
   "main": "index.js",
   "proxy": "http://localhost:5000/",
   "scripts": {
-    "build": "npm run build --prefix ./frontend",
+    "build": "npm run build --prefix frontend",
     "install-client": "cd frontend && npm install",
     "heroku-postbuild": "npm run install-client && npm run build",
     "server": "cd backend && nodemon server.js ",
@@ -19,6 +18,16 @@
     "nodemon": "^2.0.15"
   },
   "dependencies": {
-    "concurrently": "^7.1.0"
-  }
+    "concurrently": "^7.1.0",
+    "heroku": "^7.60.2"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/minhduc2312/trackermarketplace.git"
+  },
+  "bugs": {
+    "url": "https://github.com/minhduc2312/trackermarketplace/issues"
+  },
+  "homepage": "https://github.com/minhduc2312/trackermarketplace#readme",
+  "description": ""
 }
