@@ -38,13 +38,11 @@ function App() {
     }
   }, [])
   return (
-    <Router>
       <div className="App">
         <AppProvider>
           <HeaderTabs />
         </AppProvider>
       </div>
-    </Router>
 
 
   );
