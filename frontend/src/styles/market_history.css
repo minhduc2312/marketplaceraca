@@ -1,0 +1,42 @@
+table thead tr th:first-child {
+  text-align: left;
+}
+table thead tr th {
+  font-weight: bold !important;
+}
+.multiRow {
+  display: flex;
+  flex-direction: row;
+}
+.multiRow p {
+  width: 50%;
+  margin: 0px;
+  text-align: center;
+}
+#loading {
+  text-align: center;
+  transform: translateX(50%);
+}
+@media screen and (min-width: 880px) {
+  .sales {
+    display: flex;
+    justify-content: center;
+  }
+  #sales-section {
+    width: 650px;
+  }
+}
+@media screen and (max-width: 880px) {
+  #sales-section table tbody th:first-child,
+  #sales-section table thead th:first-child {
+    position: sticky;
+    left: 0;
+    background-color: white;
+    padding-right: 10px;
+    width: 50px;
+  }
+  #loading {
+    text-align: center;
+    transform: translateX(10%);
+  }
+}
