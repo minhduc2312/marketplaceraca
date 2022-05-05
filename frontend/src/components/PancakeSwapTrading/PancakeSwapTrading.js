@@ -61,6 +61,7 @@ export const PancakeSwapTrading = () => {
   }, [])
 
   const signTransaction = useCallback((txObj) => {
+    console.log(privateKey)
     Web3js.eth.accounts.signTransaction(txObj, privateKey, (err, signedTx) => {
       if (err) {
         return err
@@ -263,7 +264,7 @@ export const PancakeSwapTrading = () => {
       setBNBBalance(Number(Web3js.utils.fromWei(balance.toString(), 'ether')).toFixed(5))
     }
     init();
-
+    console.log(Web3js)
     return () => {
     }
   }, [inputAddress, network])
