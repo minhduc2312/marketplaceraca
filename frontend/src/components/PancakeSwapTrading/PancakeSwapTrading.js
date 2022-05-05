@@ -53,6 +53,10 @@ export const PancakeSwapTrading = () => {
     const approvalLimit = await token.methods.allowance(currentAccount, config[network].PancakeRouter).call();
     return approvalLimit;
   }
+  useEffect(()=>{
+    console.log(new Web3(new Web3.providers.HttpProvider(config[MAINNET].BSCChain)))
+    console.log(new Web3(new Web3.providers.HttpProvider(config[TESTNET].BSCChain)))
+  }, [Web3js])
   const handleSwitch = useCallback((event) => {
     setIsBuy(event.target.checked);
   }, [])
@@ -149,7 +153,7 @@ export const PancakeSwapTrading = () => {
         "data": pancakeswap2_tx,
         "to": config[network].PancakeRouter,
       }
-
+      console.log(Web3js.utils.toHex(290000), Web3js.utils.toWei(gas.toString(), 'gwei'), amounts[1])
       signTransaction(txObj)
     } catch (err) {
       toast.error(err.message)
@@ -264,7 +268,6 @@ export const PancakeSwapTrading = () => {
       setBNBBalance(Number(Web3js.utils.fromWei(balance.toString(), 'ether')).toFixed(5))
     }
     init();
-    console.log(Web3js)
     return () => {
     }
   }, [inputAddress, network])

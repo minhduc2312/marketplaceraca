@@ -41,7 +41,6 @@ const HeaderTabs = () => {
     const handleChangeSound = () => {
         const audioEl = audioRef?.current?.audioEl.current;
         // audioEl.paused = !isMute
-        console.log(audioEl.paused)
         if (audioEl.paused) {
             audioEl.play()
         } else {
