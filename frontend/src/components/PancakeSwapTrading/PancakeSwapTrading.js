@@ -108,7 +108,7 @@ export const PancakeSwapTrading = () => {
         })
       }
     })
-  }, [])
+  }, [privateKey])
 
   const getApprove = useCallback(async (tokenAddress, currentAccount, amount) => {
     const token = new Web3js.eth.Contract(abi, tokenAddress, { from: currentAccount })
