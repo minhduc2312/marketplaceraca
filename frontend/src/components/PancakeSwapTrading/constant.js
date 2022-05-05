@@ -3,7 +3,6 @@ export const PancakeRouterTestnet = '0xD99D1c33F9fC3444f8101754aBC46c52416550D1'
 export const WrappedBNBMainnet = '0xbb4CdB9CBd36B01bD1cBaEBF2De08d9173bc095c'
 export const WrappedBNBTestnet = '0xae13d989dac2f0debff460ac112a837c89baa7cd'
 export const addressBUSDTestnet = '0x78867BbEeF44f2326bF8DDd1941a4439382EF2A7'
-export const privateKey = '0ff801214827fc5c13c05ee23e150630a62fad798106561ac0e8b02789d9535a'
 export const BSCMainNet = 'https://bsc-dataseed.binance.org'
 export const BSCTestNet = 'https://data-seed-prebsc-1-s1.binance.org:8545/'
 

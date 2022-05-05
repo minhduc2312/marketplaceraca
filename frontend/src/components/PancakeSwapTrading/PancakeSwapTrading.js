@@ -27,15 +27,8 @@ const config = {
 }
 const TESTNET = 'testnet';
 const MAINNET = 'mainnet'
-const network = TESTNET
-const Web3js = new Web3(new Web3.providers.HttpProvider(config[network].BSCChain))
-const spend = Web3js.utils.toChecksumAddress(config[network].WrappedBNB);
 
-const getAllowance = async (tokenAddress, currentAccount) => {
-  const token = new Web3js.eth.Contract(abi, tokenAddress, { from: currentAccount })
-  const approvalLimit = await token.methods.allowance(currentAccount, config[network].PancakeRouter).call();
-  return approvalLimit;
-}
+
 const storage = window.localStorage.getItem('private') || ''
 export const PancakeSwapTrading = () => {
   const { currentAccount } = useContext(AppContext)
@@ -48,13 +41,25 @@ export const PancakeSwapTrading = () => {
   const [BNBAmount, setBNBAmount] = useState(0);
   const [gas, setGas] = useState(5);
   const [privateKey, setPrivateKey] = useState(storage);
+  const [switchNetWork, setSwitchNetWork] = useState(true)
 
-  const contract = useMemo(() => new Web3js.eth.Contract(config[network].ABIPancakeSwap, config[network].PancakeRouter, { from: currentAccount }));
+  const network = useMemo(() => switchNetWork ? MAINNET : TESTNET, [switchNetWork])
+  const Web3js = useMemo(() => new Web3(new Web3.providers.HttpProvider(config[network].BSCChain)), [network])
+  const spend = Web3js.utils.toChecksumAddress(config[network].WrappedBNB);
+  const contract = useMemo(() => new Web3js.eth.Contract(config[network].ABIPancakeSwap, config[network].PancakeRouter, { from: currentAccount }), [network]);
   const nonce = useMemo(async () => await Web3js.eth.getTransactionCount(currentAccount));
-
+  const getAllowance = async (tokenAddress, currentAccount) => {
+    const token = new Web3js.eth.Contract(abi, tokenAddress, { from: currentAccount })
+    const approvalLimit = await token.methods.allowance(currentAccount, config[network].PancakeRouter).call();
+    return approvalLimit;
+  }
   const handleSwitch = useCallback((event) => {
     setIsBuy(event.target.checked);
-  })
+  }, [])
+  const handleSwitchNetwork = useCallback((event) => {
+    setSwitchNetWork(prev => !prev)
+  }, [])
+
   const signTransaction = useCallback((txObj) => {
     Web3js.eth.accounts.signTransaction(txObj, privateKey, (err, signedTx) => {
       if (err) {
@@ -86,7 +91,7 @@ export const PancakeSwapTrading = () => {
                 pending: 'Transaction Pending',
                 success: {
                   render({ data }) {
-                    window.localStorage.setItem('private',privateKey)
+                    window.localStorage.setItem('private', privateKey)
                     return `Transaction Successful!!!`
                   },
                   onClick(data) {
@@ -102,7 +107,7 @@ export const PancakeSwapTrading = () => {
         })
       }
     })
-  })
+  }, [])
 
   const getApprove = useCallback(async (tokenAddress, currentAccount, amount) => {
     const token = new Web3js.eth.Contract(abi, tokenAddress, { from: currentAccount })
@@ -181,7 +186,7 @@ export const PancakeSwapTrading = () => {
 
 
   }
-  const handlePrivateKey =(e)=>{
+  const handlePrivateKey = (e) => {
     setPrivateKey(e.target.value);
   }
   const handleChangeInput = (e) => {
@@ -269,7 +274,7 @@ export const PancakeSwapTrading = () => {
       <Box gap={2} display='flex' justifyContent='center' flexDirection={'column'} maxWidth='600px' backgroundColor='#fff' borderRadius='10px' p={5}>
         <Typography fontSize={24} fontWeight={700} color={'#333'}>PancakeSwap Trading</Typography>
         <TextField value={privateKey} onChange={handlePrivateKey} color='info' variant="outlined" label='Private Key' />
-        <SwitchButtonCustom handleSwitch={handleSwitch} />
+        <SwitchButtonCustom handleSwitchBuy={handleSwitch} handleSwitchNetwork={handleSwitchNetwork} />
         <TextField value={inputAddress} onChange={handleChangeInput} color='info' variant="outlined" label='Input Address' />
         {inputAddress !== '' && !isValidAddress && (
           <Typography color='#ff000099'>Invalid Token Address</Typography>
