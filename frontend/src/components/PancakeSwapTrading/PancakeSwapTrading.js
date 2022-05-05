@@ -266,7 +266,7 @@ export const PancakeSwapTrading = () => {
 
     return () => {
     }
-  }, [inputAddress, amount, BNBBalance])
+  }, [inputAddress, network])
 
   return (
     <Box justifyContent='center' display='flex'>
