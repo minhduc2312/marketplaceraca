@@ -1,5 +1,6 @@
 import React, { useContext, useEffect, useState } from 'react';
-import { Button } from '@mui/material';
+import { Box, Button, Tab, Tabs } from '@mui/material';
+import { TabContext, TabList, TabPanel } from '@mui/lab';
 
 import MarketHistory from './MarketHistory';
 import Metamask from '../Metamask';
@@ -11,13 +12,15 @@ import firebaseConfig from '../../config';
 import { useDispatch } from 'react-redux';
 import { initApp } from '../../app/actions';
 import { getFirestore } from "firebase/firestore"
+import { PancakeSwapTrading } from '../PancakeSwapTrading/PancakeSwapTrading';
+
 const Portfolio = () => {
     const app = initializeApp(firebaseConfig);
     const db = getFirestore(app)
     const dispatch = useDispatch()
+    const [value, setValue] = useState('1');
     const { currentAccount } = useContext(AppContext);
-    const [isVisible, setIsVisible] = useState(true);
-    const transition = useTransition(isVisible, {
+    const transition = useTransition(value, {
         from: { x: -500, y: 10, opacity: 0 },
         enter: { x: 0, y: 0, opacity: 1, display: 'block' },
         leave: { x: 500, y: 10, opacity: 0, display: 'none' }
@@ -25,28 +28,64 @@ const Portfolio = () => {
     useEffect(() => {
         dispatch(initApp(db));
     }, [db])
-    const handleSwitch = () => {
-        setIsVisible(state => !state)
-    }
+
+
+    const handleChange = (event, newValue) => {
+        setValue(newValue);
+    };
     return (
-        <div className="portfolio">
+        <Box className="portfolio">
             <Metamask />
             {currentAccount && (
-                <React.StrictMode>
-                    <Button sx={{ height: '100%', color: '#fff', background: 'rgb(253 186 28 / 92%)', padding: '5px 10px',marginBottom:'10px' }} variant="contained" onClick={handleSwitch}>{isVisible ? "Stat Raca" : "Portfolio"}</Button>
-                    {transition((style, item) =>
-                        item ? <animated.div style={style}>
-                            <StatWallet />
-                        </animated.div> : <animated.div style={style}>
-                            <MarketHistory />
-                        </animated.div>
-                    )}
-                </React.StrictMode>
-            )}
+                <TabContext value={value}>
+                    <Box >
+                        <TabList
+                            onChange={handleChange}
+                            textColor="secondary"
+                            indicatorColor="secondary"
+                            sx={[{
+                                '& .MuiButtonBase-root': {
+                                    fontSize: 14,
+                                    fontWeight: 700,
+                                    color: '#fff'
+                                },
+                                '& .Mui-selected': {
+                                    fontSize: 16
+                                }
+                            }]}
 
-            {/* {currentAccount && <MarketHistory />}
-            {currentAccount && <StatWallet />} */}
-        </div>
+                            className='tabs-metamask'
+                            centered>
+                            <Tab color='#fff' value="1" label="Stat" />
+                            <Tab color='#fff' value="2" label="Marketplace" />
+                            <Tab color='#fff' value="3" label="Trading" />
+                        </TabList>
+                    </Box>
+                    {transition((style, item) => {
+                        switch (item) {
+                            case "1":
+                                return <animated.div style={style}>
+                                    <TabPanel value="1"><StatWallet /></TabPanel>
+                                </animated.div>
+                            case "2":
+                                return <animated.div style={style}>
+                                    <TabPanel value="2"><MarketHistory /></TabPanel>
+
+                                </animated.div>
+                            case "3":
+                                return <animated.div style={style}>
+                                    <TabPanel value="3"><PancakeSwapTrading /></TabPanel>
+
+                                </animated.div>
+                            default:
+                                return
+                        }
+                    })}
+                </TabContext>
+            )
+            }
+
+        </Box >
     );
 }
 

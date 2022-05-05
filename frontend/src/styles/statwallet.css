@@ -15,7 +15,6 @@
   max-height: 600px;
 }
 
-
 @media screen and (max-width: 880px) {
   #PortfolioWallet-section table thead th {
     padding: 5px;
@@ -43,7 +42,7 @@
   }
   #table_transactions thead tr th {
     padding: 10px 0px;
-}
+  }
   #modalUI {
     max-height: 450px;
   }
@@ -52,6 +51,23 @@
   }
   .sort-icon svg {
     margin: 0px;
+  }
+  .tabs-metamask .MuiTabs-flexContainer .MuiButtonBase-root {
+    width: calc(100% / 3);
+  }
+  .tabs-metamask .Mui-selected {
+    font-size: 14px !important;
+  }
+}
+@media screen and (max-width: 480px) {
+  .Toastify__toast-container {
+    right: 0 !important;
+    left:unset !important;
+    width: 80%! important;
+  }
+  .Toastify__toast {
+    border-radius: 10px !important;
+    margin-bottom: 10px !important
   }
 }
 @keyframes showModal {

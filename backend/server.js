@@ -2,7 +2,7 @@ const express = require('express');
 const bodyParser = require('body-parser');
 const raca = require('./routes/raca');
 const cors = require('cors');
-const database = require('./database')
+// const database = require('./database')
 
 
 const options = {
