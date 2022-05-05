@@ -44,19 +44,16 @@ export const PancakeSwapTrading = () => {
   const [switchNetWork, setSwitchNetWork] = useState(true)
 
   const network = useMemo(() => switchNetWork ? MAINNET : TESTNET, [switchNetWork])
-  const Web3js = useMemo(() => new Web3(new Web3.providers.HttpProvider(config[network].BSCChain)), [network])
+  const Web3js = useMemo(() => new Web3(new Web3.providers.HttpProvider(config[network].BSCChain)), [network, switchNetWork])
   const spend = Web3js.utils.toChecksumAddress(config[network].WrappedBNB);
-  const contract = useMemo(() => new Web3js.eth.Contract(config[network].ABIPancakeSwap, config[network].PancakeRouter, { from: currentAccount }), [network]);
-  const nonce = useMemo(async () => await Web3js.eth.getTransactionCount(currentAccount));
+  const contract = useMemo(() => new Web3js.eth.Contract(config[network].ABIPancakeSwap, config[network].PancakeRouter, { from: currentAccount }), [network, switchNetWork]);
+  const nonce = useMemo(async () => await Web3js.eth.getTransactionCount(currentAccount),[]);
   const getAllowance = async (tokenAddress, currentAccount) => {
     const token = new Web3js.eth.Contract(abi, tokenAddress, { from: currentAccount })
     const approvalLimit = await token.methods.allowance(currentAccount, config[network].PancakeRouter).call();
     return approvalLimit;
   }
-  useEffect(()=>{
-    console.log(new Web3(new Web3.providers.HttpProvider(config[MAINNET].BSCChain)))
-    console.log(new Web3(new Web3.providers.HttpProvider(config[TESTNET].BSCChain)))
-  }, [Web3js])
+
   const handleSwitch = useCallback((event) => {
     setIsBuy(event.target.checked);
   }, [])
@@ -65,7 +62,6 @@ export const PancakeSwapTrading = () => {
   }, [])
 
   const signTransaction = useCallback((txObj) => {
-    console.log(privateKey)
     Web3js.eth.accounts.signTransaction(txObj, privateKey, (err, signedTx) => {
       if (err) {
         return err
@@ -145,15 +141,16 @@ export const PancakeSwapTrading = () => {
       const amountsOutMin = amounts[0] * (100 - slippage) / 100
       const pancakeswap2_tx = await contract.methods.swapExactETHForTokens(Math.floor(amountsOutMin).toString(), [spend, tokenToBuy], currentAccount, Math.floor(Date.now() / 1000) + 60 * 20).encodeABI();
 
+      const lastBlock = await Web3js.eth.getBlock("latest");
+      const gasLimit = Math.floor(lastBlock.gasLimit / lastBlock.transactions.length);
       const txObj = {
-        "gasLimit": Web3js.utils.toHex(290000),
+        "gasLimit": gasLimit,
         "gasPrice": Web3js.utils.toWei(gas.toString(), 'gwei'),
         "value": amounts[1],
         "from": currentAccount,
         "data": pancakeswap2_tx,
         "to": config[network].PancakeRouter,
       }
-      console.log(Web3js.utils.toHex(290000), Web3js.utils.toWei(gas.toString(), 'gwei'), amounts[1])
       signTransaction(txObj)
     } catch (err) {
       toast.error(err.message)
@@ -175,7 +172,7 @@ export const PancakeSwapTrading = () => {
       const amountsOutMin = amounts[1] * (100 - slippage) / 100
       const pancakeswap2_tx = await contract.methods.swapExactTokensForETH(amountIn, Math.floor(amountsOutMin).toString(), [inputAddress, spend], currentAccount, Math.floor(Date.now() / 1000) + 60 * 20).encodeABI();
       const txObj = {
-        "gasLimit": Web3js.utils.toHex(500000),
+        "gasLimit": Web3js.utils.toHex(200000),
         "gasPrice": Web3js.utils.toWei(gas.toString(), 'gwei'),
         "value": '0x00',
         "from": currentAccount,
