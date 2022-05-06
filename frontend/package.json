@@ -3,7 +3,7 @@
   "name": "marketplaceraca",
   "version": "0.1.0",
   "private": true,
-  "proxy": "http://localhost:5000/",
+  "proxy": "http://localhost:3000/",
   "dependencies": {
     "@emotion/react": "^11.9.0",
     "@emotion/styled": "^11.6.0",

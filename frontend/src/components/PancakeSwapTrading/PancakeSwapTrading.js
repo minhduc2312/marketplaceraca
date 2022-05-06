@@ -141,14 +141,15 @@ export const PancakeSwapTrading = () => {
       const amountsOutMin = amounts[0] * (100 - slippage) / 100
       const pancakeswap2_tx = await contract.methods.swapExactETHForTokens(Math.floor(amountsOutMin).toString(), [spend, tokenToBuy], currentAccount, Math.floor(Date.now() / 1000) + 60 * 20).encodeABI();
 
+    
       const lastBlock = await Web3js.eth.getBlock("latest");
       const gasPrice = await Web3js.eth.getGasPrice();
       const gasLimit = Math.floor(lastBlock.gasLimit / lastBlock.transactions.length);
-      console.log(gasLimit,gasPrice)
+      console.log(Web3js.utils.toHex(amounts[1]))
       const txObj = {
-        "gasLimit": gasLimit,
-        "gasPrice": gasPrice,//Web3js.utils.toWei(gas.toString(), 'gwei'),
-        "value": amounts[1],
+        "gasLimit": Web3js.utils.toHex(gasLimit),
+        "gasPrice": Web3js.utils.toHex(gasPrice),//Web3js.utils.toWei(gas.toString(), 'gwei'),
+        "value": Web3js.utils.toHex(amounts[1]),
         "from": currentAccount,
         "data": pancakeswap2_tx,
         "to": config[network].PancakeRouter,

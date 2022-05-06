@@ -9,7 +9,7 @@
     "heroku-postbuild": "npm run install-client && npm run install-server && npm run build",
     "server": "cd backend && nodemon server.js ",
     "develop": "concurrently --kill-others-on-fail \"npm run server\" \"npm run start --prefix frontend\"",
-    "start": "concurrently --kill-others-on-fail \"npm run server\" \"npm run start --prefix frontend\""
+    "start": "concurrently --kill-others-on-fail \"npm run server\" \"npm start --prefix frontend\""
   },
   "keywords": [],
   "author": "",
