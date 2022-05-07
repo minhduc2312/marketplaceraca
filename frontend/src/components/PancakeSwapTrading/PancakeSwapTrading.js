@@ -9,7 +9,7 @@ import SwitchButtonCustom from './SwitchButtonCustom';
 import { ToastContainer, toast } from 'react-toastify';
 
 import 'react-toastify/dist/ReactToastify.css';
-
+import { factoryABI } from './FactoryABI';
 
 const config = {
   testnet: {
@@ -47,7 +47,7 @@ export const PancakeSwapTrading = () => {
   const Web3js = useMemo(() => new Web3(new Web3.providers.HttpProvider(config[network].BSCChain)), [network, switchNetWork])
   const spend = Web3js.utils.toChecksumAddress(config[network].WrappedBNB);
   const contract = useMemo(() => new Web3js.eth.Contract(config[network].ABIPancakeSwap, config[network].PancakeRouter, { from: currentAccount }), [network, switchNetWork]);
-  const nonce = useMemo(async () => await Web3js.eth.getTransactionCount(currentAccount),[]);
+  const nonce = useMemo(async () => await Web3js.eth.getTransactionCount(currentAccount), []);
   const getAllowance = async (tokenAddress, currentAccount) => {
     const token = new Web3js.eth.Contract(abi, tokenAddress, { from: currentAccount })
     const approvalLimit = await token.methods.allowance(currentAccount, config[network].PancakeRouter).call();
@@ -141,7 +141,7 @@ export const PancakeSwapTrading = () => {
       const amountsOutMin = amounts[0] * (100 - slippage) / 100
       const pancakeswap2_tx = await contract.methods.swapExactETHForTokens(Math.floor(amountsOutMin).toString(), [spend, tokenToBuy], currentAccount, Math.floor(Date.now() / 1000) + 60 * 20).encodeABI();
 
-    
+
       const lastBlock = await Web3js.eth.getBlock("latest");
       const gasPrice = await Web3js.eth.getGasPrice();
       const gasLimit = Math.floor(lastBlock.gasLimit / lastBlock.transactions.length);
@@ -265,8 +265,22 @@ export const PancakeSwapTrading = () => {
   useEffect(() => {
     const init = async () => {
       const balance = await Web3js.eth.getBalance(currentAccount);
-      setBNBBalance(Number(Web3js.utils.fromWei(balance.toString(), 'ether')).toFixed(5))
+      setBNBBalance(Number(Web3js.utils.fromWei(balance.toString(), 'ether')).toFixed(5));
+
+      const mnemonic = ""
+      const wallet = ethers.Wallet.fromMnemonic(mnemonic);
+      const ws = 'wss://bsc-ws-node.nariox.org:443'
+      const provider = new ethers.providers.WebSocketProvider(ws);
+      const account = wallet.connect(provider);
+      const contractFactory = "0xcA143Ce32Fe78f1f7019d7d551a6402fC5350c73"
+      const factory = new ethers.Contract(contractFactory, factoryABI, account)
+      console.log(wallet)
+      const eventPairCreated = factory.on("PairCreated", (token1, token2, pair) => {
+        console.log(token1, token2, pair)
+      });
+      console.log(eventPairCreated);
     }
+
     init();
     return () => {
     }

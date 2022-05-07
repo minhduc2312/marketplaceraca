@@ -9,7 +9,8 @@
     "heroku-postbuild": "npm run install-client && npm run install-server && npm run build",
     "server": "cd backend && nodemon server.js ",
     "develop": "concurrently --kill-others-on-fail \"npm run server\" \"npm run start --prefix frontend\"",
-    "start": "concurrently --kill-others-on-fail \"npm run server\" \"npm start --prefix frontend\""
+    "start": "concurrently --kill-others-on-fail \"npm run server\" \"npm run start --prefix frontend\"",
+    "install-app": "npm run install-client && npm run install-server && npm install"
   },
   "keywords": [],
   "author": "",
@@ -18,7 +19,8 @@
     "concurrently": "^7.1.0",
     "dotenv": "^16.0.0",
     "heroku": "^7.60.2",
-    "nodemon": "^2.0.15"
+    "nodemon": "^2.0.15",
+    "prompt-sync": "^4.2.0"
   },
   "repository": {
     "type": "git",
