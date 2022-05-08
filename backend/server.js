@@ -29,10 +29,11 @@ app.get("*", function (request, response) {
     response.sendFile(path.resolve(__dirname, "../frontend/build", "index.html"));
 });
 
-require('./bot')
 
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => {
+    require('./bot')
+
     console.log(`Server is listening on port ${PORT}`);
 
 })

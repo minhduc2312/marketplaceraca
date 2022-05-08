@@ -1,8 +1,8 @@
 import axios from "axios";
-import React, { useEffect, useRef, useState } from "react";
+import React, { useCallback, useEffect, useRef, useState } from "react";
 import Card from "./Card";
 import SwapRacaToUSD from "./SwapRaca";
-import { Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, Box, Typography, MenuItem, Select, FormControl, Grid } from '@mui/material';
+import { Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, Box, Typography, MenuItem, Select, FormControl } from '@mui/material';
 import '../../styles/nfts.css';
 import { useSelector } from "react-redux";
 import millify from "millify";
@@ -11,7 +11,7 @@ import StatsChart from "../StatsChart/StatsChart";
 
 
 const ConvertDDMM = (datetime) => {
-    const [date, time] = datetime.toLocaleString().split(',');
+    const [, time] = datetime.toLocaleString().split(',');
     return `${time.split(' ')[1]}`
 }
 
@@ -150,11 +150,11 @@ const NFTs = () => {
         setSelectTypeIngame(e.target.value)
     }
     const { raca, elmon, elcoin, btc } = useSelector(state => state.price)
-    const getData = async () => {
+    const getData = useCallback(async () => {
 
         axios.get("api/raca/market/price").then(res => {
             let data = {}
-            res.data.map(item => {
+            res.data.forEach(item => {
                 data = {
                     ...data,
                     ...item
@@ -164,7 +164,7 @@ const NFTs = () => {
         })
         axios.get(`/api/raca/market/stats/17`).then(res => setEggStatsList(res.data))
         axios.get(`/api/raca/market/stats/${selectStats}`).then(res => setSelectedStatsList(res.data))
-    }
+    }, [selectStats])
     useEffect(() => {
 
         setTokenPrice(raca)
@@ -182,7 +182,7 @@ const NFTs = () => {
             setTokenPrice(0)
             clearInterval(rerenderData);
         }
-    }, []);
+    }, [getData]);
     useEffect(() => {
 
         axios.get(`/api/raca/market/stats/${selectStats}`).then(res => setSelectedStatsList(res.data))

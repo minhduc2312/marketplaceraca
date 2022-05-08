@@ -3,7 +3,6 @@ import { styled } from '@mui/material/styles';
 import React, { memo } from 'react'
 
 const BuySellSwitch = styled(Switch)(({ content }) => ({
-    padding: 8,
     width: 120,
     height: 24,
     padding: 0,
@@ -25,7 +24,6 @@ const BuySellSwitch = styled(Switch)(({ content }) => ({
             position: 'absolute',
             top: '50%',
             transform: 'translateY(-50%)',
-            width: 16,
             fontSize: '14px',
             width: '50%',
             zIndex: 100
@@ -54,7 +52,6 @@ const BuySellSwitch = styled(Switch)(({ content }) => ({
             position: 'absolute',
             top: '50%',
             transform: 'translateY(-50%)',
-            width: 16,
             fontSize: '14px',
             width: '50%',
             zIndex: 100

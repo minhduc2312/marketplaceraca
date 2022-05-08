@@ -1,18 +1,9 @@
 import { createContext, useEffect, useState } from 'react'
 import WalletConnectProvider from "@walletconnect/web3-provider";
 import Web3 from "web3";
-import { ethers } from "ethers";
-import { contractABI, contractAddress } from './constants'
+
 export const AppContext = createContext();
 
-const getEthereumProvider = () => {
-    const provider = new ethers.providers.Web3Provider(window.ethereum)
-    const signer = provider.getSigner();
-    const transactionContract = new ethers.Contract(contractAddress, contractABI, signer);
-    console.log({
-        provider, signer, transactionContract
-    })
-}
 
 export const AppProvider = ({ children }) => {
     const [appStatus, setAppStatus] = useState('loading')

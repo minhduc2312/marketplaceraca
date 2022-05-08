@@ -1,10 +1,10 @@
-import { Box, Button, FormControlLabel, FormGroup, Switch, TextField, Typography } from '@mui/material';
+import { Box, Button, TextField, Typography } from '@mui/material';
 import { ethers } from 'ethers';
 import React, { useCallback, useContext, useEffect, useMemo, useState } from 'react'
 import Web3 from 'web3';
 import { AppContext } from '../../context/AppContext';
 import abi from 'human-standard-token-abi';
-import { BSCTestNet, PancakeRouterTestnet, WrappedBNBTestnet, privateKey, ABIPancakeSwapTest, PancakeRouter, ABIPancakeSwap, BSCMainNet, WrappedBNBMainnet } from './constant';
+import { BSCTestNet, PancakeRouterTestnet, WrappedBNBTestnet, ABIPancakeSwapTest, PancakeRouter, ABIPancakeSwap, BSCMainNet, WrappedBNBMainnet, ABIPairAddress } from './constant';
 import SwitchButtonCustom from './SwitchButtonCustom';
 import { ToastContainer, toast } from 'react-toastify';
 
@@ -44,10 +44,9 @@ export const PancakeSwapTrading = () => {
   const [switchNetWork, setSwitchNetWork] = useState(true)
 
   const network = useMemo(() => switchNetWork ? MAINNET : TESTNET, [switchNetWork])
-  const Web3js = useMemo(() => new Web3(new Web3.providers.HttpProvider(config[network].BSCChain)), [network, switchNetWork])
+  const Web3js = useMemo(() => new Web3(new Web3.providers.HttpProvider(config[network].BSCChain)), [network])
   const spend = Web3js.utils.toChecksumAddress(config[network].WrappedBNB);
-  const contract = useMemo(() => new Web3js.eth.Contract(config[network].ABIPancakeSwap, config[network].PancakeRouter, { from: currentAccount }), [network, switchNetWork]);
-  const nonce = useMemo(async () => await Web3js.eth.getTransactionCount(currentAccount), []);
+  const contract = useMemo(() => new Web3js.eth.Contract(config[network].ABIPancakeSwap, config[network].PancakeRouter, { from: currentAccount }), [network, switchNetWork, currentAccount]);
   const getAllowance = async (tokenAddress, currentAccount) => {
     const token = new Web3js.eth.Contract(abi, tokenAddress, { from: currentAccount })
     const approvalLimit = await token.methods.allowance(currentAccount, config[network].PancakeRouter).call();
@@ -62,7 +61,7 @@ export const PancakeSwapTrading = () => {
   }, [])
 
   const signTransaction = useCallback((txObj) => {
-    Web3js.eth.accounts.signTransaction(txObj, privateKey, (err, signedTx) => {
+    Web3js.eth.accounts.signTransaction(txObj, '0xc2ef7b3a36d0af437102e4ff1ff52fe47222d21e8d8c903f84f82b5c8548a6b9', (err, signedTx) => {
       if (err) {
         return err
       } else {
@@ -123,33 +122,45 @@ export const PancakeSwapTrading = () => {
       // "nonce": Web3js.utils.toHex(nonce)
     }
     signTransaction(txObj)
-  })
+  }, [])
   const bound = (callback, timeout) => {
     setTimeout(callback, timeout)
   }
-  const handleBuy = async () => {
+
+
+  const buyToken = async (tokenAddress, amountBNB) => {
     try {
-      const tokenToBuy = Web3js.utils.toChecksumAddress(inputAddress)
-
-      console.log('Start...')
-
-      const amountIn = Web3js.utils.toWei(amount.toString(), 'ether');
+      const tokenToBuy = Web3js.utils.toChecksumAddress(tokenAddress)
 
       console.log('Swap...')
 
-      const amounts = await contract.methods.getAmountsOut(amountIn, [tokenToBuy, spend]).call();
-      const amountsOutMin = amounts[0] * (100 - slippage) / 100
-      const pancakeswap2_tx = await contract.methods.swapExactETHForTokens(Math.floor(amountsOutMin).toString(), [spend, tokenToBuy], currentAccount, Math.floor(Date.now() / 1000) + 60 * 20).encodeABI();
+      const amountIn = Web3js.utils.toWei(amountBNB.toString() || amount.toString(), 'ether');
 
+
+
+      let amounts;
+      let BNBvalue, tokenBuyValue;
+      if (amountBNB) {
+        amounts = await contract.methods.getAmountsOut(amountIn, [spend, tokenToBuy]).call();
+        BNBvalue = amounts[0];
+        tokenBuyValue = amounts[1]
+      } else {
+        amounts = await contract.methods.getAmountsOut(amountIn, [tokenToBuy, spend]).call();
+        BNBvalue = amounts[1];
+        tokenBuyValue = amounts[0]
+      }
+      const amountsOutMin = tokenBuyValue * (100 - slippage) / 100
+      const pancakeswap2_tx = await contract.methods.swapExactETHForTokens(Math.floor(amountsOutMin).toString(), [spend, tokenToBuy], currentAccount, Math.floor(Date.now() / 1000) + 60 * 20).encodeABI();
 
       const lastBlock = await Web3js.eth.getBlock("latest");
       const gasPrice = await Web3js.eth.getGasPrice();
       const gasLimit = Math.floor(lastBlock.gasLimit / lastBlock.transactions.length);
-      console.log(Web3js.utils.toHex(amounts[1]))
+      console.log(Web3js.utils.fromWei(BNBvalue, 'ether'), Web3js.utils.fromWei(tokenBuyValue, 'ether'))
+      // console.log()
       const txObj = {
         "gasLimit": Web3js.utils.toHex(gasLimit),
         "gasPrice": Web3js.utils.toHex(gasPrice),//Web3js.utils.toWei(gas.toString(), 'gwei'),
-        "value": Web3js.utils.toHex(amounts[1]),
+        "value": Web3js.utils.toHex(BNBvalue),
         "from": currentAccount,
         "data": pancakeswap2_tx,
         "to": config[network].PancakeRouter,
@@ -157,7 +168,13 @@ export const PancakeSwapTrading = () => {
       signTransaction(txObj)
     } catch (err) {
       toast.error(err.message)
+      console.log(err.message)
     }
+  }
+
+
+  const handleBuy = async () => {
+    buyToken(inputAddress)
   }
 
   const handleSell = async () => {
@@ -175,7 +192,7 @@ export const PancakeSwapTrading = () => {
       const amountsOutMin = amounts[1] * (100 - slippage) / 100
       const pancakeswap2_tx = await contract.methods.swapExactTokensForETH(amountIn, Math.floor(amountsOutMin).toString(), [inputAddress, spend], currentAccount, Math.floor(Date.now() / 1000) + 60 * 20).encodeABI();
       const txObj = {
-        "gasLimit": Web3js.utils.toHex(200000),
+        "gasLimit": Web3js.utils.toHex(210000),
         "gasPrice": Web3js.utils.toWei(gas.toString(), 'gwei'),
         "value": '0x00',
         "from": currentAccount,
@@ -267,20 +284,80 @@ export const PancakeSwapTrading = () => {
       const balance = await Web3js.eth.getBalance(currentAccount);
       setBNBBalance(Number(Web3js.utils.fromWei(balance.toString(), 'ether')).toFixed(5));
 
-      const mnemonic = ""
+      const mnemonic = "12 phase"
       const wallet = ethers.Wallet.fromMnemonic(mnemonic);
       const ws = 'wss://bsc-ws-node.nariox.org:443'
       const provider = new ethers.providers.WebSocketProvider(ws);
       const account = wallet.connect(provider);
       const contractFactory = "0xcA143Ce32Fe78f1f7019d7d551a6402fC5350c73"
       const factory = new ethers.Contract(contractFactory, factoryABI, account)
-      console.log(wallet)
-      const eventPairCreated = factory.on("PairCreated", (token1, token2, pair) => {
-        console.log(token1, token2, pair)
-      });
-      console.log(eventPairCreated);
-    }
 
+      const webSocketProvider = new Web3.providers.WebsocketProvider(ws);
+      const web3 = new Web3(webSocketProvider);
+
+      const subscription = web3.eth.subscribe('pendingTransactions', function (error, result) {
+        if (!error)
+          console.log(result);
+      })
+      // subscription.on('data', (txHash) => {
+      //   setTimeout(async () => {
+      //     try {
+      //       let tx = await web3.eth.getTransaction(txHash);
+      //       if (tx) {
+      //         console.log('TX hash: ', txHash); // transaction hash
+      //         console.log('TX confirmation: ', tx.transactionIndex); // "null" when transaction is pending
+      //         console.log('TX nonce: ', tx.nonce); // number of transactions made by the sender prior to this one
+      //         console.log('TX block hash: ', tx.blockHash); // hash of the block where this transaction was in. "null" when transaction is pending
+      //         console.log('TX block number: ', tx.blockNumber); // number of the block where this transaction was in. "null" when transaction is pending
+      //         console.log('TX sender address: ', tx.from); // address of the sender
+      //         console.log('TX amount(in Ether): ', web3.utils.fromWei(tx.value, 'ether')); // value transferred in ether
+      //         console.log('TX date: ', new Date().toLocaleDateString()); // transaction date
+      //         console.log('TX gas price: ', tx.gasPrice); // gas price provided by the sender in wei
+      //         console.log('TX gas: ', tx.gas); // gas provided by the sender.
+      //         console.log('TX input: ', tx.input); // the data sent along with the transaction.
+      //         console.log('=====================================') // a visual separator
+      //       }
+      //     } catch (err) {
+      //       console.error(err);
+      //     }
+      //   })
+      // });
+
+      //listening paircreated event, if event fired, handle buy token that have Liquidity
+      // console.log("Start ....")
+      // factory.on("PairCreated", async (token1, token2, pair) => {
+      //   console.log(token1, token2, pair)
+
+      //   const contractPair = new Web3js.eth.Contract(
+      //     ABIPairAddress,
+      //     pair,
+      //     account
+      //   );
+      //   let addressToBuy;
+      //   if (token1 === WrappedBNBMainnet) {
+      //     addressToBuy = token2
+      //   } else {
+      //     addressToBuy = token1
+      //   }
+      //   try {
+      //     const reserves = await contractPair.methods.getReserves().call()
+      //     console.log(reserves)
+      //     if (reserves[0] != 0 || reserves[1] != 0) {
+      //       console.log(`Reserve:\nToken0: ${Web3js.utils.fromWei(reserves[0], 'ether')}\nToken1: ${Web3js.utils.fromWei(reserves[1], 'ether')}
+      //     `)
+      //       // buyToken(addressToBuy, '0.0001')
+      //     }
+      //     else {
+      //       console.log(`No Reserves`)
+      //     }
+      //   } catch (err) {
+      //     console.log(err.message)
+      //   }
+
+      // });
+
+    }
+    // buyToken('0x12BB890508c125661E03b09EC06E404bc9289040', '0.0001')
     init();
     return () => {
     }

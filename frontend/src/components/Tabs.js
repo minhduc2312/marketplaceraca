@@ -22,7 +22,7 @@ const TabInfo = (props) => {
     const { label, style, ...others } = props
     return (
         <Box className='tab-info'>
-            <img {...others} className={`icon-${label.toLowerCase()}`} />
+            <img alt='' {...others} className={`icon-${label.toLowerCase()}`} />
             <Typography style={style} sx={{ fontSize: '16px', fontWeight: '600' }}>{label}</Typography>
         </Box>
     )
@@ -53,7 +53,6 @@ const HeaderTabs = () => {
         setStatusMute(prev => !prev);
     }
     useEffect(() => {
-        const audioEl = audioRef?.current?.audioEl.current;
         // console.log(audioEl.paused)
         const handlePressSpace = (event) => {
             if (event.keyCode === 32 && document.body) {
@@ -80,7 +79,7 @@ const HeaderTabs = () => {
     return (
         <Box sx={{ width: '100%' }}>
             <ImageAnimation />
-            <Button className='icon-muted' onClick={onClickChangeSound}><img width={35} src={`/${isMute ? 'mute.png' : 'sound.png'}`} /></Button>
+            <Button className='icon-muted' onClick={onClickChangeSound}><img alt='' width={35} src={`/${isMute ? 'mute.png' : 'sound.png'}`} /></Button>
             <ReactAudioPlayer
                 src="/metamon-sound.mp3"
                 controls
