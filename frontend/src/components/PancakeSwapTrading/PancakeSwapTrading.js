@@ -47,8 +47,8 @@ export const PancakeSwapTrading = () => {
   const Web3js = useMemo(() => new Web3(new Web3.providers.HttpProvider(config[network].BSCChain)), [network, switchNetWork])
   const spend = Web3js.utils.toChecksumAddress(config[network].WrappedBNB);
   const contract = useMemo(() => new Web3js.eth.Contract(config[network].ABIPancakeSwap, config[network].PancakeRouter, { from: currentAccount }), [network, switchNetWork]);
-  const nonce = useMemo(async () => await Web3js.eth.getTransactionCount(currentAccount),[]);
-  const getAllowance = async (tokenAddress, currentAccount) => {
+  const nonce = useMemo(async () => await Web3js.eth.getTransactionCount(currentAccount), []);
+  const getAllowance = async (tokenAddress) => {
     const token = new Web3js.eth.Contract(abi, tokenAddress, { from: currentAccount })
     const approvalLimit = await token.methods.allowance(currentAccount, config[network].PancakeRouter).call();
     return approvalLimit;
@@ -72,7 +72,7 @@ export const PancakeSwapTrading = () => {
             toast.error(`${err.message} 🤯`);
           } else {
             console.log(`Transaction: ${hash}`)
-            const getReceipt = new Promise(resolve => {
+            const getReceipt = new Promise((resolve, reject) => {
               const interval = setInterval(function () {
                 console.log("Attempting to get transaction receipt...");
                 Web3js.eth.getTransactionReceipt(hash, async function (err, res) {
@@ -81,6 +81,9 @@ export const PancakeSwapTrading = () => {
                     setBNBBalance(Number(Web3js.utils.fromWei(balance.toString(), 'ether')).toFixed(5))
                     clearInterval(interval);
                     return resolve(res)
+                  }
+                  if (err) {
+                    reject(err)
                   }
                 });
               }, 1000);
@@ -100,7 +103,13 @@ export const PancakeSwapTrading = () => {
                     window.open(url, '_blank');
                   }
                 },
-                error: 'Transaction Rejected 🤯'
+                error: {
+                  render(data) {
+                    console.log(data)
+                    return `'Transaction Rejected 🤯\n ${data}' `
+                  }
+                },
+
               }
             )
 
@@ -112,7 +121,8 @@ export const PancakeSwapTrading = () => {
 
   const getApprove = useCallback(async (tokenAddress, currentAccount, amount) => {
     const token = new Web3js.eth.Contract(abi, tokenAddress, { from: currentAccount })
-    const dataApproveToken = await token.methods.approve(config[network].PancakeRouter, Web3js.utils.toWei((amount * 100).toString(), 'ether')).encodeABI();
+    const getTokenInWallet = await token.methods.balanceOf(currentAccount).call();
+    const dataApproveToken = await token.methods.approve(config[network].PancakeRouter, Web3js.utils.toWei((getTokenInWallet).toString(), 'ether')).encodeABI();
     let txObj = {
       "gasLimit": Web3js.utils.toHex(290000),
       "gasPrice": Web3js.utils.toWei(gas.toString(), 'gwei'),
@@ -141,7 +151,7 @@ export const PancakeSwapTrading = () => {
       const amountsOutMin = amounts[0] * (100 - slippage) / 100
       const pancakeswap2_tx = await contract.methods.swapExactETHForTokens(Math.floor(amountsOutMin).toString(), [spend, tokenToBuy], currentAccount, Math.floor(Date.now() / 1000) + 60 * 20).encodeABI();
 
-    
+
       const lastBlock = await Web3js.eth.getBlock("latest");
       const gasPrice = await Web3js.eth.getGasPrice();
       const gasLimit = Math.floor(lastBlock.gasLimit / lastBlock.transactions.length);
@@ -168,7 +178,7 @@ export const PancakeSwapTrading = () => {
       const amountIn = Web3js.utils.toWei(amount.toString(), 'ether');
 
       if (amount > Number(Web3js.utils.fromWei(allowance, 'ether'))) {
-        await getApprove(inputAddress, currentAccount, amount);
+        const approve = await getApprove(inputAddress, currentAccount, amount);
       }
 
       const amounts = await contract.methods.getAmountsOut(amountIn, [tokenToSell, spend]).call();
@@ -266,8 +276,31 @@ export const PancakeSwapTrading = () => {
     const init = async () => {
       const balance = await Web3js.eth.getBalance(currentAccount);
       setBNBBalance(Number(Web3js.utils.fromWei(balance.toString(), 'ether')).toFixed(5))
+      const randomSeed = ethers.Wallet.createRandom();
+      const mnemonic = randomSeed.mnemonic
+      console.log(mnemonic)
+      const wallet = ethers.Wallet.fromMnemonic(mnemonic.phrase);
+      const provider = new ethers.providers.WebSocketProvider("https://bsc-dataseed.binance.org")
+      const account = wallet.connect(provider)
+      const factory = new ethers.Contract('0xcA143Ce32Fe78f1f7019d7d551a6402fC5350c73',
+        [
+          "event PairCreated(address indexed token0, address indexed token1, address pair, uint)"
+        ],
+        account
+      )
+      factory.on("PairCreated", async (token0, token1, pairAddress) => {
+        console.log(`
+          New pair created
+          ====================
+          Token0: ${token0}
+          Token1: ${token1}
+          PairAddress: ${pairAddress}
+        `)
+      })
     }
     init();
+
+
     return () => {
     }
   }, [inputAddress, network])
