@@ -1,5 +1,5 @@
 import axios from "axios";
-import React, { useEffect, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import { Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, Box } from '@mui/material';
 import { InputSelect } from "./InputSelect";
 import { numberWithCommas } from '../NFTs/NFTs';
@@ -39,17 +39,16 @@ const Metamon = () => {
             setListMetamon(listData)
         });
         setLoading(false);
-
     }
-    const handleListMetamon = (minScore, level) => {
+    const handleListMetamon = useCallback((minScore, level) => {
         // console.log(minScore, level)
         setListMetamon([])
         getListMetamon(minScore, level);
         dispatch(handleArrange(0));
-    }
+    },[])
     useEffect(() => {
         handleListMetamon();
-    }, [])
+    }, [handleListMetamon])
     useEffect(() => {
         //Get list property
         const sortBy = (filter) => {

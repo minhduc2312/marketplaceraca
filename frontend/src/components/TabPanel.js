@@ -1,12 +1,10 @@
 import Typography from '@mui/material/Typography';
-import Box from '@mui/material/Box';
 import PropTypes from 'prop-types';
 import { useTransition, animated } from 'react-spring'
 import { useState } from 'react'
 
 function TabPanel(props) {
     const { children, value, index, ...other } = props;
-    const [show, setShow] = useState(true)
     const transition = useTransition(true, {
         from: { x: -500, y: 10, opacity: 0 },
         enter: { x: 0, y: 0, opacity: 1, display: 'block' },
