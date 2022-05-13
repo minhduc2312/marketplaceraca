@@ -5,6 +5,9 @@ const router = express.Router();
 router
     .route('/market/price')
     .get(getNFTsPrice)
+router
+    .route('/market/price/:id')
+    .get(getNFTsPrice)
 
 router
     .route('/market/stats/:id')

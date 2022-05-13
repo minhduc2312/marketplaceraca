@@ -69,7 +69,7 @@ body::before {
 .icon-elemon {
   width: 55px;
 }
-.icon-statistics {
+.icon-trading {
   width: 55px;
 }
 .tab-info {
@@ -120,6 +120,7 @@ body::before {
   #tabs-bar {
     background: url("../src/styles/bg.jpg") no-repeat;
     border-radius: 4px;
+    width: 100%;
   }
   .tab {
     padding: 5px 16px !important;

@@ -6,7 +6,7 @@ import { Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper
 import '../../styles/nfts.css';
 import { useSelector } from "react-redux";
 import millify from "millify";
-import StatsChart from "../StatsChart/StatsChart";
+import StatsChart from "./StatsChart/StatsChart";
 
 
 

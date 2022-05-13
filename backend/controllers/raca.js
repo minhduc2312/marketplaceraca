@@ -1,4 +1,5 @@
-const { default: axios } = require("axios")
+const { default: axios } = require("axios");
+const e = require("express");
 
 const NFTList = [
     {
@@ -44,16 +45,29 @@ const getDataMarket = (categoryId = '', size = '') => {
 }
 
 exports.getNFTsPrice = async (req, res, next) => {
-    const getData = async () => {
-        return await Promise.all(NFTList.map(async ({ name, id }) => {
-            return await getDataMarket(id, 5).then(res => {
-                return {
-                    [name]: res.data.list
-                }
-            })
-        }))
+    try {
+        if (req.params?.id) {
+            res.status(200).json(await getDataMarket(req.params.id, 10).then(res=>{
+                return res.data.list
+            }))
+            console.log(req.params.id)
+        } else {
+            const getData = async () => {
+                return await Promise.all(NFTList.map(async ({ name, id }) => {
+                    return await getDataMarket(id, 5).then(res => {
+                        return {
+                            [name]: res.data.list
+                        }
+                    })
+                }))
+            }
+            res.status(200).json(await getData().then(res => res))
+        }
+    } catch (error) {
+        console.log(error)
     }
-    res.status(200).json(await getData().then(res => res))
+   
+
 }
 exports.getNFTsStats = async (req, res, next) => {
     try {
