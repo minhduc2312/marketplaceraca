@@ -37,6 +37,7 @@ const initState = {
   currentAccount: '',
   listToken,
   db: {},
+  theme: 'light',
 };
 
 const rootReducer = (state = initState, action) => {
@@ -150,7 +151,7 @@ const rootReducer = (state = initState, action) => {
             tokenName: action.payload.symbol,
             address: action.payload.token,
             price: action.payload.price,
-            id:action.payload?.id
+            id: action.payload?.id
           },
         ],
         prevLength: state.listToken.length
@@ -185,6 +186,11 @@ const rootReducer = (state = initState, action) => {
       return {
         ...state,
         db: action.payload
+      }
+    case 'changeTheme':
+      return {
+        ...state,
+        theme: action.payload === 'light' ? 'light' : 'dark'
       }
     default:
       return state;

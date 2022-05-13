@@ -2,9 +2,13 @@ import { useEffect } from 'react';
 import { useDispatch } from 'react-redux';
 import './App.css';
 import { updatePriceAuto } from './app/actions';
-import HeaderTabs from './components/Tabs';
+import HeaderTabs from './components/Tab/Tabs';
 import axios from "axios"
 import { AppProvider } from './context/AppContext';
+import { useSelect } from '@mui/base';
+
+// import { Helmet } from 'react-helmet'
+
 
 export const log = (info) => {
   console.log(info);
@@ -13,7 +17,8 @@ export const log = (info) => {
 function App() {
 
   const dispatch = useDispatch();
-
+  // const theme = useSelect(prev => prev.theme)
+  // const themeStyle = theme === "light" ? lightTheme : darkTheme
 
   useEffect(() => {
     const getPrice = async () => {
@@ -38,13 +43,20 @@ function App() {
     }
   }, [])
   return (
-      <div className="App">
-        <AppProvider>
+    <div className="App">
+      <AppProvider>
+        {/* <ThemeProvider theme={themeStyle}> */}
+          {/* <GlobalStyle />
+          <Helmet>
+            <link rel="preconnect" href="https://fonts.googleapis.com" />
+            <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin />
+            <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" crossOrigin />
+          </Helmet>
+          <Layout></Layout> */}
           <HeaderTabs />
-        </AppProvider>
-      </div>
-
-
+        {/* </ThemeProvider> */}
+      </AppProvider>
+    </div>
   );
 }
 

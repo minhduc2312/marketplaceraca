@@ -108,7 +108,13 @@ export const initApp = (app) => {
 }
 export const clearListToken = () => {
     return {
-        type:'clearListToken'
+        type: 'clearListToken'
+    }
+}
+export const changeTheme = (theme) => {
+    return {
+        type: 'changeTheme',
+        payload: theme
     }
 }
 

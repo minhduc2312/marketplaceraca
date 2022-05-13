@@ -1,7 +1,7 @@
 const ethers = require('ethers')
 
 
-const mnemonic = "12 phase"
+const mnemonic = "okay original strike skull install service poet rug candy dry forest blade"
 const wallet = ethers.Wallet.fromMnemonic(mnemonic);
 const ws = 'wss://bsc-ws-node.nariox.org:443'
 const provider = new ethers.providers.WebSocketProvider(ws);

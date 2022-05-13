@@ -8,6 +8,7 @@
     "install-server": "cd backend && npm install",
     "heroku-postbuild": "npm run install-client && npm run install-server && npm run build",
     "server": "cd backend && nodemon server.js ",
+    "client": "cd frontend && npm start",
     "develop": "concurrently --kill-others-on-fail \"npm run server\" \"npm run start --prefix frontend\"",
     "start": "concurrently --kill-others-on-fail \"npm run server\" \"npm run start --prefix frontend\"",
     "install-app": "npm run install-client && npm run install-server && npm install"
