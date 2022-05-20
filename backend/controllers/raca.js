@@ -47,10 +47,10 @@ const getDataMarket = (categoryId = '', size = '') => {
 exports.getNFTsPrice = async (req, res, next) => {
     try {
         if (req.params?.id) {
-            res.status(200).json(await getDataMarket(req.params.id, 10).then(res=>{
+            const size =  req.params?.size || 10
+            res.status(200).json(await getDataMarket(req.params.id, size).then(res=>{
                 return res.data.list
             }))
-            console.log(req.params.id)
         } else {
             const getData = async () => {
                 return await Promise.all(NFTList.map(async ({ name, id }) => {

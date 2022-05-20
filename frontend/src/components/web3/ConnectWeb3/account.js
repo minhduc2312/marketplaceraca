@@ -1,10 +1,5 @@
+import { key } from './env';
+import web3 from './web3'
 
-import { ethers } from 'ethers';
-
-const ws = 'wss://bsc-ws-node.nariox.org:443'
-const mnemonic = ""
-const wallet = ethers.Wallet.fromMnemonic(mnemonic);
-const provider = new ethers.providers.WebSocketProvider(ws);
-const account = wallet.connect(provider);
-
-export default account;
+const account = web3.eth.accounts.privateKeyToAccount(key)
+export default account

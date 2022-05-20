@@ -42,7 +42,7 @@ const Metamask = () => {
         </div>
     )
     const userLoggedIn = (
-        <div style={{ margin: '5px 0',lineBreak:'anywhere' }}>{currentAccount}
+        <div style={{ margin: '5px 0',lineBreak:'anywhere' }}>{`${currentAccount?.slice(0,5)}...${currentAccount?.slice(-4)}`}
             {window.w3 && <Button sx={{ height: '100%', color: '#fff', background: 'rgb(253 186 28 / 92%)', padding: '2px 10px' }} variant="contained" onClick={() => disconnectWC()}>
                 Log out</Button>}
         </div>

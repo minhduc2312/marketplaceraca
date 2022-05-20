@@ -9,7 +9,8 @@ package-lock.json
 
 # testing
 /coverage
-
+#data
+src/components/web3/ConnectWeb3/env.js
 # production
 /build
 

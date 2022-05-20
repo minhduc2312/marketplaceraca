@@ -8,6 +8,9 @@ router
 router
     .route('/market/price/:id')
     .get(getNFTsPrice)
+router
+    .route('/market/price/:id/:size')
+    .get(getNFTsPrice)
 
 router
     .route('/market/stats/:id')

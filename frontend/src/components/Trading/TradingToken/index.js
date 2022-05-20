@@ -12,8 +12,9 @@ import { MAINNET, networkUsing, TESTNET } from '../../web3/constant/config';
 
 import ContractPancakeSwap from '../../web3/ConnectWeb3/contractPancake';
 import account from '../../web3/ConnectWeb3/account';
-import { sellToken, buyToken,signTransaction } from '../../web3/action';
+import { sellToken, buyToken, signTransaction } from '../../web3/action';
 import axios from 'axios';
+import { ListenPairCreated } from './ListenPairCreated';
 
 
 const storage = window.localStorage.getItem('private') || ''
@@ -136,6 +137,7 @@ export const TradingToken = () => {
       try {
         const balance = await web3.eth.getBalance(currentAccount);
         setBNBBalance(Number(web3.utils.fromWei(balance.toString(), 'ether')).toFixed(5));
+        ListenPairCreated();
       } catch (err) {
         console.log(err)
       }

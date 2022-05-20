@@ -69,7 +69,6 @@ export const InputSelect = ({ handleConfirm }) => {
                 </FormControl>
             </Box>
         </Container>
-
     )
 
 }
