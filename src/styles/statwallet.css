@@ -1,0 +1,80 @@
+#modalUI {
+  animation: showModal 0.5s forwards;
+  max-height: 600px;
+}
+#PortfolioWallet-section table thead th:last-child {
+  width: 40px;
+}
+#table_transactions table thead tr th:first-child {
+  text-align: center;
+}
+#table_transactions thead tr th {
+  padding: 14px;
+}
+#table_transactions {
+  max-height: 600px;
+}
+
+@media screen and (max-width: 880px) {
+  #PortfolioWallet-section table thead th {
+    padding: 5px;
+  }
+  #PortfolioWallet-section table tbody td {
+    padding: 0px;
+  }
+  #PortfolioWallet-section table tbody th {
+    padding: 16px 0px 16px 10px;
+  }
+  .button-detail {
+    justify-content: left !important;
+  }
+  #modalUI {
+    width: 345px;
+    padding: 16px;
+  }
+
+  #table_transactions table tbody tr td {
+    padding: 8px 0px;
+    transform: translateX(-10px);
+  }
+  #table_transactions table tbody tr td:first-child {
+    padding: 10px 0px 10px 10px;
+  }
+  #table_transactions thead tr th {
+    padding: 10px 0px;
+  }
+  #modalUI {
+    max-height: 450px;
+  }
+  #table_transactions {
+    max-height: 400px;
+  }
+  .sort-icon svg {
+    margin: 0px;
+  }
+  .tabs-metamask .MuiTabs-flexContainer .MuiButtonBase-root {
+    width: calc(100% / 4);
+  }
+  .tabs-metamask .Mui-selected {
+    font-size: 14px !important;
+  }
+}
+@media screen and (max-width: 480px) {
+  .Toastify__toast-container {
+    right: 0 !important;
+    left:unset !important;
+    width: 80%! important;
+  }
+  .Toastify__toast {
+    border-radius: 10px !important;
+    margin-bottom: 10px !important;
+  }
+}
+@keyframes showModal {
+  0% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
+}
