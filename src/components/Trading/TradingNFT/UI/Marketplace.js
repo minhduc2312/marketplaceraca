@@ -12,6 +12,7 @@ import { setBalanceRaca } from '../../../../app/actions';
 import { getBalanceRaca } from '../getBalanceRaca';
 import web3 from '../../../web3/ConnectWeb3/web3';
 import { toast } from 'react-toastify';
+import useMediaQuery from '@mui/material/useMediaQuery';
 
 const selectNFTs = [
     {
@@ -54,6 +55,9 @@ const listFilter = {
     maxAmount: 100,
 }
 
+
+
+
 const Marketplace = () => {
     const [selectedNFT, setSelectedNFT] = useState(selectNFTs[0].id);
     const [NFTListSelected, setNFTListSelected] = useState([]);
@@ -61,6 +65,7 @@ const Marketplace = () => {
     const [filter, setFilter] = useState(listFilter);
     const [inputKey, setInputKey] = useState(JSON.parse(sessionStorage.getItem('account'))?.privateKey || '');
     const dispatch = useDispatch();
+    const matches = useMediaQuery('(max-width:600px)');
 
     const handleChangeSelectedNFT = (e) => {
         setSelectedNFT(e.target.value)
@@ -79,7 +84,7 @@ const Marketplace = () => {
     const getNFTList = useCallback((filter) => {
         try {
             setIsLoading(true)
-            let query ='';
+            let query = '';
             if ([13, 20, 7].includes(selectedNFT)) {
                 {
                     query = 'token_standard=BEP721&'
@@ -91,7 +96,7 @@ const Marketplace = () => {
             } else {
                 query += `token_standard=BEP1155&min_count=${filter.minAmount}&max_count=${filter.maxAmount}`
             }
-            axios.get(`https://market-api.radiocaca.com/nft-sales?saleType&category=${selectedNFT}&tokenType&tokenId=-1&token_standard=${[13, 20, 7].includes(selectedNFT) ? 'BEP721' : 'BEP1155'}&pageNo=1&pageSize=20&sortBy=${filter.order}&order=asc&${query}`).then(res => {
+            axios.get(`https://market-api.radiocaca.com/nft-sales?saleType&category=${selectedNFT}&tokenType&tokenId=-1&token_standard=${[13, 20, 7].includes(selectedNFT) ? 'BEP721' : 'BEP1155'}&pageNo=1&pageSize=10&sortBy=${filter.order}&order=asc&${query}`).then(res => {
                 setNFTListSelected(res.data.list)
                 setIsLoading(false)
             }).finally(() => setIsLoading(false));
@@ -131,17 +136,23 @@ const Marketplace = () => {
             }
         })
     }
-    const handleBuyNFT = async (id_in_contract, totalPrice) => {
-        await buyNFT(id_in_contract, totalPrice);
+    const handleBuyNFT = async (e, id_in_contract, totalPrice) => {
+        await buyNFT(id_in_contract, totalPrice).then(async (res) => {
+            console.log(res)
+            if (res) {
+                const balance = await getBalanceRaca()
+                dispatch(setBalanceRaca(balance))
+                setNFTListSelected(prev =>
+                    prev.filter(item => item.id_in_contract !== id_in_contract)
+                );
+                e.target.className += "disabled"
+                e.target.disabled = true
+            }
 
-        setNFTListSelected(prev =>
-            prev.filter(item => item.id_in_contract !== id_in_contract)
-        );
-        const getBalance = await getBalanceRaca();
-        dispatch(setBalanceRaca(getBalance))
+        });
 
     }
-    useEffect( () => {
+    useEffect(() => {
         getNFTList(filter);
         return () => {
             setNFTListSelected([])
@@ -159,7 +170,15 @@ const Marketplace = () => {
                 alignItems: 'center',
                 position: 'relative',
             }}>
-                <Box className='select__head' sx={{ display: 'flex', justifyContent: 'space-between', width: '100%' }}>
+                <Box className='select__head' sx={[
+                    { display: 'flex', justifyContent: 'space-between', width: '100%' },
+                    matches ? {
+                        flexDirection: 'column',
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                        rowGap: '10px'
+                    } : {},
+                ]}>
                     <Box sx={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
                         <TextField onChange={changeInputKey} value={inputKey} label='Input Private key' />
                         <Button onClick={importKey} sx={[
@@ -192,8 +211,21 @@ const Marketplace = () => {
                     <BalanceRaca />
                 </Box>
 
-                <Box className='select__filter' sx={{ display: 'flex', justifyContent: 'center', alignItems: 'end', gap: '10px' }}>
-                    <Box className='section__filter' sx={{ color: '#333' }}>
+                <Box className='select__filter' sx={[
+                    { display: 'flex', justifyContent: 'center', alignItems: 'end', gap: '10px' },
+                    matches ? {
+                        width: '100%',
+                        flexDirection: 'column',
+                        justifyContent: 'center',
+                        alignItems: 'center',
+                    } : {}
+                ]}>
+                    <Box className='section__filter' sx={[
+                        { color: '#333' },
+                        matches ? {
+                            width: '100%',
+                        } : {}
+                    ]}>
                         {selectedNFT === 13 && (<FilterMTM handleConfirmMTM={handleConfirmMTM} />)}
                         {[15, 16, 17].includes(selectedNFT) && (<Count handleConfirmCount={handleConfirmCount} />)}
                     </Box>

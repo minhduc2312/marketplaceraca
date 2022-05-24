@@ -9,37 +9,45 @@ import { getBalanceRaca } from '../getBalanceRaca'
 const DetailsAuction = ({ log }) => {
     const dispatch = useDispatch();
     const eventBuyNFT = (auctionID, price) => {
-        buyNFT(auctionID, price).then(async () => {
-            const balance = await getBalanceRaca()
-            dispatch(setBalanceRaca(balance))
-        })
+        try {
+            buyNFT(auctionID, price).then(async () => {
+                const balance = await getBalanceRaca()
+                dispatch(setBalanceRaca(balance))
+            })
+        } catch (err) {
+            console.log(err.message)
+        }
+
     }
     return (
-        <Box sx={{ textAlign: 'left', display: 'flex', flexDirection: 'column', flexWrap: 'wrap', height: '72px', border: '1px solid #33333373', borderRadius: '5px', padding: '10px', marginTop: '10px', boxShadow: '0px 0px 5px 1px #33333373', justifyContent: 'center' }}>
-            <Typography sx={{
-                width: '160px',
-                overflow: 'hidden',
-                textOverflow: 'ellipsis',
-                whiteSpace: 'nowrap',
-            }}>
-                {`Name: ${log.nameNFT}`}
-            </Typography>
-            <Typography>
-                {`TokenID: ${log.tokenId}`}
-            </Typography>
+        <Box sx={{ border: '1px solid #33333373', borderRadius: '5px', padding: '10px', marginTop: '10px', boxShadow: '0px 0px 5px 0px #33333373', }}>
+            <Box sx={{ textAlign: 'left', display: 'flex', flexDirection: 'column', flexWrap: 'wrap', height: '72px', justifyContent: 'center' }}>
+                <Typography sx={{
+                    width: '160px',
+                    overflow: 'hidden',
+                    textOverflow: 'ellipsis',
+                    whiteSpace: 'nowrap',
+                }}>
+                    {`Name: ${log.nameNFT}`}
+                </Typography>
+                <Typography>
+                    {`TokenID: ${log.tokenId}`}
+                </Typography>
 
-            <Typography>
-                {`Date: ${log.time}`}
-            </Typography>
-            <Typography>
-                {`Count: ${log.count}`}
-            </Typography>
-            <Typography>
-                {`Fixed: ${numberWithCommas(log.average)}`}
-            </Typography>
-            <Typography>
-                {`Total: ${numberWithCommas(log.total)}`}
-            </Typography>
+                <Typography>
+                    {`Date: ${log.time}`}
+                </Typography>
+                <Typography>
+                    {`Count: ${log.count}`}
+                </Typography>
+                <Typography>
+                    {`Fixed: ${numberWithCommas(log.average)}`}
+                </Typography>
+                <Typography>
+                    {`Total: ${numberWithCommas(log.total)}`}
+                </Typography>
+            </Box>
+
             <Button onClick={() => eventBuyNFT(log.auctionsID, log.total)}
                 sx={[
                     {
@@ -50,7 +58,6 @@ const DetailsAuction = ({ log }) => {
                     { backgroundColor: '#fcc33c', fontWeight: '700' }
                 ]}>Buy</Button>
         </Box>
-
     )
 }
 

@@ -10,11 +10,16 @@ const BalanceRaca = () => {
     const balanceRaca = useSelector(prev => prev.balanceRaca)
     const dispatch = useDispatch();
     useEffect(() => {
-        const setBalance = async () => {
-            const balance = await getBalanceRaca()
-            dispatch(setBalanceRaca(balance))
+        try {
+            const setBalance = async () => {
+                const balance = await getBalanceRaca()
+                dispatch(setBalanceRaca(balance))
+            }
+            setBalance();
+        } catch (err) {
+            console.log(err)
         }
-        setBalance();
+
     }, [])
     return (
         <>

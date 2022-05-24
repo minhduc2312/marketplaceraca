@@ -18,14 +18,11 @@ export const sellToken = async (tokenAddress, amountToken, slippage, gasFee, net
 
 
         const contract = ContractPancakeSwap(network)
-        const currentAccount = account.address;
+        const currentAccount = account?.address;
         const spend = web3.utils.toChecksumAddress(networkUsing[network].WrappedBNB);
 
-        
-        
         const tokenToSell = web3.utils.toChecksumAddress(tokenAddress)
         const allowance = await getAllowance(tokenToSell, currentAccount,networkUsing[network].PancakeRouter, network)
-        console.log(account)
         const amountIn = web3.utils.toWei(amountToken.toString(), 'ether');
         
         if (amountToken > Number(web3.utils.fromWei(allowance, 'ether'))) {
@@ -44,7 +41,6 @@ export const sellToken = async (tokenAddress, amountToken, slippage, gasFee, net
             "data": pancakeswap2_tx,
             "to": networkUsing[network].PancakeRouter,
         }
-        console.log('Swapping...')
         signTransaction(txObj, network, account)
     } catch (err) {
         toast.error(err.message)

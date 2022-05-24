@@ -32,7 +32,7 @@ const abi = [
 export const transferNFT = async () => {
     const account = web3.eth.accounts.privateKeyToAccount('');
     web3.eth.accounts.wallet.add(account);
-    web3.eth.defaultAccount = account.address;
+    web3.eth.defaultAccount = account?.address;
     const contractAddress = "0xE8d66Ac34C5f8CFaC1aB4f6C949c6A612a2c45FF";
     const contract = new web3.eth.Contract(abi, contractAddress, { from: '0x6872e4b65Cba7a968454721939c921812DBbe8ab', gasLimit: '112320', gasPrice: web3.utils.toWei('5', 'Gwei') })
     const sendNFT = await contract.methods.safeTransferFrom('0x6872e4b65Cba7a968454721939c921812DBbe8ab', '0x2352934326Bc4C6e65d84AD5825D56137F8F2D5c', '30899').send()

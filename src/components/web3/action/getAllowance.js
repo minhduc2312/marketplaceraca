@@ -7,7 +7,6 @@ export const getAllowance = async (tokenAddress, currentAccount, spender, networ
     const web3js = network === MAINNET ? web3 : web3Test
     const token = new web3js.eth.Contract(abi, tokenAddress, { from: currentAccount })
     const approvalLimit = await token.methods.allowance(currentAccount, spender).call();
-    console.log(currentAccount)
 
     return approvalLimit;
 }

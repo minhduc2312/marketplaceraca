@@ -31,8 +31,6 @@ export const marketABI = [
             { "internalType": "uint64", "name": "startDate", "type": "uint64" },
             { "internalType": "uint64", "name": "endDate", "type": "uint64" },
         ],
-
-
         "name": "hashAuction",
         "outputs": [
             { "internalType": "uint256", "name": "", "type": "uint256" }

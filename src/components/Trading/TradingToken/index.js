@@ -53,7 +53,7 @@ export const TradingToken = () => {
 
 
   const handleBuy = async () => {
-    buyToken(inputAddress, BNBAmount, slippage, gas, network)
+    buyToken(inputAddress, BNBAmount, slippage, gas, network).then(res => console.log("Buy successfully"))
   }
 
   const handleSell = async () => {
@@ -142,9 +142,18 @@ export const TradingToken = () => {
     const init = async () => {
       try {
         const privateKey = localStorage.getItem('private');
-        const account = web3.eth.accounts.privateKeyToAccount(privateKey);         
-        const balance = await web3.eth.getBalance(account.address);
+        const account = web3.eth.accounts.privateKeyToAccount(privateKey);
+        const balance = await web3.eth.getBalance(account?.address);
         setBNBBalance(Number(web3.utils.fromWei(balance.toString(), 'ether')).toFixed(5));
+        const BNBOut = async () => {
+          if (amount > 0) {
+            const amountIn = web3.utils.toWei(amount, 'ether');
+            const amounts = await ContractPancakeSwap(network).methods.getAmountsOut(amountIn, [inputAddress, spend]).call();
+            setBNBAmount(web3.utils.fromWei(amounts[1], 'ether'))
+          }
+        }
+
+        BNBOut();
         // ListenPairCreated();
       } catch (err) {
         console.log(err)

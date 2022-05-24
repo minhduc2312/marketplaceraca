@@ -97,7 +97,7 @@ const NFTDetail = ({ nft, handleBuyNFT }) => {
                             <span role="img" className="logo___1_qoR" >
                                 <img style={{ margin: '0px 5px 5px 0px' }} height="16px" width="16px" src={`${process.env.PUBLIC_URL}/raca-icon.svg`} alt='price icon' />
                             </span>
-                            {`${millify(nft.fixed_price / nft.count, { precision: 3, })} (~${(nft.fixed_price * raca) >= 0 ? (nft.fixed_price / nft.count * raca).toFixed(2) : Math.floor(nft.fixed_price / nft.count * raca)} $)`}
+                            {`${millify(nft.fixed_price / nft.count, { precision: 3, })} (~${(nft.fixed_price * raca) <= 0 ? Math.f(nft.fixed_price / nft.count * raca).toFixed(2) : Math.floor(nft.fixed_price / nft.count * raca)} $)`}
                         </TypographyPrice>
                     </BoxPriceSection>
                     <BoxPriceSection >
@@ -108,11 +108,11 @@ const NFTDetail = ({ nft, handleBuyNFT }) => {
                             <span role="img" className="logo___1_qoR">
                                 <img style={{ margin: '0px 5px 5px 0px' }} height="16px" width="16px" src={`${process.env.PUBLIC_URL}/raca-icon.svg`} alt='price icon' />
                             </span>
-                            {`${millify(nft.fixed_price, { precision: 3, })} (~${(nft.fixed_price * raca) >= 0 ? (nft.fixed_price * raca).toFixed(2) : Math.floor(nft.fixed_price * raca)} $)`}
+                            {`${millify(nft.fixed_price, { precision: 3, })} (~${(nft.fixed_price * raca) <= 0 ? (nft.fixed_price * raca).toFixed(2) : Math.floor(nft.fixed_price * raca)} $)`}
                         </TypographyPrice>
                     </BoxPriceSection>
                 </Box>
-                <Button onClick={() => handleBuyNFT(nft.id_in_contract, nft.fixed_price)} sx={[
+                <Button onClick={(e) => handleBuyNFT(e,nft.id_in_contract, nft.fixed_price)} sx={[
                     {
                         '&:hover': {
                             backgroundColor: 'rgb(255 179 0)',

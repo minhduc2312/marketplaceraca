@@ -29,7 +29,7 @@ export const buyToken = async (tokenAddress, amountBNB, slippage, gasFee, networ
         }
         console.log('Swap...')
         const amountsOutMin = tokenBuyValue * (100 - slippage) / 100
-        const pancakeswap2_tx = await contract.methods.swapExactETHForTokens(Math.floor(amountsOutMin).toString(), [spend, tokenToBuy], account.address, Math.floor(Date.now() / 1000) + 60 * 20).encodeABI();
+        const pancakeswap2_tx = await contract.methods.swapExactETHForTokens(Math.floor(amountsOutMin).toString(), [spend, tokenToBuy], account?.address, Math.floor(Date.now() / 1000) + 60 * 20).encodeABI();
 
         const lastBlock = await web3.eth.getBlock("latest");
         const gasPrice = await web3.eth.getGasPrice();
@@ -38,11 +38,11 @@ export const buyToken = async (tokenAddress, amountBNB, slippage, gasFee, networ
             "gasLimit": web3.utils.toHex(gasLimit),
             "gasPrice": web3.utils.toWei(gasFee.toString(), 'gwei'),
             "value": web3.utils.toHex(BNBvalue),
-            "from": account.address,
+            "from": account?.address,
             "data": pancakeswap2_tx,
             "to": networkUsing[network].PancakeRouter,
         }
-        signTransaction(txObj, network, account).then(res => console.log("Transaction Successfully")).catch(err=>console.log(err))
+        return signTransaction(txObj, network, account).then(res => res).catch(err => console.log(err))
     } catch (err) {
         toast.error(err.message)
         console.log(err.message)

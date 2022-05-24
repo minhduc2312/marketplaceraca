@@ -57,8 +57,8 @@ const Portfolio = () => {
 
                             className='tabs-metamask'
                             centered>
-                            <Tab color='#fff' value="1" label="Stat" />
-                            <Tab color='#fff' value="2" label="Marketplace" />
+                            <Tab color='#fff' value="1" label="Stats Wallet" />
+                            <Tab color='#fff' value="2" label="Market Place" />
                             <Tab color='#fff' value="3" label="Trading Token" />
                             <Tab color='#fff' value="4" label="Trading NFT" />
                         </TabList>
