@@ -1,6 +1,6 @@
-import web3 from "../../web3/ConnectWeb3/web3";
-import { ABIPairAddress, factoryABI } from "../../web3/constant/ABI";
-import { WrappedBNBMainnet } from "../../web3/constant/config";
+import web3 from "../../web3js/ConnectWeb3/web3";
+import { ABIPairAddress, factoryABI } from "../../web3js/constant/ABI";
+import { WrappedBNBMainnet } from "../../web3js/constant/config";
 import { ethers } from "ethers";
 
 export const ListenPairCreated = () => {

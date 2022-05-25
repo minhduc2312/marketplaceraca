@@ -1,51 +1,20 @@
 import { Box, Button, FormControl, Grid, MenuItem, Select, TextField, Typography } from '@mui/material'
-import React, { useCallback, useEffect, useState } from 'react'
-import Loading from '../../../helper/Loading'
+import React, { memo, useCallback, useEffect, useState } from 'react'
+import Loading from '../../../../helper/Loading'
 import Count from './Count';
 import FilterMTM from './FilterMTM';
 import axios from 'axios';
 import NFTDetail from './NFTDetail';
-import { buyNFT } from '../buyNFT';
+import { buyNFT } from '../Action/buyNFT';
 import BalanceRaca from './BalanceRaca';
 import { useDispatch } from 'react-redux';
-import { setBalanceRaca } from '../../../../app/actions';
-import { getBalanceRaca } from '../getBalanceRaca';
-import web3 from '../../../web3/ConnectWeb3/web3';
+import { setBalanceRaca } from '../../../../../app/actions';
+import { getBalanceRaca } from '../Action/getBalanceRaca';
+import web3 from '../../../web3js/ConnectWeb3/web3';
 import { toast } from 'react-toastify';
 import useMediaQuery from '@mui/material/useMediaQuery';
+import SelectNFT, { selectNFTs } from './SelectNFT';
 
-const selectNFTs = [
-    {
-        name: 'Metamon',
-        id: 13,
-        img: 'metamon.png'
-    },
-    {
-        name: 'Eggs',
-        id: 17,
-        img: 'MetamonEgg.png'
-    },
-    {
-        name: 'Diamond Yellow',
-        id: 16,
-        img: 'DiamondYellow.png'
-    },
-    {
-        name: 'Potion',
-        id: 15,
-        img: 'potion.png'
-    },
-    {
-        name: 'Kiss-up State Land',
-        id: 20,
-        img: 'kissup.png'
-    },
-    {
-        name: 'Musk USM Land',
-        id: 7,
-        img: 'mml.png'
-    },
-]
 
 const listFilter = {
     order: 'fixed_price',
@@ -54,9 +23,6 @@ const listFilter = {
     minAmount: 1,
     maxAmount: 100,
 }
-
-
-
 
 const Marketplace = () => {
     const [selectedNFT, setSelectedNFT] = useState(selectNFTs[0].id);
@@ -67,9 +33,9 @@ const Marketplace = () => {
     const dispatch = useDispatch();
     const matches = useMediaQuery('(max-width:600px)');
 
-    const handleChangeSelectedNFT = (e) => {
+    const handleChangeSelectedNFT = useCallback((e) => {
         setSelectedNFT(e.target.value)
-    }
+    }, [])
     const handleChangeOrder = (e) => {
         setFilter(prev => {
             return {
@@ -106,7 +72,6 @@ const Marketplace = () => {
     }, [filter, selectedNFT])
 
     const handleConfirmMTM = useCallback((minScore, level) => {
-
         setFilter(prev => {
             return {
                 ...prev,
@@ -154,8 +119,12 @@ const Marketplace = () => {
     }
     useEffect(() => {
         getNFTList(filter);
+        const reload = setInterval(() => {
+            getNFTList(filter);
+        }, 10000)
         return () => {
             setNFTListSelected([])
+            clearInterval(reload)
         }
     }, [getNFTList])
 
@@ -190,24 +159,8 @@ const Marketplace = () => {
                             { backgroundColor: '#fcc33c', fontWeight: '700' }
                         ]}>Import</Button>
                     </Box>
-                    <FormControl className='select-nft' >
-                        <Select
-                            size='small'
-                            labelId="select"
-                            id="selectedNFT"
-                            value={selectedNFT}
-                            onChange={handleChangeSelectedNFT}
-                            sx={{ color: '#333', fontWeight: 600 }}>
 
-                            {selectNFTs.length !== 0 && selectNFTs.map(nft => (
-                                <MenuItem value={nft.id} key={nft.id}>
-                                    <img style={{ objectFit: 'contain' }} width='40px' height='40px' src={`${process.env.PUBLIC_URL}/raca/${nft.img}`} alt={nft.name} />
-                                    {nft.name}
-                                </MenuItem>
-                            ))}
-
-                        </Select>
-                    </FormControl>
+                    <SelectNFT selectedNFT={selectedNFT} handleChange={handleChangeSelectedNFT} />
                     <BalanceRaca />
                 </Box>
 
@@ -269,4 +222,4 @@ const Marketplace = () => {
     )
 }
 
-export default Marketplace
+export default memo(Marketplace)

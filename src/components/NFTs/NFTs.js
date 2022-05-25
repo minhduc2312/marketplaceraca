@@ -32,6 +32,7 @@ const getSellIngameList = (formDataPrams) => {
         }
     }).then((res) => {
         const data = res.data.data;
+        console.log(res)
         return axios({
             method: 'POST',
             url: 'https://metamon-api.radiocaca.com/usm-api/shop-order/sellList',
@@ -164,7 +165,9 @@ const NFTs = () => {
             })
             setPriceMarketList(data)
         })
-        axios.get(`${URL_API}/api/raca/market/stats/17`).then(res => setEggStatsList(res.data))
+        axios.get(`${URL_API}/api/raca/market/stats/17`).then(res =>
+            setEggStatsList(res.data)
+        ).catch(err => console.log(err))
         axios.get(`${URL_API}/api/raca/market/stats/${selectStats}`).then(res => setSelectedStatsList(res.data))
     }, [selectStats])
     useEffect(() => {
@@ -173,8 +176,10 @@ const NFTs = () => {
     }, [raca])
     useEffect(() => {
         getData();
+
         convertDateTime();
         const rerenderData = setInterval(() => {
+           
             getData();
             convertDateTime();
         }, 20000)
@@ -184,7 +189,7 @@ const NFTs = () => {
             setTokenPrice(0)
             clearInterval(rerenderData);
         }
-    }, [getData]);
+    }, []);
     useEffect(() => {
 
         axios.get(`${URL_API}/api/raca/market/stats/${selectStats}`).then(res => setSelectedStatsList(res.data))
@@ -274,7 +279,7 @@ const NFTs = () => {
                                             <img width='50px' height='50px' src={`${process.env.PUBLIC_URL}/raca/DiamondYellow.png`} alt='DiamondYellow' />
                                         </TableCell>
                                         <TableCell align="center">
-                                            <img style={{ objectFit: 'contain' }} width='50px' height='50px' src={`${process.env.PUBLIC_URL}/raca/potion.png`}  alt='Potion' />
+                                            <img style={{ objectFit: 'contain' }} width='50px' height='50px' src={`${process.env.PUBLIC_URL}/raca/potion.png`} alt='Potion' />
                                         </TableCell>
                                         <TableCell align="center">
                                             <FormControl className='select-ingame'>

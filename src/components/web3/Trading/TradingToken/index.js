@@ -1,17 +1,17 @@
 import { Box, Button, TextField, Typography } from '@mui/material';
 import { ethers } from 'ethers';
 import React, { useCallback, useContext, useEffect, useMemo, useState } from 'react'
-import { AppContext } from '../../../context/AppContext';
+import { AppContext } from '../../../../context/AppContext';
 
 import SwitchButtonCustom from './SwitchButtonCustom';
 import { ToastContainer, toast } from 'react-toastify';
 
 import 'react-toastify/dist/ReactToastify.css';
-import web3Main, { web3Test } from '../../web3/ConnectWeb3/web3.js'
-import { MAINNET, networkUsing, TESTNET } from '../../web3/constant/config';
+import web3Main, { web3Test } from '../../web3js/ConnectWeb3/web3.js'
+import { MAINNET, networkUsing, TESTNET } from '../../web3js/constant/config';
 
-import ContractPancakeSwap from '../../web3/ConnectWeb3/contractPancake';
-import { sellToken, buyToken, signTransaction } from '../../web3/action';
+import ContractPancakeSwap from '../../web3js/ConnectWeb3/contractPancake';
+import { sellToken, buyToken, signTransaction } from '../../web3js/action';
 import { ListenPairCreated } from './ListenPairCreated';
 
 

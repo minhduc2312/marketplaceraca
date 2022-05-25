@@ -1,4 +1,4 @@
-import web3 from "../../web3/ConnectWeb3/web3";
+import web3 from "../../../web3js/ConnectWeb3/web3";
 import abi from "human-standard-token-abi"
 import { toast } from "react-toastify";
 

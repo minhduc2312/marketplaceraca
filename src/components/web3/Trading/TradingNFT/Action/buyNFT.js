@@ -1,12 +1,12 @@
-import { getAllowance } from "../../web3/action/getAllowance";
-import { signTransaction } from "../../web3/action/SignTransaction";
-import web3 from "../../web3/ConnectWeb3/web3";
-import { MAINNET } from "../../web3/constant/config";
+import { getAllowance } from "../../../web3js/action/getAllowance";
+import { signTransaction } from "../../../web3js/action/SignTransaction";
+import web3 from "../../../web3js/ConnectWeb3/web3";
+import { MAINNET } from "../../../web3js/constant/config";
 import { marketABI } from "./MarketABI";
 
 import abi from 'human-standard-token-abi';
 import { toast } from "react-toastify";
-import { getApprove } from "../../web3/action/getApprove";
+import { getApprove } from "../../../web3js/action/getApprove";
 
 const addressMarket = "0xe97fdca0a3fc76b3046ae496c1502c9d8dfef6fc";
 const addressRACA = '0x12BB890508c125661E03b09EC06E404bc9289040'

@@ -1,5 +1,5 @@
 import provider from './provider'
-import { BSCTestNet } from '../../web3/constant/config';
+import { BSCTestNet } from '../../web3js/constant/config';
 import Web3 from 'web3';
 
 const web3 = new Web3(provider);

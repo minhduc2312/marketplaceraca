@@ -201,7 +201,14 @@ const InputFilters = () => {
             <TextField
               value={minPower}
               onChange={handleMinPower}
-              sx={{ width: 100, marginRight: "0.5rem" }}
+              sx={{
+                width: 100, marginRight: "0.5rem",
+                '& .MuiInput-underline:before': {
+                  borderBottomColor: '#fff !important'
+                }, '& .MuiInput-underline:hover:before': {
+                  borderBottomColor: '#fff'
+                }
+              }}
               id="min-power"
               label="Min"
               variant="standard"
@@ -211,7 +218,14 @@ const InputFilters = () => {
             <TextField
               value={maxPower}
               onChange={handleMaxPower}
-              sx={{ width: 100, marginRight: "0.5rem" }}
+              sx={{
+                width: 100, marginRight: "0.5rem",
+                '& .MuiInput-underline:before': {
+                  borderBottomColor: '#fff !important'
+                }, '& .MuiInput-underline:hover:before': {
+                  borderBottomColor: '#fff'
+                }
+              }}
               id="max-power"
               label="Max"
               variant="standard"

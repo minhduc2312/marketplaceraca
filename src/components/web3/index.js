@@ -3,7 +3,7 @@ import { Box, Tab } from '@mui/material';
 import { TabContext, TabList, TabPanel } from '@mui/lab';
 
 import MarketHistory from './StatsMarket/MarketHistory';
-import Metamask from '../web3/Metamask';
+import Metamask from './Metamask';
 import StatWallet from './StatsWallet/StatWallet';
 import { useTransition, animated } from 'react-spring'
 import { AppContext } from '../../context/AppContext';
@@ -12,8 +12,8 @@ import firebaseConfig from '../../config';
 import { useDispatch } from 'react-redux';
 import { initApp } from '../../app/actions';
 import { getFirestore } from "firebase/firestore"
-import { TradingToken } from '../Trading/TradingToken';
-import TradingNFT from '../Trading/TradingNFT';
+import { TradingToken } from './Trading/TradingToken';
+import TradingNFT from './Trading/TradingNFT';
 
 const Portfolio = () => {
     const app = initializeApp(firebaseConfig);
@@ -57,10 +57,10 @@ const Portfolio = () => {
 
                             className='tabs-metamask'
                             centered>
-                            <Tab color='#fff' value="1" label="Stats Wallet" />
-                            <Tab color='#fff' value="2" label="Market Place" />
-                            <Tab color='#fff' value="3" label="Trading Token" />
-                            <Tab color='#fff' value="4" label="Trading NFT" />
+                            <Tab color='#fff' value="1" label="Stats Wallet" wrapped/>
+                            <Tab color='#fff' value="2" label="Market Place" wrapped/>
+                            <Tab color='#fff' value="3" label="Trading Token" wrapped/>
+                            <Tab color='#fff' value="4" label="Trading NFT" wrapped/>
                         </TabList>
                     </Box>
                     {transition((style, item) => {

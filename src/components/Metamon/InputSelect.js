@@ -43,9 +43,24 @@ export const InputSelect = ({ handleConfirm }) => {
                 alignItems: 'end',
                 justifyContent: 'center'
             }}>
-                <TextField value={minScore} onChange={handleMinScoreChange} sx={{ color: '#fff', width: 100, marginRight: '0.5rem' }} id="min-score" label="Min score" variant="standard" type='number' autoComplete="new-password"
+                <TextField value={minScore} onChange={handleMinScoreChange} sx={{
+                    color: '#fff', width: 100, marginRight: '0.5rem',
+                    '& .MuiInput-underline:before': {
+                        borderBottomColor: '#fff !important'
+                    }, '& .MuiInput-underline:hover:before': {
+                        borderBottomColor: '#fff'
+                    }
+
+                }} id="min-score" label="Min score" variant="standard" type='number' autoComplete="new-password"
                 />
-                <TextField value={level} onChange={handleLevelChange} sx={{ color: '#fff', width: 100, marginRight: '0.5rem' }} id="level" label="Level" variant="standard" type='number' autoComplete="new-password"
+                <TextField value={level} onChange={handleLevelChange} sx={{
+                    color: '#fff', width: 100, marginRight: '0.5rem',
+                    '& .MuiInput-underline:before': {
+                        borderBottomColor: '#fff !important'
+                    }, '& .MuiInput-underline:hover:before': {
+                        borderBottomColor: '#fff'
+                    }
+                }} id="level" label="Level" variant="standard" type='number' autoComplete="new-password"
                 />
                 <Button sx={{ height: '100%', color: '#383838', background: '#fcc33c' }} variant="contained" onClick={ConfirmHandle}>Confirm</Button>
             </Box>

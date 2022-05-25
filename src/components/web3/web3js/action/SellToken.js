@@ -1,7 +1,7 @@
 import { toast } from "react-toastify";
 import ContractPancakeSwap from "../ConnectWeb3/contractPancake";
 import web3MainNet, { web3Test } from "../ConnectWeb3/web3";
-import { networkUsing, MAINNET } from "../../web3/constant/config";
+import { networkUsing, MAINNET } from "../../web3js/constant/config";
 import { getAllowance } from "./getAllowance";
 import { getApprove } from "./getApprove";
 import { signTransaction } from "./SignTransaction";

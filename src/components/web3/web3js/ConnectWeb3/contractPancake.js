@@ -1,4 +1,4 @@
-import { MAINNET, networkUsing } from "../../web3/constant/config";
+import { MAINNET, networkUsing } from "../../web3js/constant/config";
 import account from "./account";
 import web3Main, { web3Test } from "./web3";
 

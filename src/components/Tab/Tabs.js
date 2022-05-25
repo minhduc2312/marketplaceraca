@@ -7,7 +7,7 @@ import NFTs from '../NFTs/NFTs';
 import Metamon from '../Metamon/Metamon'
 import Elemon from '../Elemon/Elemon'
 import '../../App.css'
-import Portfolio from '../Portfolio';
+import Portfolio from '../Web3';
 import { Button, Typography } from '@mui/material';
 import ImageAnimation from '../helper/ImageAnimation';
 import ReactAudioPlayer from 'react-audio-player';
