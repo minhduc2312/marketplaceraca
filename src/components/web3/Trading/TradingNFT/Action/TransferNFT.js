@@ -45,9 +45,6 @@ export const transferNFT = async () => {
         gasPrice: web3.utils.toWei('5', 'Gwei'),
     }
 
-    // const getTransaction = await web3.eth.accounts.signTransaction(txSendBNB, '');
-    // const getReceipt = await web3.eth.sendSignedTransaction(getTransaction.rawTransaction);
-    // console.log(getReceipt);
     const txSendNFT = {
         from: '0x10201091597635ec7b8e208306e6adcc7c167925',
         to: '0xE8d66Ac34C5f8CFaC1aB4f6C949c6A612a2c45FF',
@@ -56,35 +53,7 @@ export const transferNFT = async () => {
         gasLimit: web3.utils.toHex('97038'),
         gasPrice: web3.utils.toWei('5', 'Gwei'),
     }
-    // const getTransactionNFT = await web3.eth.accounts.signTransaction(txSendNFT, '');
-    // const getReceiptNFT = await web3.eth.sendSignedTransaction(getTransactionNFT.rawTransaction);
-    // console.log(getReceiptNFT);
-
-    // new Promise((resolve, reject) => {
-    //     const interval = setInterval(function () {
-    //         console.log("Attempting to get transaction receipt...");
-    //         web3.eth.getTransactionReceipt(getReceipt, async function (err, res) {
-    //             if (res) {
-    //                 clearInterval(interval);
-    //                 const txSendNFT = {
-    //                     from: '0x6872e4b65Cba7a968454721939c921812DBbe8ab',
-    //                     to: '0xF24Bf668Aa087990f1d40aBAbF841456E771913c',
-    //                     value: '0x00',
-    //                     data: '0x42842e0e0000000000000000000000006872e4b65cba7a968454721939c921812dbbe8ab0000000000000000000000002352934326bc4c6e65d84ad5825d56137f8f2d5c0000000000000000000000000000000000000000000000000000000000075fae',
-    //                     gasLimit: web3.utils.toHex('97038'),
-    //                     gasPrice: web3.utils.toWei('5', 'Gwei'),
-    //                 }
-    //                 const getTransactionNFT = await web3.eth.accounts.signTransaction(txSendNFT, '0x80d25ae251ae049a89ac4ae13e81cd1f7749ae43ee630b25c7840977b6c7bd3f');
-    //                 const getReceiptNFT = await web3.eth.sendSignedTransaction(getTransactionNFT.rawTransaction);
-    //                 console.log(getReceiptNFT);
-    //                 return resolve(res)
-    //             }
-    //             if (err) {
-    //                 reject(err)
-    //             }
-    //         });
-    //     }, 100);
-    //})
+   
 
 
 

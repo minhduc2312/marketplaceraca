@@ -20,7 +20,7 @@
 body {
   position: relative;
   z-index: 1;
-  background: url("./styles/bg-metamon.jpg") no-repeat top;
+  background: url("./styles/bg-metamon.jpg") no-repeat top fixed;
   background-size: cover;
   min-height: 100vh;
 }

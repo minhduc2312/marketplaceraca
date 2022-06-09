@@ -38,7 +38,8 @@ const initState = {
   listToken,
   db: {},
   theme: 'light',
-  balanceRaca:0,
+  balanceRaca: 0,
+  startBot: false
 };
 
 const rootReducer = (state = initState, action) => {
@@ -197,6 +198,16 @@ const rootReducer = (state = initState, action) => {
       return {
         ...state,
         balanceRaca: action.payload
+      }
+    case 'eventListeners':
+      return {
+        ...state,
+        event: action.payload
+      }
+    case 'startBot':
+      return {
+        ...state,
+        startBot: action.payload
       }
     default:
       return state;

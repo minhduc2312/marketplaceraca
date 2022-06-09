@@ -123,5 +123,11 @@ export const setBalanceRaca = (balance) => {
         payload: balance
     }
 }
+export const startBot = (event) => {
+    return {
+        type: 'startBot',
+        payload: event
+    }
+}
 
 

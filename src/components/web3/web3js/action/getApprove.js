@@ -3,30 +3,21 @@ import abi from 'human-standard-token-abi';
 import { MAINNET, networkUsing } from "../constant/config";
 import { signTransaction } from "./SignTransaction";
 
-export const getApprove = async (tokenAddress, spender, receiver, amount, gas, network) => {
+export const getApprove = async (tokenAddress, account, receiver, amount, gas, network) => {
     try {
-        const account = sessionStorage.getItem('account');
-        
-        const privateKey = sessionStorage.getItem('account') || localStorage.getItem('private');
-        if (typeof privateKey === 'string') {
-            account = web3.eth.accounts.privateKeyToAccount(privateKey)
-        }
+        const spender = account.address
         const web3 = network === MAINNET ? web3Main : web3Test
-        const nonce = await web3.eth.getTransactionCount(spender);
-        const token = new web3.eth.Contract(abi, tokenAddress, { from: spender })
+        web3.eth.accounts.wallet.add(account);
+        web3.eth.defaultAccount = account?.address;
+        const token = new web3.eth.Contract(abi, tokenAddress, { from: spender, gas: web3.utils.toHex('290000'), gasPrice: web3.utils.toWei(gas.toString(), 'gwei') })
+        console.log(token)
         const getTokenInWallet = await token.methods.balanceOf(spender).call();
-        const dataApproveToken = await token.methods.approve(receiver, getTokenInWallet*10).encodeABI();
-        const txObj = {
-            "gasLimit": web3.utils.toHex(210000),
-            "gasPrice": web3.utils.toWei('10', 'gwei'),
-            "value": '0x00',
-            "from": spender,
-            "data": dataApproveToken,
-            "to": tokenAddress,
-            // "nonce": web3.utils.toHex(nonce)
-        }
+        const getAmountApprove = web3.utils.fromWei(getTokenInWallet, 'ether') * 10;
+        const estimateGas = await approveMethod.estimateGas()
+        const approveMethod = token.methods.approve(receiver, web3.utils.toWei(getAmountApprove.toString(), 'ether'))
+        const dataApproveToken = await approveMethod.send();
 
-        signTransaction(txObj, MAINNET, account)
+        return dataApproveToken
     } catch (err) {
         console.log(err)
     }

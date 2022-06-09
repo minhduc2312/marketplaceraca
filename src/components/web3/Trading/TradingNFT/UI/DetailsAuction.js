@@ -1,6 +1,6 @@
 import { Box, Button, Typography } from '@mui/material'
 import millify from 'millify'
-import React, { useEffect, useState } from 'react'
+import React, { memo, useEffect, useState } from 'react'
 import { useDispatch } from 'react-redux'
 import { setBalanceRaca } from '../../../../../app/actions'
 import { numberWithCommas } from '../../../../helper/numberWithCommas'
@@ -13,14 +13,23 @@ const DetailsAuction = ({ log }) => {
     const [infoMetamon, setInfoMetamon] = useState();
 
     useEffect(() => {
-        if (log.nameNFT === 'Metamon') {
-            axios.get(`https://market-api.radiocaca.com/nft-sales?tokenId=${log.tokenId}`).then(res => {
-                setInfoMetamon(res.data.list[0])
-            })
+        if (log.nftAddress === '0xF24Bf668Aa087990f1d40aBAbF841456E771913c') {
+            const getDataMetamon = setTimeout(() => {
+                axios.get(`https://market-api.radiocaca.com/nft-sales?tokenId=${log.tokenId}`)
+                    .then(res => {
+                        console.log('loading...')
+                        if (res.data.list[0]) {
+                            console.log("Successfully")
+                            setInfoMetamon(res.data.list[0])
+                        }
+
+                    }
+                    )
+            }, 2000)
+
         }
 
         return () => {
-
         }
     }, [])
 
@@ -91,4 +100,4 @@ const DetailsAuction = ({ log }) => {
     )
 }
 
-export default DetailsAuction
+export default memo(DetailsAuction)

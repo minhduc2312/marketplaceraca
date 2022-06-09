@@ -119,6 +119,7 @@ const Marketplace = () => {
     }
     useEffect(() => {
         getNFTList(filter);
+        
         const reload = setInterval(() => {
             getNFTList(filter);
         }, 10000)

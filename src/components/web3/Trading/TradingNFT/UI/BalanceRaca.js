@@ -19,11 +19,13 @@ const BalanceRaca = () => {
         } catch (err) {
             console.log(err)
         }
+        return () => {
 
+        }
     }, [])
     return (
         <>
-            <Typography sx={{ color: '#333', }}>{`Balance RACA: ${balanceRaca}`}</Typography>
+            <Typography sx={{ color: '#333', }}>{`Balance RACA: ${Number(balanceRaca).toFixed(5)}`}</Typography>
         </>
 
     )

@@ -1,5 +1,4 @@
 import { toast } from "react-toastify";
-import account from "../ConnectWeb3/account";
 import web3Main, { web3Test } from "../ConnectWeb3/web3";
 import { MAINNET } from "../constant/config";
 

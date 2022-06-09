@@ -36,7 +36,7 @@ export const buyNFT = async (id_in_contract, price) => {
             }
             return new Promise((resolve, reject) => {
                 if (allowance < web3.utils.fromWei(price.toString(), 'ether')) {
-                    getApprove(addressRACA, account?.address, addressMarket, 0, 5, MAINNET)
+                    getApprove(addressRACA, account?.address, addressMarket, 0, 5, MAINNET,account)
                 }
                 resolve()
             }).then(() => signTransaction(txObj, MAINNET, account));

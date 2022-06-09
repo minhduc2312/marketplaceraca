@@ -32,7 +32,6 @@ const getSellIngameList = (formDataPrams) => {
         }
     }).then((res) => {
         const data = res.data.data;
-        console.log(res)
         return axios({
             method: 'POST',
             url: 'https://metamon-api.radiocaca.com/usm-api/shop-order/sellList',
@@ -179,7 +178,7 @@ const NFTs = () => {
 
         convertDateTime();
         const rerenderData = setInterval(() => {
-           
+
             getData();
             convertDateTime();
         }, 20000)
@@ -189,7 +188,7 @@ const NFTs = () => {
             setTokenPrice(0)
             clearInterval(rerenderData);
         }
-    }, []);
+    }, [selectStats]);
     useEffect(() => {
 
         axios.get(`${URL_API}/api/raca/market/stats/${selectStats}`).then(res => setSelectedStatsList(res.data))
@@ -206,9 +205,9 @@ const NFTs = () => {
         }
 
         getSellIngameList(getFormData(selectTypeIngame)).then(res => {
-            if (res?.data) {
+            if (res?.data?.data) {
                 const data = res.data.data;
-                setSellIngameList(data?.shopOrderList)
+                setSellIngameList(data.shopOrderList)
             }
 
         }).catch(err => console.log(err));

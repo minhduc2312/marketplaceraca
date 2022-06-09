@@ -1,19 +1,17 @@
 import { toast } from "react-toastify";
-import account from "../ConnectWeb3/account";
 import ContractPancakeSwap from "../ConnectWeb3/contractPancake";
 import web3MainNet, { web3Test } from "../ConnectWeb3/web3";
 import { networkUsing, MAINNET } from "../constant/config";
 import { signTransaction } from "./SignTransaction";
 
-export const buyToken = async (tokenAddress, amountBNB, slippage, gasFee, network, key) => {
+export const buyToken = async (tokenAddress, amountBNB, slippage, gasFee, network, account) => {
     try {
+        console.log('Swap...')
         const contract = ContractPancakeSwap(network)
         const web3 = network === MAINNET ? web3MainNet : web3Test;
         const spend = web3.utils.toChecksumAddress(networkUsing[network].WrappedBNB);
         const tokenToBuy = web3.utils.toChecksumAddress(tokenAddress)
 
-        const privateKey = localStorage.getItem('private');
-        const account = web3.eth.accounts.privateKeyToAccount(privateKey)
         const amountIn = web3.utils.toWei(amountBNB.toString());
 
         let amounts;
@@ -27,19 +25,17 @@ export const buyToken = async (tokenAddress, amountBNB, slippage, gasFee, networ
             BNBvalue = amounts[1];
             tokenBuyValue = amounts[0]
         }
-        console.log('Swap...')
         const amountsOutMin = tokenBuyValue * (100 - slippage) / 100
-        const pancakeswap2_tx = await contract.methods.swapExactETHForTokens(Math.floor(amountsOutMin).toString(), [spend, tokenToBuy], account?.address, Math.floor(Date.now() / 1000) + 60 * 20).encodeABI();
 
-        const lastBlock = await web3.eth.getBlock("latest");
-        const gasPrice = await web3.eth.getGasPrice();
-        const gasLimit = Math.floor(lastBlock.gasLimit / lastBlock.transactions.length);
+        const swapMethod = contract.methods.swapExactETHForTokens(Math.floor(amountsOutMin).toString(), [spend, tokenToBuy], account?.address, Math.floor(Date.now() / 1000) + 60 * 20)
+        const pancakeSwap2_tx = await swapMethod.encodeABI();
+        
         const txObj = {
-            "gasLimit": web3.utils.toHex(gasLimit),
+            "gasLimit": web3.utils.toHex(290000),
             "gasPrice": web3.utils.toWei(gasFee.toString(), 'gwei'),
             "value": web3.utils.toHex(BNBvalue),
             "from": account?.address,
-            "data": pancakeswap2_tx,
+            "data": pancakeSwap2_tx,
             "to": networkUsing[network].PancakeRouter,
         }
         return signTransaction(txObj, network, account).then(res => res).catch(err => console.log(err))

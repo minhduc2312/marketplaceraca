@@ -33,10 +33,10 @@ const Metamask = () => {
             /* width: 25%; */
             alignItems: 'center',
         }}>
-            <img alt='' width={`100px`} height='100px' src='marketplaceraca/metamask.png' />
+            <img alt='' width={`100px`} height='100px' src='/marketplaceraca/metamask.png' />
             <Button sx={{ height: '100%', color: '#fff', background: 'rgb(253 186 28 / 92%)', padding: '5px 10px' }} variant="contained" onClick={() => connectToWallet()}>Connect to Wallet</Button>
             <Button sx={{ height: '100%', color: '#fff', background: 'rgb(253 186 28 / 92%)', padding: '5px 10px', marginTop: '10px' }} variant="contained" onClick={() => walletConnect()}>
-                <img alt='' width='30px' style={{ marginRight: '5px' }} src='marketplaceraca/wallet-connect.svg'></img>
+                <img alt='' width='30px' style={{ marginRight: '5px' }} src='/marketplaceraca/wallet-connect.svg'></img>
                 Wallet Connect</Button>
 
         </div>

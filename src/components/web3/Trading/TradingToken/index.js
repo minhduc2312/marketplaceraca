@@ -15,7 +15,7 @@ import { sellToken, buyToken, signTransaction } from '../../web3js/action';
 import { ListenPairCreated } from './ListenPairCreated';
 
 
-const storage = window.localStorage.getItem('private') || ''
+const storage = window.sessionStorage.getItem('account')
 export const TradingToken = () => {
   const { currentAccount } = useContext(AppContext)
   const [inputAddress, setInputAddress] = useState('');
@@ -26,9 +26,9 @@ export const TradingToken = () => {
   const [BNBBalance, setBNBBalance] = useState(0);
   const [BNBAmount, setBNBAmount] = useState(0);
   const [gas, setGas] = useState(5);
-  const [privateKey, setPrivateKey] = useState(storage);
+  const [privateKey, setPrivateKey] = useState(JSON.parse(storage)?.privateKey || '');
   const [switchNetWork, setSwitchNetWork] = useState(true)
-
+  const [account, setAccount] = useState()
 
   const network = useMemo(() => switchNetWork ? MAINNET : TESTNET, [switchNetWork])
 
@@ -53,17 +53,19 @@ export const TradingToken = () => {
 
 
   const handleBuy = async () => {
-    buyToken(inputAddress, BNBAmount, slippage, gas, network).then(res => console.log("Buy successfully"))
+    buyToken(inputAddress, BNBAmount, slippage, gas, network, account).then(res => res && console.log("Buy successfully"))
   }
 
   const handleSell = async () => {
-    sellToken(inputAddress, amount, slippage, gas, network)
+    // console.log(account)
+    sellToken(inputAddress, amount, slippage, gas, network, account).then(res => res && ('Sell Successfully!!!'))
   }
   const handlePrivateKey = (e) => {
     setPrivateKey(e.target.value);
     try {
-      if (web3.eth.accounts.privateKeyToAccount(e.target.value))
-        window.localStorage.setItem('private', e.target.value)
+      const getAccount = web3.eth.accounts.privateKeyToAccount(e.target.value);
+      if (getAccount)
+        window.sessionStorage.setItem('account', JSON.stringify(getAccount))
     } catch (err) {
       console.log(err.message)
     }
@@ -138,22 +140,25 @@ export const TradingToken = () => {
   }
 
   useEffect(() => {
-
     const init = async () => {
       try {
-        const privateKey = localStorage.getItem('private');
-        const account = web3.eth.accounts.privateKeyToAccount(privateKey);
-        const balance = await web3.eth.getBalance(account?.address);
-        setBNBBalance(Number(web3.utils.fromWei(balance.toString(), 'ether')).toFixed(5));
-        const BNBOut = async () => {
-          if (amount > 0) {
-            const amountIn = web3.utils.toWei(amount, 'ether');
-            const amounts = await ContractPancakeSwap(network).methods.getAmountsOut(amountIn, [inputAddress, spend]).call();
-            setBNBAmount(web3.utils.fromWei(amounts[1], 'ether'))
+
+        const account = JSON.parse(sessionStorage.getItem('account'));
+        if (account) {
+          setAccount(account)
+          const balance = await web3.eth.getBalance(account?.address);
+          setBNBBalance(Number(web3.utils.fromWei(balance.toString(), 'ether')).toFixed(5));
+          const BNBOut = async () => {
+            if (amount > 0) {
+              const amountIn = web3.utils.toWei(amount, 'ether');
+              const amounts = await ContractPancakeSwap(network).methods.getAmountsOut(amountIn, [inputAddress, spend]).call();
+              setBNBAmount(web3.utils.fromWei(amounts[1], 'ether'))
+            }
           }
+
+          BNBOut();
         }
 
-        BNBOut();
         // ListenPairCreated();
       } catch (err) {
         console.log(err)
@@ -161,6 +166,7 @@ export const TradingToken = () => {
     }
     init();
     return () => {
+      
     }
   }, [inputAddress, network, privateKey])
 
