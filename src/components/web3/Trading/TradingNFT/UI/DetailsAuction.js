@@ -14,15 +14,13 @@ const DetailsAuction = ({ log }) => {
 
     useEffect(() => {
         if (log.nftAddress === '0xF24Bf668Aa087990f1d40aBAbF841456E771913c') {
-            const getDataMetamon = setTimeout(() => {
+            const getDataMetamon = setInterval(() => {
                 axios.get(`https://market-api.radiocaca.com/nft-sales?tokenId=${log.tokenId}`)
                     .then(res => {
-                        console.log('loading...')
                         if (res.data.list[0]) {
-                            console.log("Successfully")
                             setInfoMetamon(res.data.list[0])
+                            clearInterval(getDataMetamon)
                         }
-
                     }
                     )
             }, 2000)

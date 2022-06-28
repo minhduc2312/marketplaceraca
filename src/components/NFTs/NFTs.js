@@ -7,6 +7,7 @@ import '../../styles/nfts.css';
 import { useSelector } from "react-redux";
 import millify from "millify";
 import StatsChart from "./StatsChart/StatsChart";
+import { useMemo } from "react";
 
 
 
@@ -140,6 +141,8 @@ const NFTs = () => {
     const [selectTypeIngame, setSelectTypeIngame] = useState(selectIngameList[0].type);
     const refSelect = useRef();
 
+    const timeInterval = useMemo(() => 3000, [])
+
     const convertDateTime = () => {
         const now = new Date();
         setTimeUpdated(now.toLocaleString())
@@ -167,30 +170,43 @@ const NFTs = () => {
         axios.get(`${URL_API}/api/raca/market/stats/17`).then(res =>
             setEggStatsList(res.data)
         ).catch(err => console.log(err))
-        axios.get(`${URL_API}/api/raca/market/stats/${selectStats}`).then(res => setSelectedStatsList(res.data))
-    }, [selectStats])
-    useEffect(() => {
 
+    }, [])
+
+
+    useEffect(() => {
         setTokenPrice(raca)
     }, [raca])
+
     useEffect(() => {
         getData();
-
         convertDateTime();
         const rerenderData = setInterval(() => {
-
             getData();
             convertDateTime();
-        }, 20000)
+        }, timeInterval)
 
         return () => {
             setEggStatsList([])
             setTokenPrice(0)
             clearInterval(rerenderData);
         }
-    }, [selectStats]);
-    useEffect(() => {
+    }, []);
 
+    useEffect(() => {
+        const getStatsNFT = () => {
+            axios.get(`${URL_API}/api/raca/market/stats/${selectStats}`).then(res => setSelectedStatsList(res.data));
+        };
+        getStatsNFT();
+        const rerenderData = setInterval(() => {
+            getStatsNFT();
+        }, timeInterval)
+        return () => {
+            clearInterval(rerenderData)
+        }
+    }, [selectStats])
+
+    useEffect(() => {
         axios.get(`${URL_API}/api/raca/market/stats/${selectStats}`).then(res => setSelectedStatsList(res.data))
         return () => {
             setSelectedStatsList([])
