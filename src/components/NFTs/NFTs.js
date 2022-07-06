@@ -141,7 +141,7 @@ const NFTs = () => {
     const [selectTypeIngame, setSelectTypeIngame] = useState(selectIngameList[0].type);
     const refSelect = useRef();
 
-    const timeInterval = useMemo(() => 3000, [])
+    const timeInterval = useMemo(() => 20000, [])
 
     const convertDateTime = () => {
         const now = new Date();
@@ -168,7 +168,7 @@ const NFTs = () => {
             setPriceMarketList(data)
         })
         axios.get(`${URL_API}/api/raca/market/stats/17`).then(res =>
-            setEggStatsList(res.data)
+            setEggStatsList(res.data?.code === 400 ? [] : res.data)
         ).catch(err => console.log(err))
 
     }, [])
@@ -195,7 +195,10 @@ const NFTs = () => {
 
     useEffect(() => {
         const getStatsNFT = () => {
-            axios.get(`${URL_API}/api/raca/market/stats/${selectStats}`).then(res => setSelectedStatsList(res.data));
+            axios.get(`${URL_API}/api/raca/market/stats/${selectStats}`).then(res => {
+                setSelectedStatsList(res.data?.code === 400 ? [] : res.data);
+            })
+
         };
         getStatsNFT();
         const rerenderData = setInterval(() => {
@@ -206,12 +209,6 @@ const NFTs = () => {
         }
     }, [selectStats])
 
-    useEffect(() => {
-        axios.get(`${URL_API}/api/raca/market/stats/${selectStats}`).then(res => setSelectedStatsList(res.data))
-        return () => {
-            setSelectedStatsList([])
-        }
-    }, [selectStats])
 
     useEffect(() => {
         const getChild = refSelect.current.childNodes[0]
@@ -413,7 +410,7 @@ const NFTs = () => {
                                             </TableRow>
                                         </TableHead>
                                         <TableBody>
-                                            {selectedStatsList?.length !== 0 && selectedStatsList.map((item, index) => {
+                                            {selectedStatsList?.length !== 0 && selectedStatsList?.map((item, index) => {
                                                 return (
                                                     <TableRow key={index + 1}>
                                                         <TableCell align="center" sx={{ borderLeft: "1px solid" }}>{index + 1}</TableCell>

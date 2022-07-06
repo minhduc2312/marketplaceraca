@@ -39,6 +39,7 @@ const selectNFTsList = [
   },
 ]
 const URL_API = 'https://api-marketplace-mind.herokuapp.com'
+
 const StatsChart = () => {
   const [selectedStats, setSelectedStats] = useState(selectNFTsList[0].id);
   const [optionsCustom, setOptionsCustom] = useState(options)
@@ -48,12 +49,13 @@ const StatsChart = () => {
     options.title.text = selectNFTsList.filter(item => item.id === Number(e.target.value))[0].name
     // options.title.text = selectNFTsList[e.target.value].name
   }
-  
+
 
   useEffect(() => {
     axios.get(`${URL_API}/api/raca/market/stats/${selectedStats}/1000`).then(res => {
-      if (res?.data) {
-        const data = res.data;
+      const { data } = res
+      if (data?.length) {
+        const data = res.data || [];
         data.sort((a, b) => a < b ? 1 : -1);
         const timeSplit = 15 * 60;
         const dataTemp = {}
