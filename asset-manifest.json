@@ -1,24 +1,24 @@
 {
   "files": {
-    "main.css": "/marketplaceraca/static/css/main.259d94ba.chunk.css",
-    "main.js": "/marketplaceraca/static/js/main.e09f21a3.chunk.js",
-    "main.js.map": "/marketplaceraca/static/js/main.e09f21a3.chunk.js.map",
-    "runtime-main.js": "/marketplaceraca/static/js/runtime-main.16875bee.js",
-    "runtime-main.js.map": "/marketplaceraca/static/js/runtime-main.16875bee.js.map",
-    "static/css/2.b8fe46b5.chunk.css": "/marketplaceraca/static/css/2.b8fe46b5.chunk.css",
-    "static/js/2.f65977a4.chunk.js": "/marketplaceraca/static/js/2.f65977a4.chunk.js",
-    "static/js/2.f65977a4.chunk.js.map": "/marketplaceraca/static/js/2.f65977a4.chunk.js.map",
+    "main.css": "/marketplaceraca/static/css/main.7b62968d.chunk.css",
+    "main.js": "/marketplaceraca/static/js/main.408b06c7.chunk.js",
+    "main.js.map": "/marketplaceraca/static/js/main.408b06c7.chunk.js.map",
+    "runtime-main.js": "/marketplaceraca/static/js/runtime-main.9f042940.js",
+    "runtime-main.js.map": "/marketplaceraca/static/js/runtime-main.9f042940.js.map",
+    "static/css/2.2c4e78b8.chunk.css": "/marketplaceraca/static/css/2.2c4e78b8.chunk.css",
+    "static/js/2.879a7e73.chunk.js": "/marketplaceraca/static/js/2.879a7e73.chunk.js",
+    "static/js/2.879a7e73.chunk.js.map": "/marketplaceraca/static/js/2.879a7e73.chunk.js.map",
     "index.html": "/marketplaceraca/index.html",
-    "static/css/2.b8fe46b5.chunk.css.map": "/marketplaceraca/static/css/2.b8fe46b5.chunk.css.map",
-    "static/css/main.259d94ba.chunk.css.map": "/marketplaceraca/static/css/main.259d94ba.chunk.css.map",
-    "static/js/2.f65977a4.chunk.js.LICENSE.txt": "/marketplaceraca/static/js/2.f65977a4.chunk.js.LICENSE.txt",
+    "static/css/2.2c4e78b8.chunk.css.map": "/marketplaceraca/static/css/2.2c4e78b8.chunk.css.map",
+    "static/css/main.7b62968d.chunk.css.map": "/marketplaceraca/static/css/main.7b62968d.chunk.css.map",
+    "static/js/2.879a7e73.chunk.js.LICENSE.txt": "/marketplaceraca/static/js/2.879a7e73.chunk.js.LICENSE.txt",
     "static/media/App.css": "/marketplaceraca/static/media/bg.e49a4dc5.jpg"
   },
   "entrypoints": [
-    "static/js/runtime-main.16875bee.js",
-    "static/css/2.b8fe46b5.chunk.css",
-    "static/js/2.f65977a4.chunk.js",
-    "static/css/main.259d94ba.chunk.css",
-    "static/js/main.e09f21a3.chunk.js"
+    "static/js/runtime-main.9f042940.js",
+    "static/css/2.2c4e78b8.chunk.css",
+    "static/js/2.879a7e73.chunk.js",
+    "static/css/main.7b62968d.chunk.css",
+    "static/js/main.408b06c7.chunk.js"
   ]
 }
